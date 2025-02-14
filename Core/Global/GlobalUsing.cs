@@ -4,3 +4,6 @@ global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;
 global using Microsoft.EntityFrameworkCore;
+global using Core.Data.Entities.Interfaces;
+global using Core.Data.Entities.Enums;
+global using System.ComponentModel.DataAnnotations.Schema;

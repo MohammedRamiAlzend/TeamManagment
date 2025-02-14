@@ -1,6 +1,6 @@
 ﻿namespace Core.Data.Entities.Interfaces;
 
-public interface IEntitiy
+public interface IHasId
 {
     int Id { get; set; }
 }
