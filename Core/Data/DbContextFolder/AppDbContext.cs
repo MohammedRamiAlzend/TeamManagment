@@ -4,18 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Core.Data.DbContextFolder
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Claim> Claims{ get; set; }
-        public DbSet<Role> Roles{ get; set; }
-        public DbSet<WorkTask> Tasks{ get; set; }
-        public DbSet<TaskAssignment> TaskAssignments{ get; set; }
-        public DbSet<Point> Points{ get; set; }
+        public required DbSet<Employee> Employees { get; set; }
+        public required DbSet<Department> Departments { get; set; }
+        public required DbSet<Claim> Claims{ get; set; }
+        public required DbSet<Role> Roles{ get; set; }
+        public required DbSet<WorkTask> Tasks{ get; set; }
+        public required DbSet<TaskAssignment> TaskAssignments{ get; set; }
+        public required DbSet<Point> Points{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>(entity => {
