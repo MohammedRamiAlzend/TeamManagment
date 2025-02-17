@@ -1,4 +1,5 @@
 using Core.Data.DbContextFolder;
+using Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(
     opt =>
     {
         opt.UseSqlServer(connectionString);
-    }
-    );
+    });
+
+builder.Services.AddScoped<IEntityCommiter, EntityCommiter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

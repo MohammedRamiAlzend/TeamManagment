@@ -10,7 +10,6 @@
     <Folder Include="Data\Entities\DTOS\" />
     <Folder Include="Data\Entities\Models\" />
     <Folder Include="Data\DataSeeder\" />
-    <Folder Include="Repositories\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
