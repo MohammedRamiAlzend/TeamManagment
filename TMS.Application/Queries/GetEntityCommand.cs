@@ -1,0 +1,18 @@
+﻿namespace TMS.Application.Queries;
+public record GetEntityQuery<TEntity>(
+        Expression<Func<TEntity, bool>>? Filter = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null
+    ) : IRequest<DbRequest<TEntity>> where TEntity : class, IHasId;
+public class GetEntityQueryHandler<TEntity>(IEntityCommiter entityCommiter)
+    : IRequestHandler<GetEntityQuery<TEntity>, DbRequest<TEntity>>
+    where TEntity : class, IHasId
+{
+    public async Task<DbRequest<TEntity>> Handle(GetEntityQuery<TEntity> request, CancellationToken cancellationToken)
+    {
+        var requestGet = await entityCommiter.GetRepository<TEntity>().GetAsync(
+            filter: request.Filter,
+            include: request.Include
+            );
+        return requestGet;
+    }
+}
