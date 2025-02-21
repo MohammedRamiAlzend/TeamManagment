@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
 
 namespace TMS.Infrastructure.Repositories;
 
@@ -18,10 +17,13 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         }
 
         return await ExecuteOperationAsync(
-            async () => await dbSet.AddAsync(entity),
+            async () =>
+            {
+                await dbSet.AddAsync(entity);
+                return DbRequest.Success();
+            },
             $"Entity of type {typeof(T).Name} has been added successfully",
-            $"Something went wrong while adding entity of type {typeof(T).Name}"
-        );
+            $"Something went wrong while adding entity of type {typeof(T).Name}");
     }
 
     /// <summary>
@@ -133,20 +135,30 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     /// <summary>
     /// Removes an entity from the database asynchronously.
     /// </summary>
-    public Task<DbRequest> RemoveAsync(Expression<Func<T, bool>>? filter = null)
+    public async Task<DbRequest> RemoveAsync(Expression<Func<T, bool>> filter)
     {
-        var getAll= Task.Run(async ()=> await GetAllAsync(filter)).Result;
-        return ExecuteOperationAsync(
-            () =>
+        if (filter == null)
+        {
+            throw new ArgumentNullException(nameof(filter), "Filter cannot be null.");
+        }
+
+        var getEntity = await GetAsync(filter);
+
+        return await ExecuteOperationAsync(
+            async () =>
             {
-                if(getAll != null && getAll.IsSuccess)
+                if (getEntity != null && getEntity.IsSuccess && getEntity.Data != null)
                 {
-                    dbSet.RemoveRange(getAll.Data);
+                    dbSet.Remove(getEntity.Data);
+                    return DbRequest.Success();
                 }
-               return Task.CompletedTask;
+                else
+                    return DbRequest.Failure();
             },
-            $"Entity of type {typeof(T).Name} with {string.Join(",",getAll.Data)} has been deleted.",
-            $"Something went wrong while deleting entity of type {typeof(T).Name}"
+           successMessage: $"Entity of type {typeof(T).Name} with Id {getEntity.Data?.Id} has been deleted.",
+           errorMessage: $"Something went wrong while updating entity of type {typeof(T).Name}",
+           errorMessagePrefix: $"Something went wrong while deleting entity of type {typeof(T).Name}"
+
         );
     }
     /// <summary>
@@ -160,26 +172,30 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         }
 
         return await ExecuteOperationAsync(
-            () =>
-            {
-                dbSet.Attach(entity);
-                dbSet.Entry(entity).State = EntityState.Modified;
-                return Task.CompletedTask;
-            },
-            "Entity has been updated successfully.",
-            $"Something went wrong while updating entity of type {typeof(T).Name}"
-        );
+        async () =>
+        {
+            dbSet.Attach(entity);
+            dbSet.Entry(entity).State = EntityState.Modified;
+            return DbRequest.Success();
+        },
+        successMessage: $"Entity of type {typeof(T).Name} has been updated successfully.",
+        errorMessagePrefix: $"Something went wrong while updating entity of type {typeof(T).Name}");
     }
 
     /// <summary>
     /// Executes a database operation asynchronously and returns a standardized response.
     /// </summary>
-    private async Task<DbRequest> ExecuteOperationAsync(Func<Task> operation, string successMessage, string errorMessagePrefix)
+    private async Task<DbRequest> ExecuteOperationAsync(Func<Task<DbRequest>> operation,
+                                                        string successMessage = "",
+                                                        string? errorMessage = null,
+                                                        string errorMessagePrefix = "")
     {
         try
         {
-            await operation();
-            return DbRequest.Success(successMessage);
+            var result = await operation();
+            result.Message = result.IsSuccess ? successMessage :
+                                                (errorMessage ?? result.Message);
+            return result;
         }
         catch (Exception e)
         {

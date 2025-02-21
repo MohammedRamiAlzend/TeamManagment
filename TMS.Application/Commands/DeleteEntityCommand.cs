@@ -1,7 +1,7 @@
 ﻿using TMS.Core.MediatR.Interfaces;
 
 namespace TMS.Application.Commands;
-public record DeleteEntityCommand<TEntity>(Expression<Func<TEntity, bool>>? Filter = null) : IRequest<DbRequest> where TEntity : class, IHasId;
+public record DeleteEntityCommand<TEntity>(Expression<Func<TEntity, bool>> Filter) : IRequest<DbRequest> where TEntity : class, IHasId;
 public class DeleteEntityCommandHandler<TEntity>(IEntityCommiter entityCommiter)
     : IRequestHandler<DeleteEntityCommand<TEntity>, DbRequest>
     where TEntity : class, IHasId
