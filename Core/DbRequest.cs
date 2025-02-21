@@ -38,7 +38,7 @@ public class DbRequest
 /// </summary>
 public class DbRequest<TData> : DbRequest
 {
-    public TData? Data { get; set; }
+    public TData Data { get; set; }
 
     public static DbRequest<TData> Success(TData data, params string[] messages)
         => new()
@@ -48,7 +48,7 @@ public class DbRequest<TData> : DbRequest
             Data = data
         };
 
-    public static DbRequest<TData> Failure(params string[] messages) => new()
+    public static new DbRequest<TData> Failure(params string[] messages) => new()
     {
         IsSuccess = false,
         Message = string.Join(", ", messages)

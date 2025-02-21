@@ -17,5 +17,5 @@ public interface IDbContextRepository<T> where T : class
         int pageSize = 10);
     Task<DbRequest> AddAsync(T entity);
     Task<DbRequest> UpdateAsync(T entity);
-    Task<DbRequest> RemoveAsync(T entity);
+    Task<DbRequest> RemoveAsync(Expression<Func<T, bool>> filter);
 }

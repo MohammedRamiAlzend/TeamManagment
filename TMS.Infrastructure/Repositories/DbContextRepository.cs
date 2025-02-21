@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
 
 namespace TMS.Infrastructure.Repositories;
 
-public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<T>> logger) : IDbContextRepository<T>
+public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     where T : class, IHasId
 {
     /// <summary>
@@ -18,10 +17,13 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
 
         return await ExecuteOperationAsync(
-            async () => await dbSet.AddAsync(entity),
+            async () =>
+            {
+                await dbSet.AddAsync(entity);
+                return DbRequest.Success();
+            },
             $"Entity of type {typeof(T).Name} has been added successfully",
-            $"Something went wrong while adding entity of type {typeof(T).Name}"
-        );
+            $"Something went wrong while adding entity of type {typeof(T).Name}");
     }
 
     /// <summary>
@@ -50,7 +52,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving entities.");
             return DbRequest<List<T>>.Failure(
                 $"Something went wrong while retrieving entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -97,7 +98,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving paginated entities.");
             return DbRequest<PaginatedDbRequest<T>>.Failure(
                 $"Something went wrong while retrieving paginated entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -127,7 +127,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving an entity.");
             return DbRequest<T>.Failure(
                 $"Something went wrong while retrieving an entity of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -136,24 +135,32 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
     /// <summary>
     /// Removes an entity from the database asynchronously.
     /// </summary>
-    public async Task<DbRequest> RemoveAsync(T entity)
+    public async Task<DbRequest> RemoveAsync(Expression<Func<T, bool>> filter)
     {
-        if (entity == null)
+        if (filter == null)
         {
-            return DbRequest.Failure("Entity cannot be null");
+            throw new ArgumentNullException(nameof(filter), "Filter cannot be null.");
         }
 
+        var getEntity = await GetAsync(filter);
+
         return await ExecuteOperationAsync(
-            () =>
+            async () =>
             {
-                dbSet.Remove(entity);
-                return Task.CompletedTask;
+                if (getEntity != null && getEntity.IsSuccess && getEntity.Data != null)
+                {
+                    dbSet.Remove(getEntity.Data);
+                    return DbRequest.Success();
+                }
+                else
+                    return DbRequest.Failure();
             },
-            $"Entity of type {typeof(T).Name} with ID {entity.Id} has been deleted.",
-            $"Something went wrong while deleting entity of type {typeof(T).Name}"
+           successMessage: $"Entity of type {typeof(T).Name} with Id {getEntity.Data?.Id} has been deleted.",
+           errorMessage: $"Something went wrong while updating entity of type {typeof(T).Name}",
+           errorMessagePrefix: $"Something went wrong while deleting entity of type {typeof(T).Name}"
+
         );
     }
-
     /// <summary>
     /// Updates an entity in the database asynchronously.
     /// </summary>
@@ -165,30 +172,33 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
 
         return await ExecuteOperationAsync(
-            () =>
-            {
-                dbSet.Attach(entity);
-                dbSet.Entry(entity).State = EntityState.Modified;
-                return Task.CompletedTask;
-            },
-            "Entity has been updated successfully.",
-            $"Something went wrong while updating entity of type {typeof(T).Name}"
-        );
+        async () =>
+        {
+            dbSet.Attach(entity);
+            dbSet.Entry(entity).State = EntityState.Modified;
+            return DbRequest.Success();
+        },
+        successMessage: $"Entity of type {typeof(T).Name} has been updated successfully.",
+        errorMessagePrefix: $"Something went wrong while updating entity of type {typeof(T).Name}");
     }
 
     /// <summary>
     /// Executes a database operation asynchronously and returns a standardized response.
     /// </summary>
-    private async Task<DbRequest> ExecuteOperationAsync(Func<Task> operation, string successMessage, string errorMessagePrefix)
+    private async Task<DbRequest> ExecuteOperationAsync(Func<Task<DbRequest>> operation,
+                                                        string successMessage = "",
+                                                        string? errorMessage = null,
+                                                        string errorMessagePrefix = "")
     {
         try
         {
-            await operation();
-            return DbRequest.Success(successMessage);
+            var result = await operation();
+            result.Message = result.IsSuccess ? successMessage :
+                                                (errorMessage ?? result.Message);
+            return result;
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred during the operation.");
             return DbRequest.Failure($"{errorMessagePrefix} \n Exception Message: {e.Message}");
         }
     }
