@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.Commands;
+﻿using TMS.Core.MediatR.Interfaces;
+
+namespace TMS.Application.Commands;
 public record AddEntityCommand<TEntity>(TEntity Entity) : IRequest<DbRequest> where TEntity : class, IHasId;
 public class AddEntityCommandHandler<TEntity>(IEntityCommiter entityCommiter)
     : IRequestHandler<AddEntityCommand<TEntity>, DbRequest>

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TMS.Infrastructure.Repositories;
 
-public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<T>> logger) : IDbContextRepository<T>
+public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     where T : class, IHasId
 {
     /// <summary>
@@ -50,7 +50,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving entities.");
             return DbRequest<List<T>>.Failure(
                 $"Something went wrong while retrieving entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -97,7 +96,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving paginated entities.");
             return DbRequest<PaginatedDbRequest<T>>.Failure(
                 $"Something went wrong while retrieving paginated entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -127,7 +125,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred while retrieving an entity.");
             return DbRequest<T>.Failure(
                 $"Something went wrong while retrieving an entity of type {typeof(T).Name}. \n Exception Message: {e.Message}");
         }
@@ -136,24 +133,22 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
     /// <summary>
     /// Removes an entity from the database asynchronously.
     /// </summary>
-    public async Task<DbRequest> RemoveAsync(T entity)
+    public Task<DbRequest> RemoveAsync(Expression<Func<T, bool>>? filter = null)
     {
-        if (entity == null)
-        {
-            return DbRequest.Failure("Entity cannot be null");
-        }
-
-        return await ExecuteOperationAsync(
+        var getAll= Task.Run(async ()=> await GetAllAsync(filter)).Result;
+        return ExecuteOperationAsync(
             () =>
             {
-                dbSet.Remove(entity);
-                return Task.CompletedTask;
+                if(getAll != null && getAll.IsSuccess)
+                {
+                    dbSet.RemoveRange(getAll.Data);
+                }
+               return Task.CompletedTask;
             },
-            $"Entity of type {typeof(T).Name} with ID {entity.Id} has been deleted.",
+            $"Entity of type {typeof(T).Name} with {string.Join(",",getAll.Data)} has been deleted.",
             $"Something went wrong while deleting entity of type {typeof(T).Name}"
         );
     }
-
     /// <summary>
     /// Updates an entity in the database asynchronously.
     /// </summary>
@@ -188,7 +183,6 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<
         }
         catch (Exception e)
         {
-            logger.LogError(e, "An error occurred during the operation.");
             return DbRequest.Failure($"{errorMessagePrefix} \n Exception Message: {e.Message}");
         }
     }

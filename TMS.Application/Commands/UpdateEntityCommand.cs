@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.Commands;
+﻿using TMS.Core.MediatR.Interfaces;
+
+namespace TMS.Application.Commands;
 public record UpdateEntityCommand<TEntity>(TEntity Entity) : IRequest<DbRequest> where TEntity : class, IHasId;
 public class UpdateEntityCommandHandler<TEntity>(IEntityCommiter entityCommiter)
     : IRequestHandler<UpdateEntityCommand<TEntity>, DbRequest>

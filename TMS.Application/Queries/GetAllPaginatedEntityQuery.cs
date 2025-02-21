@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.Queries;
+﻿using TMS.Core.MediatR.Interfaces;
+
+namespace TMS.Application.Queries;
 public record GetAllPaginatedEntityQuery<TEntity>(
         Expression<Func<TEntity, bool>>? Filter = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
