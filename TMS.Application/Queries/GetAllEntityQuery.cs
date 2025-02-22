@@ -1,23 +1,32 @@
-﻿using TMS.Core.MediatR.Interfaces;
+﻿using AutoMapper;
+using TMS.Core.AutoMapperClasses.DTOs;
+using TMS.Core.MediatR.Interfaces;
 
 namespace TMS.Application.Queries;
-public record GetAllEntityQuery<TEntity>(
+public record GetAllEntityQuery<TEntity,TEntityDTO>(
         Expression<Func<TEntity, bool>>? Filter = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderBy = null
-    ) : IRequest<DbRequest<List<TEntity>>> where TEntity : Entity;
-public class GetAllEntityQueryHandler<TEntity>(IEntityCommiter entityCommiter)
-    : IRequestHandler<GetAllEntityQuery<TEntity>, DbRequest<List<TEntity>>>
+    ) : IRequest<DbRequest<List<TEntityDTO>>>
     where TEntity : Entity
+    where TEntityDTO : IDTO;
+
+
+public class GetAllEntityQueryHandler<TEntity, TEntityDTO>(
+    IEntityCommiter entityCommiter,
+    IMapper mapper)
+    : IRequestHandler<GetAllEntityQuery<TEntity,TEntityDTO>, DbRequest<List<TEntityDTO>>>
+    where TEntity : Entity
+    where TEntityDTO : IDTO
 {
-    public async Task<DbRequest<List<TEntity>>> Handle(GetAllEntityQuery<TEntity> request, CancellationToken cancellationToken)
+    public async Task<DbRequest<List<TEntityDTO>>> Handle(GetAllEntityQuery<TEntity,TEntityDTO> request, CancellationToken cancellationToken)
     {
         var requestGet = await entityCommiter.GetRepository<TEntity>().GetAllAsync(
             filter: request.Filter,
             include: request.Include,
             request.OrderBy
             );
-        if (requestGet.IsSuccess) await entityCommiter.CommitAsync(cancellationToken);
-        return requestGet;
+        var dtoList = mapper.Map<List<TEntityDTO>>(requestGet.Data);
+        return new DbRequest<List<TEntityDTO>> {  Data = dtoList };
     }
 }
