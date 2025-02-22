@@ -5,10 +5,10 @@ namespace TMS.Application.Queries;
 public record GetEntityQuery<TEntity>(
         Expression<Func<TEntity, bool>>? Filter = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null
-    ) : IRequest<DbRequest<TEntity>> where TEntity : class, IHasId;
+    ) : IRequest<DbRequest<TEntity>> where TEntity :  Entity;
 public class GetEntityQueryHandler<TEntity>(IEntityCommiter entityCommiter,ILogger<TEntity> logger)
     : IRequestHandler<GetEntityQuery<TEntity>, DbRequest<TEntity>>
-    where TEntity : class, IHasId
+    where TEntity : Entity
 {
     public async Task<DbRequest<TEntity>> Handle(GetEntityQuery<TEntity> request, CancellationToken cancellationToken)
     {

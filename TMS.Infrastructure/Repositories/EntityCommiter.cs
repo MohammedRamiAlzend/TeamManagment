@@ -20,7 +20,7 @@ public class EntityCommiter(AppDbContext appDbContext) : IEntityCommiter
     public async Task<int> CommitAsync() => await appDbContext.SaveChangesAsync();
     public async Task<int> CommitAsync(CancellationToken cancellationToken) => await appDbContext.SaveChangesAsync(cancellationToken);
     public void Dispose() => appDbContext.Dispose();
-    public IDbContextRepository<T> GetRepository<T>() where T : class, IHasId
+    public IDbContextRepository<T> GetRepository<T>() where T : Entity
     {
         if (_repos.ContainsKey(typeof(T)))
             return (IDbContextRepository<T>)_repos[typeof(T)];

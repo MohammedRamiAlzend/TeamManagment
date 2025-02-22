@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace TMS.Infrastructure.Repositories;
 
 public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
-    where T : class, IHasId
+    where T : Entity
 {
     /// <summary>
     /// Adds a new entity to the database asynchronously.

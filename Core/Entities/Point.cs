@@ -2,7 +2,7 @@
 
 namespace TMS.Core.Entities
 {
-    public class Point : IHasId, ISoftDeletable, IAuditable
+    public class Point : Entity, ISoftDeletable, IAuditable
     {
         public int Id { get; set; }
         public int PointValue { get; set; }

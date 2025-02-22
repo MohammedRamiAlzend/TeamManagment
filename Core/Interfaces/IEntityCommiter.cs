@@ -5,7 +5,7 @@ namespace TMS.Core.Interfaces;
 
 public interface IEntityCommiter : IDisposable
 {
-    IDbContextRepository<T> GetRepository<T>() where T : class, IHasId;
+    IDbContextRepository<T> GetRepository<T>() where T :  Entity;
     IDbContextRepository<Employee> Employees { get; }
     IDbContextRepository<Department> Departments { get; }
     IDbContextRepository<Claim> Claims { get; }

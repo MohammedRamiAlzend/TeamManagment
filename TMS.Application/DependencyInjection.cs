@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddScoped<ISender, Sender>();
         return services;
     }
-    public static void AddEntityRequests<T>(this IServiceCollection services) where T : class,IHasId
+    public static void AddEntityRequests<T>(this IServiceCollection services) where T : Entity
     {
         services.AddScoped<IRequestHandler<GetAllEntityQuery<T>, DbRequest<List<T>>>, GetAllEntityQueryHandler<T>>();
         services.AddScoped<IRequestHandler<GetAllPaginatedEntityQuery<T>, DbRequest<PaginatedDbRequest<T>>>,GetAllPaginatedEntityQueryHandler<T>>();

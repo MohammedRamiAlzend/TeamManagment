@@ -1,10 +1,10 @@
 ﻿using TMS.Core.MediatR.Interfaces;
 
 namespace TMS.Application.Commands;
-public record UpdateEntityCommand<TEntity>(TEntity Entity) : IRequest<DbRequest> where TEntity : class, IHasId;
+public record UpdateEntityCommand<TEntity>(TEntity Entity) : IRequest<DbRequest> where TEntity :  Entity;
 public class UpdateEntityCommandHandler<TEntity>(IEntityCommiter entityCommiter)
     : IRequestHandler<UpdateEntityCommand<TEntity>, DbRequest>
-    where TEntity : class, IHasId
+    where TEntity : Entity
 {
     public async Task<DbRequest> Handle(UpdateEntityCommand<TEntity> request, CancellationToken cancellationToken)
     {

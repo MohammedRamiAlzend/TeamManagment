@@ -2,7 +2,7 @@
 
 namespace TMS.Core.Entities
 {
-    public class Role : IHasId, IAuditable, ISoftDeletable
+    public class Role : Entity, IAuditable, ISoftDeletable
     {
         public int Id { get; set; }
         public string RoleName { get; set; }

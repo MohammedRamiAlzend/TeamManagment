@@ -2,7 +2,7 @@
 
 namespace TMS.Core.Entities;
 
-public class WorkTask : IHasId, IAuditable, ISoftDeletable
+public class WorkTask : Entity, IAuditable, ISoftDeletable
 {
     public int Id { get; set; }
     //Should be unique

@@ -1,7 +1,7 @@
 ﻿using TMS.Core.Entities.Interfaces;
 
 namespace TMS.Core.Entities;
-public class Claim : IHasId, IAuditable, ISoftDeletable
+public class Claim : Entity, IAuditable, ISoftDeletable
 {
     public int Id { get; set; }
     public string Name { get; set; }

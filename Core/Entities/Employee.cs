@@ -2,7 +2,7 @@
 
 namespace TMS.Core.Entities
 {
-    public class Employee : IHasId, ISoftDeletable, IAuditable
+    public class Employee : Entity, ISoftDeletable, IAuditable
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

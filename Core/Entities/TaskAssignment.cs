@@ -2,7 +2,7 @@
 
 namespace TMS.Core.Entities;
 
-public class TaskAssignment : IHasId, IAuditable, ISoftDeletable
+public class TaskAssignment : Entity, IAuditable, ISoftDeletable
 {
     public int Id { get; set; }
     public DateTime AssignedAt { get; set; }
