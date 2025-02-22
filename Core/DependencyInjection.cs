@@ -3,8 +3,9 @@
 namespace TMS.Core;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddCoreDI(this IServiceCollection service)
+    public static IServiceCollection AddCoreDI(this IServiceCollection services)
     {
-        return service;
+        services.AddAutoMapper(typeof(DependencyInjection));
+        return services;
     }
 }
