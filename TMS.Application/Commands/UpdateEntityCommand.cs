@@ -1,14 +1,14 @@
 ﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Core.Commands;
-public record UpdateEntityCommand<TEntity,TEntityDTO>(int Id, TEntityDTO Entity) : 
-    IRequest<DbRequest> 
+namespace TMS.Application.Commands;
+public record UpdateEntityCommand<TEntity, TEntityDTO>(int Id, TEntityDTO Entity) :
+    IRequest<DbRequest>
     where TEntity : Entity
     where TEntityDTO : IDTO;
-public class UpdateEntityCommandHandler<TEntity,TEntityDTO>(
+public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
     IEntityCommiter entityCommiter,
     IMapper mapper)
-    : IRequestHandler<UpdateEntityCommand<TEntity,TEntityDTO>, DbRequest>
+    : IRequestHandler<UpdateEntityCommand<TEntity, TEntityDTO>, DbRequest>
     where TEntity : Entity
     where TEntityDTO : IDTO
 {

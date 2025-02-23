@@ -5,17 +5,24 @@ namespace TMS.Server.Controllers;
 [Route("[controller]")]
 public class EmployeesController(ISender sender) : ControllerBase
 {
-    [HttpPost("")]
+    [HttpPost("AddEmployee")]
     public async Task<IActionResult> AddEmployeeAsync([FromBody] CreateEmployeeDto employee)
     {
         var result = await sender.Send(new AddEntityCommand<CreateEmployeeDto>(employee));
         return Ok(result);
     }
 
-    [HttpGet("")]
+    [HttpGet("GetAllEmployees")]
     public async Task<IActionResult> GetAllEmployeesAsync()
     {
         var result = await sender.Send(new GetAllEntityQuery<Employee,EmployeeDto>());
+        return Ok(result);
+    }
+    [HttpGet("GetAllEmployeesPaginated/{pageNumber}/{pageSize}")]
+    public async Task<IActionResult> GetAllEmployeesPaginatedAsync([FromRoute]int pageNumber,[FromRoute] int pageSize)
+    {
+        var result = await sender.Send(new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
+                                                                                PageNumber:pageNumber,PageSize:pageSize));
         return Ok(result);
     }
     [HttpGet("{employeeId}")]

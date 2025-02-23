@@ -1,6 +1,6 @@
 ﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Core.Commands;
+namespace TMS.Application.Commands;
 
 public record AddEntityCommand<TEntityDTO>(TEntityDTO EntityDTO) : IRequest<DbRequest> where TEntityDTO : IDTO;
 

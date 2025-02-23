@@ -1,32 +1,34 @@
 ﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Core.Queries;
-public record GetEntityQuery<TEntity, TEntityDTO>(
-        Expression<Func<TEntity, bool>>? Filter = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null
-    ) : IRequest<DbRequest<TEntityDTO>>
-    where TEntity : Entity
-    where TEntityDTO : IDTO;
-
-
-public class GetEntityQueryHandler<TEntity, TEntityDTO>(
-    IEntityCommiter entityCommiter,
-    IMapper mapper)
-    : IRequestHandler<GetEntityQuery<TEntity, TEntityDTO>, DbRequest<TEntityDTO>>
-    where TEntity : Entity
-    where TEntityDTO : IDTO
+namespace TMS.Core.Queries
 {
-    public async Task<DbRequest<TEntityDTO>> Handle(GetEntityQuery<TEntity, TEntityDTO> request, CancellationToken cancellationToken)
-    {
-        var requestGet = await entityCommiter.GetRepository<TEntity>().GetAsync(
-            filter: request.Filter,
-            include: request.Include
-            );
-        var entityAsDTO = mapper.Map<TEntityDTO>(requestGet.Data);
+    public record GetEntityQuery<TEntity, TEntityDTO>(
+            Expression<Func<TEntity, bool>>? Filter = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null
+        ) : IRequest<DbRequest<TEntityDTO>>
+        where TEntity : Entity
+        where TEntityDTO : IDTO;
 
-        return new DbRequest<TEntityDTO>
+
+    public class GetEntityQueryHandler<TEntity, TEntityDTO>(
+        IEntityCommiter entityCommiter,
+        IMapper mapper)
+        : IRequestHandler<GetEntityQuery<TEntity, TEntityDTO>, DbRequest<TEntityDTO>>
+        where TEntity : Entity
+        where TEntityDTO : IDTO
+    {
+        public async Task<DbRequest<TEntityDTO>> Handle(GetEntityQuery<TEntity, TEntityDTO> request, CancellationToken cancellationToken)
         {
-            Data = entityAsDTO
-        };
+            var requestGet = await entityCommiter.GetRepository<TEntity>().GetAsync(
+                filter: request.Filter,
+                include: request.Include
+                );
+            var entityAsDTO = mapper.Map<TEntityDTO>(requestGet.Data);
+
+            return new DbRequest<TEntityDTO>
+            {
+                Data = entityAsDTO
+            };
+        }
     }
 }

@@ -6,7 +6,6 @@ global using AutoMapper;
 global using TMS.Core.MediatR.Interfaces;
 global using TMS.Core.Entities;
 global using Microsoft.Extensions.DependencyInjection;
-global using TMS.Core.Commands;
 global using TMS.Core.Queries;
 global using TMS.Core.MediatR;
 global using TMS.Core.AutoMapperClasses.DTOs;

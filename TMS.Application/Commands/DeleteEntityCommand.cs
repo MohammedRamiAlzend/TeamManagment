@@ -1,10 +1,10 @@
 ﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Core.Commands;
+namespace TMS.Application.Commands;
 public record DeleteEntityCommand<TEntity>(Expression<Func<TEntity, bool>> Filter) : IRequest<DbRequest> where TEntity : Entity;
 public class DeleteEntityCommandHandler<TEntity>(IEntityCommiter entityCommiter)
     : IRequestHandler<DeleteEntityCommand<TEntity>, DbRequest>
-    where TEntity :  Entity
+    where TEntity : Entity
 {
     public async Task<DbRequest> Handle(DeleteEntityCommand<TEntity> request, CancellationToken cancellationToken)
     {
