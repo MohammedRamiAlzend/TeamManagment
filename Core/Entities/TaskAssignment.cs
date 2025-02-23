@@ -1,8 +1,6 @@
-﻿using TMS.Core.Entities.Interfaces;
+﻿namespace TMS.Core.Entities;
 
-namespace TMS.Core.Entities;
-
-public class TaskAssignment : Entity, IAuditable, ISoftDeletable
+public class TaskAssignment : Entity
 {
     public int Id { get; set; }
     public DateTime AssignedAt { get; set; }

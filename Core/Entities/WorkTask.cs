@@ -1,10 +1,7 @@
-﻿using TMS.Core.Entities.Interfaces;
+﻿namespace TMS.Core.Entities;
 
-namespace TMS.Core.Entities;
-
-public class WorkTask : Entity, IAuditable, ISoftDeletable
+public class WorkTask : Entity
 {
-    public int Id { get; set; }
     //Should be unique
     //TODO:make an interceptor and check if the type then generate it and
     //save it in database
@@ -19,8 +16,4 @@ public class WorkTask : Entity, IAuditable, ISoftDeletable
     public DateTime? DeadLine { get; set; }
     public int PointId { get; set; }
     public Point Point { get; set; }
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAt { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
 }

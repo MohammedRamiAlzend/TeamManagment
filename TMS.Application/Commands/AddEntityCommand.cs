@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using TMS.Core.MediatR.Interfaces;
-using TMS.Core.AutoMapperClasses.DTOs;
+﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Application.Commands;
+namespace TMS.Core.Commands;
 
 public record AddEntityCommand<TEntityDTO>(TEntityDTO EntityDTO) : IRequest<DbRequest> where TEntityDTO : IDTO;
 

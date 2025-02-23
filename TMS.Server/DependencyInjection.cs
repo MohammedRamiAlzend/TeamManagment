@@ -1,5 +1,5 @@
-﻿using TMS.Application;
-using TMS.Application.Queries;
+﻿using TMS.Core;
+using TMS.Core.Queries;
 using TMS.Core;
 using TMS.Infrastructure;
 namespace TMS.Server;

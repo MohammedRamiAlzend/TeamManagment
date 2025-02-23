@@ -1,20 +1,16 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using TMS.Application.Commands;
-using TMS.Application.Queries;
-using TMS.Core.AutoMapperClasses.DTOs;
-using TMS.Core.Entities;
-using TMS.Core.MediatR;
-using TMS.Core.MediatR.Interfaces;
-namespace TMS.Application;
+﻿using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
+using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs;
+using TMS.Core.Entities.Interfaces;
 
+namespace TMS.Core;
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationDI(this IServiceCollection services)
     {
         //services.AddEntityRequests<Claim>();
         //services.AddEntityRequests<Department>();
-        services.AddEntityRequests<Employee,EmployeeDTO>();
+        services.AddEntityRequests<Employee,CreateEmployeeDto>();
+        services.AddEntityRequests<Employee,EmployeeDto>();
         //services.AddEntityRequests<Point>();
         //services.AddEntityRequests<Role>();
         //services.AddEntityRequests<TaskAssignment>();

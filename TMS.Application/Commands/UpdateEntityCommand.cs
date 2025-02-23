@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using TMS.Core.AutoMapperClasses.DTOs;
-using TMS.Core.MediatR.Interfaces;
+﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Application.Commands;
+namespace TMS.Core.Commands;
 public record UpdateEntityCommand<TEntity,TEntityDTO>(int Id, TEntityDTO Entity) : 
     IRequest<DbRequest> 
     where TEntity : Entity

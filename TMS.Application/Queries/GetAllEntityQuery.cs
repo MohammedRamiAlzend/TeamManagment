@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using TMS.Core.AutoMapperClasses.DTOs;
-using TMS.Core.MediatR.Interfaces;
+﻿using TMS.Core.Entities.Interfaces;
 
-namespace TMS.Application.Queries;
+namespace TMS.Core.Queries;
 public record GetAllEntityQuery<TEntity,TEntityDTO>(
         Expression<Func<TEntity, bool>>? Filter = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
