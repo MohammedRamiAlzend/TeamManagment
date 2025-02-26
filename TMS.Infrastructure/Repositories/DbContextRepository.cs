@@ -1,11 +1,13 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 
 namespace TMS.Infrastructure.Repositories;
 
-public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
+public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<T>> logger) : IDbContextRepository<T>
     where T : Entity
 {
+
     /// <summary>
     /// Adds a new entity to the database asynchronously.
     /// </summary>
@@ -13,7 +15,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     {
         if (entity == null)
         {
-            return DbRequest.Failure("Entity cannot be null");
+            return DbRequest.Failure("Entity cannot be null.");
         }
 
         return await ExecuteOperationAsync(
@@ -23,7 +25,8 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
                 return DbRequest.Success();
             },
             $"Entity of type {typeof(T).Name} has been added successfully",
-            $"Something went wrong while adding entity of type {typeof(T).Name}");
+            $"Failed to add entity of type {typeof(T).Name}."
+        );
     }
 
     /// <summary>
@@ -52,8 +55,9 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Error retrieving entities of type {EntityType}.", typeof(T).Name);
             return DbRequest<List<T>>.Failure(
-                $"Something went wrong while retrieving entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
+                $"Something went wrong while retrieving entities of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
 
@@ -67,6 +71,11 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         int pageNumber = 1,
         int pageSize = 10)
     {
+        if (pageNumber <= 0 || pageSize <= 0)
+        {
+            return DbRequest<PaginatedDbRequest<T>>.Failure("Page number and size must be greater than zero.");
+        }
+
         IQueryable<T> query = dbSet;
 
         try
@@ -76,10 +85,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
             if (orderBy != null) query = orderBy(query);
 
             var totalCount = await query.CountAsync();
-            var items = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             if (items.Count == 0)
             {
@@ -98,8 +104,9 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Error retrieving paginated entities of type {EntityType}.", typeof(T).Name);
             return DbRequest<PaginatedDbRequest<T>>.Failure(
-                $"Something went wrong while retrieving paginated entities of type {typeof(T).Name}. \n Exception Message: {e.Message}");
+                $"Something went wrong while retrieving paginated entities of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
 
@@ -127,8 +134,9 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Error retrieving entity of type {EntityType}.", typeof(T).Name);
             return DbRequest<T>.Failure(
-                $"Something went wrong while retrieving an entity of type {typeof(T).Name}. \n Exception Message: {e.Message}");
+                $"Something went wrong while retrieving an entity of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
 
@@ -139,26 +147,23 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     {
         if (filter == null)
         {
-            throw new ArgumentNullException(nameof(filter), "Filter cannot be null.");
+            return DbRequest.Failure("Filter cannot be null.");
         }
 
         var getEntity = await GetAsync(filter);
+        if (!getEntity.IsSuccess || getEntity.Data == null)
+        {
+            return DbRequest.Failure("Entity not found.");
+        }
 
         return await ExecuteOperationAsync(
             async () =>
             {
-                if (getEntity != null && getEntity.IsSuccess && getEntity.Data != null)
-                {
-                    dbSet.Remove(getEntity.Data);
-                    return DbRequest.Success();
-                }
-                else
-                    return DbRequest.Failure();
+                dbSet.Remove(getEntity.Data);
+                return DbRequest.Success();
             },
-           successMessage: $"Entity of type {typeof(T).Name} with Id {getEntity.Data?.Id} has been deleted.",
-           errorMessage: $"Something went wrong while updating entity of type {typeof(T).Name}",
-           errorMessagePrefix: $"Something went wrong while deleting entity of type {typeof(T).Name}"
-
+            $"Entity of type {typeof(T).Name} with ID {getEntity.Data.Id} has been deleted.",
+            $"Failed to delete entity of type {typeof(T).Name}."
         );
     }
     /// <summary>
@@ -168,18 +173,19 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     {
         if (entity == null)
         {
-            return DbRequest.Failure("Entity cannot be null");
+            return DbRequest.Failure("Entity cannot be null.");
         }
 
         return await ExecuteOperationAsync(
-        async () =>
-        {
-            dbSet.Attach(entity);
-            dbSet.Entry(entity).State = EntityState.Modified;
-            return DbRequest.Success();
-        },
-        successMessage: $"Entity of type {typeof(T).Name} has been updated successfully.",
-        errorMessagePrefix: $"Something went wrong while updating entity of type {typeof(T).Name}");
+            async () =>
+            {
+                dbSet.Attach(entity);
+                dbSet.Entry(entity).State = EntityState.Modified;
+                return DbRequest.Success();
+            },
+            $"Entity of type {typeof(T).Name} has been updated successfully.",
+            $"Failed to update entity of type {typeof(T).Name}."
+        );
     }
 
     /// <summary>
@@ -187,20 +193,18 @@ public class DbContextRepository<T>(DbSet<T> dbSet) : IDbContextRepository<T>
     /// </summary>
     private async Task<DbRequest> ExecuteOperationAsync(Func<Task<DbRequest>> operation,
                                                         string successMessage = "",
-                                                        string? errorMessage = null,
-                                                        string errorMessagePrefix = "")
+                                                        string errorMessage = "")
     {
         try
         {
             var result = await operation();
-            result.Message = result.IsSuccess ? successMessage :
-                                                (errorMessage ?? result.Message);
+            result.Message = result.IsSuccess ? successMessage : errorMessage;
             return result;
         }
         catch (Exception e)
         {
-            return DbRequest.Failure($"{errorMessagePrefix} \n Exception Message: {e.Message}");
+            logger.LogError(e, "Error during operation for entity of type {EntityType}.", typeof(T).Name);
+            return DbRequest.Failure($"An error occurred during the operation. Exception: {e.Message}");
         }
     }
 }
-
