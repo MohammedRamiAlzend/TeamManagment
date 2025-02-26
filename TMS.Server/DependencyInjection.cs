@@ -1,5 +1,4 @@
 ﻿using TMS.Core;
-using TMS.Core.Queries;
 using TMS.Infrastructure;
 using TMS.Application;
 namespace TMS.Server;

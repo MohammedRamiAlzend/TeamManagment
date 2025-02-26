@@ -16,7 +16,7 @@ public class PaginatedDbRequest<T>
 public class DbRequest
 {
     public bool IsSuccess { get; set; }
-    public string? Message { get; set; }
+    public required string Message { get; set; }
 
     public static DbRequest Success(params string[] messages)
         => new()

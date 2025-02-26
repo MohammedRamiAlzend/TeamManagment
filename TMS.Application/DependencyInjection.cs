@@ -1,4 +1,5 @@
 ﻿using TMS.Application.Commands;
+using TMS.Application.Queries;
 using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs;
 using TMS.Core.Entities.Interfaces;
@@ -21,12 +22,12 @@ public static class DependencyInjection
     public static void AddEntityRequests<TEntity, TEntityDTO>(this IServiceCollection services) where TEntity : Entity
                                                                                                where TEntityDTO : IDTO
     {
-        services.AddScoped<IRequestHandler<GetAllEntityQuery<TEntity, TEntityDTO>, DbRequest<List<TEntityDTO>>>, GetAllEntityQueryHandler<TEntity, TEntityDTO>>();
-        services.AddScoped<IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>, DbRequest<PaginatedDbRequest<TEntityDTO>>>, GetAllPaginatedEntityQueryHandler<TEntity, TEntityDTO>>();
-        services.AddScoped<IRequestHandler<GetEntityQuery<TEntity, TEntityDTO>, DbRequest<TEntityDTO>>, GetEntityQueryHandler<TEntity, TEntityDTO>>();
-        services.AddScoped<IRequestHandler<AddEntityCommand<TEntityDTO>, DbRequest>, AddEntityCommandHandler<TEntity, TEntityDTO>>();
-        services.AddScoped<IRequestHandler<UpdateEntityCommand<TEntity, TEntityDTO>, DbRequest>, UpdateEntityCommandHandler<TEntity, TEntityDTO>>();
-        services.AddScoped<IRequestHandler<DeleteEntityCommand<TEntity>, DbRequest>, DeleteEntityCommandHandler<TEntity>>();
+        services.AddScoped<IRequestHandler<GetAllEntityQuery<TEntity, TEntityDTO>, ApiResponse<List<TEntityDTO>>>, GetAllEntityQueryHandler<TEntity, TEntityDTO>>();
+        services.AddScoped<IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>, PaginatedApiResponse<TEntityDTO>>, GetAllPaginatedEntityQueryHandler<TEntity, TEntityDTO>>();
+        services.AddScoped<IRequestHandler<GetEntityQuery<TEntity, TEntityDTO>, ApiResponse<TEntityDTO>>, GetEntityQueryHandler<TEntity, TEntityDTO>>();
+        services.AddScoped<IRequestHandler<AddEntityCommand<TEntityDTO>, ApiResponse<TEntityDTO>>, AddEntityCommandHandler<TEntity, TEntityDTO>>();
+        services.AddScoped<IRequestHandler<UpdateEntityCommand<TEntity, TEntityDTO>, ApiResponse>, UpdateEntityCommandHandler<TEntity, TEntityDTO>>();
+        services.AddScoped<IRequestHandler<DeleteEntityCommand<TEntity>, ApiResponse>, DeleteEntityCommandHandler<TEntity>>();
     }
 }
 

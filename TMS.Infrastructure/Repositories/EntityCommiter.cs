@@ -5,7 +5,7 @@ using TMS.Infrastructure.Data.DbContextTools;
 
 namespace TMS.Infrastructure.Repositories;
 
-public class EntityCommiter(AppDbContext appDbContext) : IEntityCommiter
+public class EntityCommiter(AppDbContext appDbContext,ILogger<EntityCommiter> logger) : IEntityCommiter
 {
     private readonly Dictionary<Type, object> _repos = [];
     public IDbContextRepository<Employee> Employees => GetRepository<Employee>();
@@ -17,7 +17,18 @@ public class EntityCommiter(AppDbContext appDbContext) : IEntityCommiter
     public IDbContextRepository<Point> Points => GetRepository<Point>();
     public int Commit() => appDbContext.SaveChanges();
     public async Task<int> CommitAsync() => await appDbContext.SaveChangesAsync();
-    public async Task<int> CommitAsync(CancellationToken cancellationToken) => await appDbContext.SaveChangesAsync(cancellationToken);
+    public async Task<int> CommitAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await appDbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            logger.LogCritical($"{e.Message}");
+            return 0;
+        }
+    }
     public void Dispose() => appDbContext.Dispose();
     public IDbContextRepository<T> GetRepository<T>() where T : Entity
     {

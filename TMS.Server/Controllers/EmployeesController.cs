@@ -1,4 +1,7 @@
 
+using TMS.Application.Commands;
+using TMS.Application.Queries;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]
@@ -22,15 +25,15 @@ public class EmployeesController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetAllEmployeesPaginatedAsync([FromRoute]int pageNumber,[FromRoute] int pageSize)
     {
         var result = await sender.Send(new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
-                                                                                PageNumber:pageNumber,PageSize:pageSize));
+                                                                                PageNumber: pageNumber,
+                                                                                PageSize: pageSize));
         return Ok(result);
     }
     [HttpGet("{employeeId}")]
     public async Task<IActionResult> GetEmployeeByIdAsync([FromRoute] int employeeId)
     {
         var result = await sender.Send(new GetEntityQuery<Employee, EmployeeDto>(
-                Filter: x => x.Id == employeeId
-            ));
+                Filter: x => x.Id == employeeId));
         return Ok(result);
     }
     [HttpPut("{employeeId}")]
