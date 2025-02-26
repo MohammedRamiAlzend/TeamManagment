@@ -1,45 +1,58 @@
 ﻿namespace TMS.Application.Queries;
 public record GetAllPaginatedEntityQuery<TEntity, TEntityDTO>(
-        Expression<Func<TEntity, bool>>? Filter = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderBy = null,
-        int PageNumber = 1,
-        int PageSize = 10
-    ) : IRequest<PaginatedApiResponse<TEntityDTO>>
+    Expression<Func<TEntity, bool>>? Filter = null,
+    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
+    Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderBy = null,
+    int PageNumber = 1,
+    int PageSize = 10
+) : IRequest<PaginatedApiResponse<TEntityDTO>>
     where TEntity : Entity
     where TEntityDTO : IDTO;
+
 public class GetAllPaginatedEntityQueryHandler<TEntity, TEntityDTO>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
-    ILogger<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>> logger)
-    : IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>, PaginatedApiResponse<TEntityDTO>>
+    ILogger<GetAllPaginatedEntityQueryHandler<TEntity, TEntityDTO>> logger
+) : IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>, PaginatedApiResponse<TEntityDTO>>
     where TEntity : Entity
     where TEntityDTO : IDTO
 {
     public async Task<PaginatedApiResponse<TEntityDTO>> Handle(GetAllPaginatedEntityQuery<TEntity, TEntityDTO> request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Get All Entity Paginated is started ....");
+        logger.LogInformation("Processing GetAllPaginatedEntityQuery for {EntityType}", typeof(TEntity).Name);
 
-        var requestGetAllPaginated = await entityCommiter.GetRepository<TEntity>().GetAllPaginatedAsync(
-            filter: request.Filter,
-            include: request.Include,
-            orderBy: request.OrderBy,
-            request.PageNumber,
-            request.PageSize);
-        if(requestGetAllPaginated.IsSuccess is false)
+        try
         {
-            logger.LogError(requestGetAllPaginated.Message);
-            return PaginatedApiResponse<TEntityDTO>.Failure(HttpStatusCode.BadRequest, requestGetAllPaginated.Message);
-        }
-        var dtoPaginatedList = mapper.Map<List<TEntityDTO>>(requestGetAllPaginated.Data.Items);
-        logger.LogInformation("Get All Entity Paginated is Ended ....");
+            var repository = entityCommiter.GetRepository<TEntity>();
+            if (repository == null)
+            {
+                logger.LogError("Repository for {EntityType} is null", typeof(TEntity).Name);
+                return PaginatedApiResponse<TEntityDTO>.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
+            }
 
-        return PaginatedApiResponse<TEntityDTO>.Success(
-                    items: dtoPaginatedList,
-                    totalCount: requestGetAllPaginated.Data.TotalCount,
-                    pageNumber: requestGetAllPaginated.Data.PageNumber,
-                    pageSize: requestGetAllPaginated.Data.PageSize,
-                    code: HttpStatusCode.OK,
-                    messages: requestGetAllPaginated.Message);
+            var result = await repository.GetAllPaginatedAsync(request.Filter, request.Include, request.OrderBy, request.PageNumber, request.PageSize);
+            if (!result.IsSuccess)
+            {
+                logger.LogError("GetAllPaginated operation failed for {EntityType}: {Message}", typeof(TEntity).Name, result.Message);
+                return PaginatedApiResponse<TEntityDTO>.Failure(HttpStatusCode.BadRequest, result.Message);
+            }
+
+            var dtoList = mapper.Map<List<TEntityDTO>>(result.Data.Items);
+            logger.LogInformation("GetAllPaginatedEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
+
+            return PaginatedApiResponse<TEntityDTO>.Success(
+                items: dtoList,
+                totalCount: result.Data.TotalCount,
+                pageNumber: result.Data.PageNumber,
+                pageSize: result.Data.PageSize,
+                code: HttpStatusCode.OK,
+                messages: result.Message
+            );
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while processing GetAllPaginatedEntityQuery for {EntityType}", typeof(TEntity).Name);
+            return PaginatedApiResponse<TEntityDTO>.Failure(HttpStatusCode.InternalServerError, "An error occurred while retrieving the paginated entities.");
+        }
     }
 }

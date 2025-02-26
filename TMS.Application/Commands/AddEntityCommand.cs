@@ -1,7 +1,5 @@
 ﻿namespace TMS.Application.Commands;
-
 public record AddEntityCommand<TEntityDTO>(TEntityDTO EntityDTO) : IRequest<ApiResponse<TEntityDTO>> where TEntityDTO : IDTO;
-
 public class AddEntityCommandHandler<TEntity, TEntityDTO>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
@@ -12,31 +10,69 @@ public class AddEntityCommandHandler<TEntity, TEntityDTO>(
 {
     public async Task<ApiResponse<TEntityDTO>> Handle(AddEntityCommand<TEntityDTO> request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Start Adding.....");
-        logger.LogInformation("Start Mapping.....");
-        var entity = mapper.Map<TEntity>(request.EntityDTO);
-        logger.LogInformation("End Mapping.....");
-        logger.LogInformation("Adding Data.....");
-        var requestAdd = await entityCommiter.GetRepository<TEntity>().AddAsync(entity);
-        if (requestAdd.IsSuccess is false)
+        if (request.EntityDTO == null)
         {
-            logger.LogError($"Error Accourd while adding entity of Type {typeof(TEntity)}");
-            return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.BadRequest, requestAdd.Message);
+            logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDTO).Name);
+            return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.UnprocessableEntity, "Invalid entity data provided.");
         }
+
+        logger.LogInformation("Processing AddEntityCommand for {EntityType}", typeof(TEntityDTO).Name);
+
+        TEntity entity = MapEntity(request.EntityDTO);
+        if (entity == null)
+        {
+            return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.InternalServerError, "Entity mapping resulted in null.");
+        }
+
+        return await AddEntityToRepositoryAsync(entity, request.EntityDTO, cancellationToken);
+    }
+
+    private TEntity MapEntity(TEntityDTO entityDTO)
+    {
         try
         {
-            await entityCommiter.CommitAsync(cancellationToken);
-            logger.LogInformation(requestAdd.Message);
-            return ApiResponse<TEntityDTO>.Success(request.EntityDTO, HttpStatusCode.OK, requestAdd.Message);
+            logger.LogInformation("Mapping DTO to Entity for {EntityType}", typeof(TEntityDTO).Name);
+            return mapper.Map<TEntity>(entityDTO);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogError(requestAdd.Message);
-            return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.BadRequest, e.Message);
+            logger.LogError(ex, "Failed to map DTO to Entity for {EntityType}", typeof(TEntityDTO).Name);
+            throw;
+        }
+    }
+
+    private async Task<ApiResponse<TEntityDTO>> AddEntityToRepositoryAsync(TEntity entity, TEntityDTO entityDTO, CancellationToken cancellationToken)
+    {
+        try
+        {
+            logger.LogInformation("Adding Entity of type {EntityType} to the repository", typeof(TEntity).Name);
+
+            var repository = entityCommiter.GetRepository<TEntity>();
+            if (repository == null)
+            {
+                logger.LogError("Repository for {EntityType} is null", typeof(TEntity).Name);
+                return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
+            }
+
+            var requestAdd = await repository.AddAsync(entity);
+            if (!requestAdd.IsSuccess)
+            {
+                logger.LogError("Repository addition failed for {EntityType}: {Message}", typeof(TEntity).Name, requestAdd.Message);
+                return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.BadRequest, requestAdd.Message);
+            }
+
+            await entityCommiter.CommitAsync(cancellationToken);
+            logger.LogInformation("Entity added successfully: {Message}", requestAdd.Message);
+            return ApiResponse<TEntityDTO>.Success(entityDTO, HttpStatusCode.Created, requestAdd.Message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while adding Entity of type {EntityType}", typeof(TEntity).Name);
+            return ApiResponse<TEntityDTO>.Failure(HttpStatusCode.InternalServerError, "An error occurred while saving the entity.");
         }
         finally
         {
-            logger.LogInformation("Adding process is Ended ....");
+            logger.LogInformation("AddEntityCommand processing completed for {EntityType}", typeof(TEntityDTO).Name);
         }
     }
 }
