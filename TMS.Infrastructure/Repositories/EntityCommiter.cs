@@ -34,7 +34,7 @@ public class EntityCommiter(AppDbContext appDbContext,ILogger<EntityCommiter> lo
     {
         if (_repos.ContainsKey(typeof(T)))
             return (IDbContextRepository<T>)_repos[typeof(T)];
-        IDbContextRepository<T> newRepo = new DbContextRepository<T>(appDbContext.Set<T>());
+        IDbContextRepository<T> newRepo = new DbContextRepository<T>(appDbContext.Set<T>(),logger);
         _repos.Add(typeof(T), newRepo);
         return newRepo;
     }

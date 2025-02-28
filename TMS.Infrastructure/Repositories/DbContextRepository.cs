@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TMS.Infrastructure.Repositories;
 
-public class DbContextRepository<T>(DbSet<T> dbSet, ILogger<DbContextRepository<T>> logger) : IDbContextRepository<T>
+public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContextRepository<T>
     where T : Entity
 {
 
