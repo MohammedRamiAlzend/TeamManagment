@@ -39,9 +39,9 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
                 return ApiResponse.Failure(HttpStatusCode.BadRequest, existingEntityResult.Message);
             }
 
-            var existingEntity =  existingEntityResult.Data;
+            var existingEntity = existingEntityResult.Data;
             mapper.Map(request.Entity, existingEntity);
-            
+
             var updateResult = await repository.UpdateAsync((TEntity)existingEntity);
             if (!updateResult.IsSuccess)
             {
@@ -49,10 +49,16 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
                 return ApiResponse.Failure(HttpStatusCode.BadRequest, updateResult.Message);
             }
 
-            await entityCommiter.CommitAsync(cancellationToken);
-            logger.LogInformation("Entity updated successfully: {Message}", updateResult.Message);
-
-            return ApiResponse.Success(HttpStatusCode.OK, updateResult.Message);
+            var saveResult = await entityCommiter.CommitAsync(cancellationToken);
+            if (saveResult > 0)
+            {
+                logger.LogInformation("Entity updated successfully: {Message}", updateResult.Message);
+                return ApiResponse.Success(HttpStatusCode.OK, updateResult.Message);
+            }
+            else
+            {
+                return ApiResponse.Failure(HttpStatusCode.BadRequest, "Error Accourd while SaveChanges");
+            }
         }
         catch (Exception ex)
         {

@@ -12,6 +12,7 @@ public static class DependencyInjection
         //services.AddEntityRequests<Claim>();
         //services.AddEntityRequests<Department>();
         services.AddEntityRequests<Employee, CreateEmployeeDto>();
+        services.AddEntityRequests<Employee, UpdateEmployeeDto>();
         services.AddEntityRequests<Employee, EmployeeDto>();
         //services.AddEntityRequests<Point>();
         //services.AddEntityRequests<Role>();

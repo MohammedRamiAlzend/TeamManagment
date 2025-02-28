@@ -9,14 +9,22 @@ public class EmployeeProfile : Profile
 {
     public EmployeeProfile()
     {
-        //CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
-
         CreateMap<CreateEmployeeDto, Employee>()
-           .ForMember(dest => dest.Departments, opt => opt.Ignore()); 
+            .ForMember(dest => dest.Departments, opt => opt.Ignore())
+            .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedToEmployeeTasks, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedByEmployeeTasks, opt => opt.Ignore());
 
         CreateMap<Employee, EmployeeDto>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
             .ForMember(dest => dest.Departments, opt => opt.MapFrom(src => src.Departments.Select(d => d.Name).ToList()));
+
+        CreateMap<UpdateEmployeeDto, Employee>()
+            .ForMember(dest => dest.Departments, opt => opt.Ignore()) 
+            .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedToEmployeeTasks, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedByEmployeeTasks, opt => opt.Ignore())
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
     }
 }

@@ -35,9 +35,21 @@ public class EmployeesController(ISender sender) : ControllerBase
         return Ok(result);
     }
     [HttpPut("{employeeId}")]
-    public async Task<IActionResult> UpdateEmployeeAsync([FromRoute] int employeeId, [FromBody] CreateEmployeeDto employee)
+    public async Task<IActionResult> UpdateEmployeeAsync(
+        [FromRoute] int employeeId,
+        [FromBody] UpdateEmployeeDto employee)
     {
-        var result = await sender.Send(new UpdateEntityCommand<Employee,CreateEmployeeDto>(employeeId,employee));
+        if (employee == null)
+        {
+            return BadRequest("Employee data is required.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = await sender.Send(new UpdateEntityCommand<Employee, UpdateEmployeeDto>(employeeId, employee));
         return Ok(result);
     }
 
