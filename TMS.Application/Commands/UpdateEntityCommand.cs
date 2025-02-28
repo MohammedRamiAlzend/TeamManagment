@@ -42,7 +42,7 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
             var existingEntity =  existingEntityResult.Data;
             mapper.Map(request.Entity, existingEntity);
             
-            var updateResult = await repository.UpdateAsync(existingEntity);
+            var updateResult = await repository.UpdateAsync((TEntity)existingEntity);
             if (!updateResult.IsSuccess)
             {
                 logger.LogWarning("Update failed for {EntityType}: {Message}", typeof(TEntity).Name, updateResult.Message);

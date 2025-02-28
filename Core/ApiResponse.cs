@@ -4,6 +4,7 @@ public class ApiResponse
 {
     public bool IsSuccess { get; set; }
     public string? Message { get; set; }
+    public object? Data { get; set; }
     public HttpStatusCode? Code { get; set; }
     public static ApiResponse Success(HttpStatusCode code = HttpStatusCode.OK, params string[] messages)
     {
@@ -14,6 +15,17 @@ public class ApiResponse
             Code = code
         };
     }
+    public static ApiResponse Success<T>(T Data, HttpStatusCode code = HttpStatusCode.OK, params string[] messages)
+    {
+        return new ApiResponse()
+        {
+            Data = Data,
+            IsSuccess = true,
+            Message = string.Join(", ", messages),
+            Code = code
+        };
+    }
+
     public static ApiResponse Failure(HttpStatusCode code = HttpStatusCode.BadRequest, params string[] messages)
     {
         return new()
@@ -25,38 +37,13 @@ public class ApiResponse
     }
 
 }
-public class ApiResponse<TData> : ApiResponse
-{
-    public TData? Data { get; set; }
-    public static ApiResponse<TData> Success(TData data, HttpStatusCode code = HttpStatusCode.OK, params string[] messages)
-    {
-        return new ApiResponse<TData>()
-        {
-            IsSuccess = true,
-            Message = string.Join(", ", messages),
-            Data = data,
-            Code = code
-        };
-    }
-    public static new ApiResponse<TData> Failure(HttpStatusCode code = HttpStatusCode.BadRequest, params string[] messages)
-    {
-        return new()
-        {
-            IsSuccess = false,
-            Message = string.Join(", ", messages),
-            Data = default,
-            Code = code
-        };
-    }
-}
 
-public class PaginatedApiResponse<T> :ApiResponse<List<T>>
+public class PaginatedApiResponse :ApiResponse
 {
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-
-    public static PaginatedApiResponse<T> Success(
+    public static PaginatedApiResponse Success<T>(
         List<T> items,
         int totalCount,
         int pageNumber,
@@ -64,7 +51,7 @@ public class PaginatedApiResponse<T> :ApiResponse<List<T>>
         HttpStatusCode code = HttpStatusCode.OK,
         params string[] messages)
     {
-        return new PaginatedApiResponse<T>()
+        return new PaginatedApiResponse()
         {
             IsSuccess = true,
             Message = string.Join(", ", messages),
@@ -75,13 +62,12 @@ public class PaginatedApiResponse<T> :ApiResponse<List<T>>
             Code = code
         };
     }
-    public static new PaginatedApiResponse<T> Failure(HttpStatusCode code = HttpStatusCode.BadRequest, params string[] messages)
+    public static new PaginatedApiResponse Failure(HttpStatusCode code = HttpStatusCode.BadRequest, params string[] messages)
     {
-        return new PaginatedApiResponse<T>()
+        return new PaginatedApiResponse()
         {
             IsSuccess = false,
             Message = string.Join(", ", messages),
-            Data = [],
             TotalCount = 0,
             PageNumber = 0,
             PageSize = 0,

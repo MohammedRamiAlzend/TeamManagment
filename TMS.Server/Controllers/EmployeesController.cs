@@ -1,4 +1,3 @@
-
 using TMS.Application.Commands;
 using TMS.Application.Queries;
 
@@ -25,7 +24,6 @@ public class EmployeesController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetAllEmployeesPaginatedAsync([FromRoute]int pageNumber,[FromRoute] int pageSize)
     {
         var result = await sender.Send(new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
-                                                                                PageNumber: pageNumber,
                                                                                 PageSize: pageSize));
         return Ok(result);
     }

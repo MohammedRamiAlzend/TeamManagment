@@ -1,58 +1,70 @@
-﻿namespace TMS.Core;
-/// <summary>
-/// Represents a paginated result.
-/// </summary>
-public class PaginatedDbRequest<T>
-{
-    public List<T> Items { get; set; } = [];
-    public int TotalCount { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
-}
-
-/// <summary>
-/// Represents a standardized response for database operations.
-/// </summary>
+﻿using System.Net;
+namespace TMS.Core;
 public class DbRequest
 {
     public bool IsSuccess { get; set; }
-    public required string Message { get; set; }
-
+    public string? Message { get; set; }
+    public object? Data { get; set; }
     public static DbRequest Success(params string[] messages)
-        => new()
-        {
-            IsSuccess = true,
-            Message = string.Join(", ", messages)
-        };
-    public static DbRequest Failure(params string[] messages) => new()
     {
-        IsSuccess = false,
-        Message = string.Join(", ", messages)
-    };
-
-
-}
-
-/// <summary>
-/// Represents a standardized response for database operations with data.
-/// </summary>
-public class DbRequest<TData> : DbRequest
-{
-    public TData Data { get; set; }
-
-    public static DbRequest<TData> Success(TData data, params string[] messages)
-        => new()
+        return new DbRequest()
         {
             IsSuccess = true,
             Message = string.Join(", ", messages),
-            Data = data
         };
-
-    public static new DbRequest<TData> Failure(params string[] messages) => new()
+    }
+    public static DbRequest Success<T>(T Data, params string[] messages)
     {
-        IsSuccess = false,
-        Message = string.Join(", ", messages)
-    };
+        return new DbRequest()
+        {
+            Data = Data,
+            IsSuccess = true,
+            Message = string.Join(", ", messages),
+        };
+    }
 
+    public static DbRequest Failure(params string[] messages)
+    {
+        return new()
+        {
+            IsSuccess = false,
+            Message = string.Join(", ", messages),
+        };
+    }
 
+}
+
+public class PaginatedDbRequest : DbRequest
+{
+    public int TotalCount { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+    public static PaginatedDbRequest Success<T>(
+        List<T> items,
+        int totalCount,
+        int pageNumber,
+        int pageSize,
+        params string[] messages)
+    {
+        return new PaginatedDbRequest()
+        {
+            IsSuccess = true,
+            Message = string.Join(", ", messages),
+            Data = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+        };
+    }
+    public static new PaginatedDbRequest Failure(params string[] messages)
+    {
+        return new PaginatedDbRequest()
+        {
+            IsSuccess = false,
+            Message = string.Join(", ", messages),
+            TotalCount = 0,
+            PageNumber = 0,
+            PageSize = 0,
+        };
+    }
 }

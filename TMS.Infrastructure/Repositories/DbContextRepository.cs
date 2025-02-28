@@ -32,7 +32,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     /// <summary>
     /// Retrieves all entities from the database asynchronously, with optional filtering, including, and ordering.
     /// </summary>
-    public async Task<DbRequest<List<T>>> GetAllAsync(
+    public async Task<DbRequest> GetAllAsync(
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
@@ -48,15 +48,15 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             var result = await query.ToListAsync();
             if (result.Count == 0)
             {
-                return DbRequest<List<T>>.Failure($"No entities of type {typeof(T).Name} found.");
+                return DbRequest.Failure($"No entities of type {typeof(T).Name} found.");
             }
 
-            return DbRequest<List<T>>.Success(result, "Entities retrieved successfully.");
+            return DbRequest.Success(result, "Entities retrieved successfully.");
         }
         catch (Exception e)
         {
             logger.LogError(e, "Error retrieving entities of type {EntityType}.", typeof(T).Name);
-            return DbRequest<List<T>>.Failure(
+            return DbRequest.Failure(
                 $"Something went wrong while retrieving entities of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
@@ -64,7 +64,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     /// <summary>
     /// Retrieves all entities from the database asynchronously with pagination, filtering, including, and ordering.
     /// </summary>
-    public async Task<DbRequest<PaginatedDbRequest<T>>> GetAllPaginatedAsync(
+    public async Task<PaginatedDbRequest> GetAllPaginatedAsync(
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -73,7 +73,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     {
         if (pageNumber <= 0 || pageSize <= 0)
         {
-            return DbRequest<PaginatedDbRequest<T>>.Failure("Page number and size must be greater than zero.");
+            return PaginatedDbRequest.Failure("Page number and size must be greater than zero.");
         }
 
         IQueryable<T> query = dbSet;
@@ -89,23 +89,20 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
 
             if (items.Count == 0)
             {
-                return DbRequest<PaginatedDbRequest<T>>.Failure($"No entities of type {typeof(T).Name} found.");
+                return PaginatedDbRequest.Failure($"No entities of type {typeof(T).Name} found.");
             }
 
-            var paginatedResult = new PaginatedDbRequest<T>
-            {
-                Items = items,
-                TotalCount = totalCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-
-            return DbRequest<PaginatedDbRequest<T>>.Success(paginatedResult, "Entities retrieved successfully.");
+            return PaginatedDbRequest.Success(
+                items,
+                totalCount,
+                pageNumber,
+                pageSize,
+                "Entities retrieved successfully.");
         }
         catch (Exception e)
         {
             logger.LogError(e, "Error retrieving paginated entities of type {EntityType}.", typeof(T).Name);
-            return DbRequest<PaginatedDbRequest<T>>.Failure(
+            return PaginatedDbRequest.Failure(
                 $"Something went wrong while retrieving paginated entities of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
@@ -113,7 +110,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     /// <summary>
     /// Retrieves a single entity from the database asynchronously, with optional filtering and including related entities.
     /// </summary>
-    public async Task<DbRequest<T>> GetAsync(
+    public async Task<DbRequest> GetAsync(
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
     {
@@ -127,15 +124,15 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             var entity = await query.FirstOrDefaultAsync();
             if (entity == null)
             {
-                return DbRequest<T>.Failure($"Entity of type {typeof(T).Name} was not found.");
+                return DbRequest.Failure($"Entity of type {typeof(T).Name} was not found.");
             }
 
-            return DbRequest<T>.Success(entity, $"Entity with ID {entity.Id} has been retrieved successfully.");
+            return DbRequest.Success(entity, $"Entity with ID {entity.Id} has been retrieved successfully.");
         }
         catch (Exception e)
         {
             logger.LogError(e, "Error retrieving entity of type {EntityType}.", typeof(T).Name);
-            return DbRequest<T>.Failure(
+            return DbRequest.Failure(
                 $"Something went wrong while retrieving an entity of type {typeof(T).Name}. Exception: {e.Message}");
         }
     }
@@ -159,10 +156,10 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         return await ExecuteOperationAsync(
             async () =>
             {
-                dbSet.Remove(getEntity.Data);
+                dbSet.Remove((T)getEntity.Data);
                 return DbRequest.Success();
             },
-            $"Entity of type {typeof(T).Name} with ID {getEntity.Data.Id} has been deleted.",
+            $"Entity of type {typeof(T).Name} with ID {((T)getEntity.Data).Id} has been deleted.",
             $"Failed to delete entity of type {typeof(T).Name}."
         );
     }
