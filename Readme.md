@@ -116,8 +116,9 @@ To enable database migrations and updates, install the `dotnet-ef` CLI tool glob
 dotnet tool install --global dotnet-ef
 ```
 To verify the installation, run:
-bash dotnet ef --version
-
+```bash 
+dotnet ef --version
+```
 If the command outputs the version of the `dotnet ef` tool, it was installed successfully!
 
 ---
