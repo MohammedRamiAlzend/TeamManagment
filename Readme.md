@@ -160,11 +160,6 @@ Once the migrations are applied, you can build and run the project as follows:
 
 ---
 
-### Running Tests
-
-If test projects (unit/integration tests) are added to the solution, their setup instructions will be provided in this section.
-
----
 
 ## Technologies Used
 
