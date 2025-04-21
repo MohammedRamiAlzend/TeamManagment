@@ -79,7 +79,7 @@ The project is organized into **distinct layers**, each responsible for specific
 ### Prerequisites
 
 Before setting up the project, ensure the following are installed:
-- **.NET SDK** (compatible version required) – [Download .NET SDK](https://dotnet.microsoft.com/download)
+- **.NET SDK 9** (compatible version required) – [Download .NET SDK](https://dotnet.microsoft.com/download)
 - A compatible database server (e.g., **SQL Server**)
 
 For database migrations and updates, **Entity Framework Core**'s CLI tool `dotnet ef` is required.
