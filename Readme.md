@@ -112,7 +112,9 @@ Follow these steps to clone, configure, and run the project:
 ### Installing dotnet ef
 
 To enable database migrations and updates, install the `dotnet-ef` CLI tool globally:
-bash dotnet tool install --global dotnet-ef
+```bash 
+dotnet tool install --global dotnet-ef
+```
 To verify the installation, run:
 bash dotnet ef --version
 
