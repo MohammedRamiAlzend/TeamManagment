@@ -20,8 +20,7 @@ The **Team Management System (TMS)** is a robust and scalable application design
 4. [Features](#features)
 5. [Directory Structure](#directory-structure)
 6. [Contributing](#contributing)
-7. [License](#license)
-8. [Contact](#contact)
+7. [Contact](#contact)
 
 ---
 
