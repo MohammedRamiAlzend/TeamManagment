@@ -1,16 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using TMS.Core.Entities;
 
 namespace TMS.Infrastructure.Data.DbContextTools;
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+  public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    {
+        public AppDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionsBuilder.UseSqlServer("Server=lenovo;Database=TMS;User Id=sa;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;"); // Replace with your actual connection string
+
+            return new AppDbContext(optionsBuilder.Options);
+        }
+    }
+public class AppDbContext : DbContext
 {
-    public required DbSet<Employee> Employees { get; set; }
-    public required DbSet<Department> Departments { get; set; }
-    public required DbSet<Claim> Claims { get; set; }
-    public required DbSet<Role> Roles { get; set; }
-    public required DbSet<WorkTask> Tasks { get; set; }
-    public required DbSet<TaskAssignment> TaskAssignments { get; set; }
-    public required DbSet<Point> Points { get; set; }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+        
+    }
+
+ 
+    public  DbSet<Employee> Employees { get; set; }
+    public  DbSet<Department> Departments { get; set; }
+    public  DbSet<Claim> Claims { get; set; }
+    public  DbSet<Role> Roles { get; set; }
+    public  DbSet<WorkTask> Tasks { get; set; }
+    public  DbSet<TaskAssignment> TaskAssignments { get; set; }
+    public  DbSet<Point> Points { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>(entity =>
