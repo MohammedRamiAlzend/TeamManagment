@@ -17,10 +17,8 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        
     }
 
- 
     public  DbSet<Employee> Employees { get; set; }
     public  DbSet<Department> Departments { get; set; }
     public  DbSet<Claim> Claims { get; set; }
@@ -28,6 +26,8 @@ public class AppDbContext : DbContext
     public  DbSet<WorkTask> Tasks { get; set; }
     public  DbSet<TaskAssignment> TaskAssignments { get; set; }
     public  DbSet<Point> Points { get; set; }
+    public  DbSet<Project> Projects { get; set; }
+    public  DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>(entity =>

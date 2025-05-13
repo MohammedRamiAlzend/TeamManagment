@@ -1,6 +1,6 @@
 ﻿namespace TMS.Core.Entities.Enums;
 
-public enum TaskState
+public enum ProjectStatus
 {
     Pending,
     InProgress,

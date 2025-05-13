@@ -2,8 +2,8 @@
 namespace TMS.Core.Entities;
 public class Claim : Entity
 {
-    public string Name { get; set; }
-    public ICollection<Role> RoleClaims { get; set; }
+    public string Name { get; init; }
+    public ICollection<Role> RoleClaims { get; init; }
 }
 
 

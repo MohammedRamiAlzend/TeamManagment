@@ -2,16 +2,16 @@
 
 public class Point : Entity
 {
-    public int PointValue { get; set; }
-    public string PointType { get; set; }
-    public string? Reason { get; set; }
-    public int? TaskID { get; set; }
+    public int PointValue { get; init; }
+    public string PointType { get; init; }
+    public string? Reason { get; init; }
+    public int? TaskID { get; init; }
     [ForeignKey("TaskID")]
-    public virtual WorkTask? Task { get; set; }
-    public int? AssignedToEmployeeID { get; set; }
+    public virtual WorkTask? Task { get; init; }
+    public int? AssignedToEmployeeID { get; init; }
     [ForeignKey("AssignedToEmployeeID")]
-    public virtual Employee? AssignedToEmployee { get; set; }
-    public int? AssignedByEmployeeID { get; set; }
+    public virtual Employee? AssignedToEmployee { get; init; }
+    public int? AssignedByEmployeeID { get; init; }
     [ForeignKey("AssignedByEmployeeID")]
-    public virtual Employee? AssignedByEmployee { get; set; }
+    public virtual Employee? AssignedByEmployee { get; init; }
 }

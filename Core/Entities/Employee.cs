@@ -2,20 +2,20 @@
 
 public class Employee : Entity
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string? FatherName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? MotherName { get; set; }
-    public string NationalIdentificationNumber { get; set; }
-    public DateTime BirthDate { get; set; }
-    public DateTime HireDate { get; set; }
-    public string? Phone { get; set; }
-    public string? Email { get; set; }
-    public string? Address { get; set; }
-    public ICollection<Department> Departments { get; set; }
-    public ICollection<Role> EmployeesRoles { get; set; }
-    public ICollection<TaskAssignment>? AssignedToEmployeeTasks { get; set; }
-    public ICollection<TaskAssignment>? AssignedByEmployeeTasks { get; set; }
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
+    public string? FatherName { get; init; }
+    public string? MiddleName { get; init; }
+    public string? MotherName { get; init; }
+    public string NationalIdentificationNumber { get; init; }
+    public DateTime BirthDate { get; init; }
+    public DateTime HireDate { get; init; }
+    public string? Phone { get; init; }
+    public string? Email { get; init; }
+    public string? Address { get; init; }
+    public ICollection<Department> Departments { get; init; }
+    public ICollection<Role> EmployeesRoles { get; init; }
+    public ICollection<TaskAssignment>? AssignedToEmployeeTasks { get; init; }
+    public ICollection<TaskAssignment>? AssignedByEmployeeTasks { get; init; }
 
 }
