@@ -28,6 +28,7 @@ public class AppDbContext : DbContext
     public  DbSet<Point> Points { get; set; }
     public  DbSet<Project> Projects { get; set; }
     public  DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
+    public DbSet<User> Users { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>(entity =>
