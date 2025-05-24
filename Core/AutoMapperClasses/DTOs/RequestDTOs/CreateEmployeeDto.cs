@@ -6,23 +6,20 @@ public class CreateEmployeeDto : IDto
 {
     [Required]
     public required string FirstName { get; set; }
-
     [Required]
     public required string LastName { get; set; }
-
-    public string? FatherName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? MotherName { get; set; }
-
     [Required]
     public required string NationalIdentificationNumber { get; set; }
-
+    [Required]
     public DateTime BirthDate { get; set; }
+    [Required]
     public DateTime HireDate { get; set; }
-
-    public string? Phone { get; set; }
-    public string? Email { get; set; }
-    public string? Address { get; set; }
+    [Required]
+    public required string Email { get; set; }
+    [Required]
+    public required string Phone { get; set; }
+    [Required]
+    public required string Address { get; set; }
 
     public ICollection<int>? DepartmentIds { get; set; }
 }
