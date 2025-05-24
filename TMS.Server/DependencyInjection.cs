@@ -5,11 +5,11 @@ namespace TMS.Server;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddAppDI(this IServiceCollection services,string connectionString)
+    public static IServiceCollection AddAppDi(this IServiceCollection services,string connectionString,ConfigurationManager configuration)
     {
-        services.AddApplicationDI()
-                .AddInfrastructureDI(connectionString)
-                .AddCoreDI();
+        services.AddApplicationDi()
+                .AddInfrastructureDi(connectionString,configuration)
+                .AddCoreDi();
         return services;
     }
 }

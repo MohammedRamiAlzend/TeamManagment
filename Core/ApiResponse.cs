@@ -15,11 +15,11 @@ public class ApiResponse
             Code = code
         };
     }
-    public static ApiResponse Success<T>(T Data, HttpStatusCode code = HttpStatusCode.OK, params string[] messages)
+    public static ApiResponse Success<T>(T data, HttpStatusCode code = HttpStatusCode.OK, params string[] messages)
     {
         return new ApiResponse()
         {
-            Data = Data,
+            Data = data,
             IsSuccess = true,
             Message = string.Join(", ", messages),
             Code = code

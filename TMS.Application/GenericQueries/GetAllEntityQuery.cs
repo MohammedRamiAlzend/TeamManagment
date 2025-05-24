@@ -1,22 +1,22 @@
-﻿namespace TMS.Application.Queries;
+﻿namespace TMS.Application.GenericQueries;
 
-public record GetAllEntityQuery<TEntity, TEntityDTO>(
+public record GetAllEntityQuery<TEntity, TEntityDto>(
     Expression<Func<TEntity, bool>>? Filter = null,
     Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,
     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderBy = null
 ) : IRequest<ApiResponse>
     where TEntity : Entity
-    where TEntityDTO : IDTO;
+    where TEntityDto : IDto;
 
-public class GetAllEntityQueryHandler<TEntity, TEntityDTO>(
+public class GetAllEntityQueryHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
-    ILogger<GetAllEntityQueryHandler<TEntity, TEntityDTO>> logger
-) : IRequestHandler<GetAllEntityQuery<TEntity, TEntityDTO>, ApiResponse>
+    ILogger<GetAllEntityQueryHandler<TEntity, TEntityDto>> logger
+) : IRequestHandler<GetAllEntityQuery<TEntity, TEntityDto>, ApiResponse>
     where TEntity : Entity
-    where TEntityDTO : IDTO
+    where TEntityDto : IDto
 {
-    public async Task<ApiResponse> Handle(GetAllEntityQuery<TEntity, TEntityDTO> request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(GetAllEntityQuery<TEntity, TEntityDto> request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Processing GetAllEntityQuery for {EntityType}", typeof(TEntity).Name);
 
@@ -36,7 +36,7 @@ public class GetAllEntityQueryHandler<TEntity, TEntityDTO>(
                 return ApiResponse.Failure(HttpStatusCode.BadRequest, result.Message);
             }
 
-            var dtoList = mapper.Map<List<TEntityDTO>>(result.Data);
+            var dtoList = mapper.Map<List<TEntityDto>>(result.Data);
             logger.LogInformation("GetAllEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
 
             return ApiResponse.Success(dtoList, HttpStatusCode.OK, result.Message);

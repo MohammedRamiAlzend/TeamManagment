@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -27,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="DataSeeder\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

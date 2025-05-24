@@ -8,7 +8,7 @@ builder.Services.AddOpenApi();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
-builder.Services.AddAppDI(connectionString);
+builder.Services.AddAppDi(connectionString,builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -19,6 +19,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

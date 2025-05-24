@@ -1,5 +1,5 @@
-using TMS.Application.Commands;
-using TMS.Application.Queries;
+using TMS.Application.GenericCommands;
+using TMS.Application.GenericQueries;
 
 namespace TMS.Server.Controllers;
 

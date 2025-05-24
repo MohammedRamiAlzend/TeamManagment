@@ -1,6 +1,6 @@
 ﻿namespace TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 
-public class UpdateEmployeeDto : IDTO
+public class UpdateEmployeeDto : IDto
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

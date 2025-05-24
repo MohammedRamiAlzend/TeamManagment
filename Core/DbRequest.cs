@@ -13,11 +13,11 @@ public class DbRequest
             Message = string.Join(", ", messages),
         };
     }
-    public static DbRequest Success<T>(T Data, params string[] messages)
+    public static DbRequest Success<T>(T data, params string[] messages)
     {
         return new DbRequest()
         {
-            Data = Data,
+            Data = data,
             IsSuccess = true,
             Message = string.Join(", ", messages),
         };

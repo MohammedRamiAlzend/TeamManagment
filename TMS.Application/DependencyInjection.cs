@@ -1,5 +1,5 @@
-﻿using TMS.Application.Commands;
-using TMS.Application.Queries;
+﻿using TMS.Application.GenericCommands;
+using TMS.Application.GenericQueries;
 using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs;
 using TMS.Core.Entities.Interfaces;
@@ -7,7 +7,7 @@ using TMS.Core.Entities.Interfaces;
 namespace TMS.Application;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationDI(this IServiceCollection services)
+    public static IServiceCollection AddApplicationDi(this IServiceCollection services)
     {
         //services.AddEntityRequests<Claim>();
         //services.AddEntityRequests<Department>();
@@ -20,28 +20,28 @@ public static class DependencyInjection
         services.AddScoped<ISender, Sender>();
         return services;
     }
-    public static void AddEntityRequests<TEntity, TEntityDTO>(this IServiceCollection services) where TEntity : Entity
-                                                                                               where TEntityDTO : IDTO
+    public static void AddEntityRequests<TEntity, TEntityDto>(this IServiceCollection services) where TEntity : Entity
+                                                                                               where TEntityDto : IDto
     {
         services.AddScoped<
-            IRequestHandler<GetAllEntityQuery<TEntity, TEntityDTO>, ApiResponse>,
-                                           GetAllEntityQueryHandler<TEntity, TEntityDTO>>();
+            IRequestHandler<GetAllEntityQuery<TEntity, TEntityDto>, ApiResponse>,
+                                           GetAllEntityQueryHandler<TEntity, TEntityDto>>();
 
         services.AddScoped<
-            IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDTO>, PaginatedApiResponse>,
-                                           GetAllPaginatedEntityQueryHandler<TEntity, TEntityDTO>>();
+            IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDto>, PaginatedApiResponse>,
+                                           GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>>();
 
         services.AddScoped<
-            IRequestHandler<GetEntityQuery<TEntity, TEntityDTO>, ApiResponse>,
-                                           GetEntityQueryHandler<TEntity, TEntityDTO>>();
+            IRequestHandler<GetEntityQuery<TEntity, TEntityDto>, ApiResponse>,
+                                           GetEntityQueryHandler<TEntity, TEntityDto>>();
 
         services.AddScoped<
-            IRequestHandler<AddEntityCommand<TEntityDTO>, ApiResponse>,
-                                            AddEntityCommandHandler<TEntity, TEntityDTO>>();
+            IRequestHandler<AddEntityCommand<TEntityDto>, ApiResponse>,
+                                            AddEntityCommandHandler<TEntity, TEntityDto>>();
 
         services.AddScoped<
-            IRequestHandler<UpdateEntityCommand<TEntity, TEntityDTO>, ApiResponse>,
-                                           UpdateEntityCommandHandler<TEntity, TEntityDTO>>();
+            IRequestHandler<UpdateEntityCommand<TEntity, TEntityDto>, ApiResponse>,
+                                           UpdateEntityCommandHandler<TEntity, TEntityDto>>();
 
         services.AddScoped<
             IRequestHandler<DeleteEntityCommand<TEntity>, ApiResponse>,

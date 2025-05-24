@@ -2,7 +2,7 @@
 
 namespace TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 
-public class CreateEmployeeDto : IDTO
+public class CreateEmployeeDto : IDto
 {
     [Required]
     public required string FirstName { get; set; }

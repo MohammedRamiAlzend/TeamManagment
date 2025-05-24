@@ -1,27 +1,27 @@
 ﻿using Azure.Core;
 
-namespace TMS.Application.Commands;
-public record UpdateEntityCommand<TEntity, TEntityDTO>(int Id, TEntityDTO Entity) : IRequest<ApiResponse>
+namespace TMS.Application.GenericCommands;
+public record UpdateEntityCommand<TEntity, TEntityDto>(int Id, TEntityDto Entity) : IRequest<ApiResponse>
     where TEntity : Entity
-    where TEntityDTO : IDTO;
+    where TEntityDto : IDto;
 
-public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
+public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
-    ILogger<UpdateEntityCommandHandler<TEntity, TEntityDTO>> logger
-) : IRequestHandler<UpdateEntityCommand<TEntity, TEntityDTO>, ApiResponse>
+    ILogger<UpdateEntityCommandHandler<TEntity, TEntityDto>> logger
+) : IRequestHandler<UpdateEntityCommand<TEntity, TEntityDto>, ApiResponse>
     where TEntity : Entity
-    where TEntityDTO : IDTO
+    where TEntityDto : IDto
 {
-    public async Task<ApiResponse> Handle(UpdateEntityCommand<TEntity, TEntityDTO> request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(UpdateEntityCommand<TEntity, TEntityDto> request, CancellationToken cancellationToken)
     {
         if (request.Entity == null)
         {
-            logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDTO).Name);
+            logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDto).Name);
             return ApiResponse.Failure(HttpStatusCode.BadRequest, "Invalid entity data provided.");
         }
 
-        logger.LogInformation("Processing UpdateEntityCommand for {EntityType}", typeof(TEntityDTO).Name);
+        logger.LogInformation("Processing UpdateEntityCommand for {EntityType}", typeof(TEntityDto).Name);
 
         try
         {
@@ -67,7 +67,7 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDTO>(
         }
         finally
         {
-            logger.LogInformation("UpdateEntityCommand processing completed for {EntityType}", typeof(TEntityDTO).Name);
+            logger.LogInformation("UpdateEntityCommand processing completed for {EntityType}", typeof(TEntityDto).Name);
         }
     }
 }

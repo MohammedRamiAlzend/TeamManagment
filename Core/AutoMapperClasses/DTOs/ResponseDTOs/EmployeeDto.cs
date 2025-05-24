@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs
 {
-    public class EmployeeDto : IDTO
+    public class EmployeeDto : IDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }

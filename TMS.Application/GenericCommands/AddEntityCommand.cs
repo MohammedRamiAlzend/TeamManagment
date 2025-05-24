@@ -1,47 +1,47 @@
-﻿namespace TMS.Application.Commands;
-public record AddEntityCommand<TEntityDTO>(TEntityDTO EntityDTO) : IRequest<ApiResponse> where TEntityDTO : IDTO;
-public class AddEntityCommandHandler<TEntity, TEntityDTO>(
+﻿namespace TMS.Application.GenericCommands;
+public record AddEntityCommand<TEntityDto>(TEntityDto EntityDto) : IRequest<ApiResponse> where TEntityDto : IDto;
+public class AddEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
-    ILogger<AddEntityCommandHandler<TEntity, TEntityDTO>> logger
-) : IRequestHandler<AddEntityCommand<TEntityDTO>, ApiResponse>
+    ILogger<AddEntityCommandHandler<TEntity, TEntityDto>> logger
+) : IRequestHandler<AddEntityCommand<TEntityDto>, ApiResponse>
     where TEntity : Entity
-    where TEntityDTO : IDTO
+    where TEntityDto : IDto
 {
-    public async Task<ApiResponse> Handle(AddEntityCommand<TEntityDTO> request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(AddEntityCommand<TEntityDto> request, CancellationToken cancellationToken)
     {
-        if (request.EntityDTO == null)
+        if (request.EntityDto == null)
         {
-            logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDTO).Name);
+            logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDto).Name);
             return ApiResponse.Failure(HttpStatusCode.UnprocessableEntity, "Invalid entity data provided.");
         }
 
-        logger.LogInformation("Processing AddEntityCommand for {EntityType}", typeof(TEntityDTO).Name);
+        logger.LogInformation("Processing AddEntityCommand for {EntityType}", typeof(TEntityDto).Name);
 
-        TEntity entity = MapEntity(request.EntityDTO);
+        TEntity entity = MapEntity(request.EntityDto);
         if (entity == null)
         {
             return ApiResponse.Failure(HttpStatusCode.InternalServerError, "Entity mapping resulted in null.");
         }
 
-        return await AddEntityToRepositoryAsync(entity, request.EntityDTO, cancellationToken);
+        return await AddEntityToRepositoryAsync(entity, request.EntityDto, cancellationToken);
     }
 
-    private TEntity MapEntity(TEntityDTO entityDTO)
+    private TEntity MapEntity(TEntityDto entityDto)
     {
         try
         {
-            logger.LogInformation("Mapping DTO to Entity for {EntityType}", typeof(TEntityDTO).Name);
-            return mapper.Map<TEntity>(entityDTO);
+            logger.LogInformation("Mapping DTO to Entity for {EntityType}", typeof(TEntityDto).Name);
+            return mapper.Map<TEntity>(entityDto);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to map DTO to Entity for {EntityType}", typeof(TEntityDTO).Name);
+            logger.LogError(ex, "Failed to map DTO to Entity for {EntityType}", typeof(TEntityDto).Name);
             throw;
         }
     }
 
-    private async Task<ApiResponse> AddEntityToRepositoryAsync(TEntity entity, TEntityDTO entityDTO, CancellationToken cancellationToken)
+    private async Task<ApiResponse> AddEntityToRepositoryAsync(TEntity entity, TEntityDto entityDto, CancellationToken cancellationToken)
     {
         try
         {
@@ -63,7 +63,7 @@ public class AddEntityCommandHandler<TEntity, TEntityDTO>(
 
             await entityCommiter.CommitAsync(cancellationToken);
             logger.LogInformation("Entity added successfully: {Message}", requestAdd.Message);
-            return ApiResponse.Success(entityDTO, HttpStatusCode.Created, requestAdd.Message);
+            return ApiResponse.Success(entityDto, HttpStatusCode.Created, requestAdd.Message);
         }
         catch (Exception ex)
         {
@@ -72,7 +72,7 @@ public class AddEntityCommandHandler<TEntity, TEntityDTO>(
         }
         finally
         {
-            logger.LogInformation("AddEntityCommand processing completed for {EntityType}", typeof(TEntityDTO).Name);
+            logger.LogInformation("AddEntityCommand processing completed for {EntityType}", typeof(TEntityDto).Name);
         }
     }
 }
