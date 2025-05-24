@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TMS.Core.Interfaces;
 using TMS.Infrastructure.Data.DbContextTools;
+using TMS.Infrastructure.DataSeeder;
 using TMS.Infrastructure.Repositories;
 using TMS.Infrastructure.Services;
 
@@ -42,6 +43,10 @@ public static class DependencyInjection
                         Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!))
                 };
             });
+        
+        services.AddSingleton<DataSeederFactory>();
+        services.AddScoped<SeederRunner>();
+
         return services;
     }
 }

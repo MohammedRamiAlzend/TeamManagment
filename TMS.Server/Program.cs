@@ -1,3 +1,5 @@
+using TMS.Infrastructure.AppConfigurations;
+using TMS.Infrastructure.DataSeeder;
 using TMS.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,21 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+PermissionSettings.LoadPermissionsConfig();
+using (var scope = app.Services.CreateScope())
+{
+    var runner = scope.ServiceProvider.GetRequiredService<SeederRunner>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    try
+    {
+        await runner.RunSeedersAsync();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred during database seeding.");
+    }
+}
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

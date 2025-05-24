@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TMS.Infrastructure\TMS.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="permissions.json" />
+  </ItemGroup>
+
 </Project>

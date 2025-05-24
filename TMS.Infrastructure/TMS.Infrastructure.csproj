@@ -27,8 +27,4 @@
     <ProjectReference Include="..\TMS.Application\TMS.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataSeeder\" />
-  </ItemGroup>
-
 </Project>
