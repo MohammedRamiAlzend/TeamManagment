@@ -46,12 +46,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             if (orderBy != null) query = orderBy(query);
 
             var result = await query.ToListAsync();
-            if (result.Count == 0)
-            {
-                return DbRequest.Failure($"No entities of type {typeof(T).Name} found.");
-            }
-
-            return DbRequest.Success(result, "Entities retrieved successfully.");
+            return result.Count == 0 ? DbRequest.Failure($"No entities of type {typeof(T).Name} found.") : DbRequest.Success(result, "Entities retrieved successfully.");
         }
         catch (Exception e)
         {
@@ -122,12 +117,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             if (include != null) query = include(query);
 
             var entity = await query.FirstOrDefaultAsync();
-            if (entity == null)
-            {
-                return DbRequest.Failure($"Entity of type {typeof(T).Name} was not found.");
-            }
-
-            return DbRequest.Success(entity, $"Entity with ID {entity.Id} has been retrieved successfully.");
+            return entity == null ? DbRequest.Failure($"Entity of type {typeof(T).Name} was not found.") : DbRequest.Success(entity, $"Entity with ID {entity.Id} has been retrieved successfully.");
         }
         catch (Exception e)
         {
