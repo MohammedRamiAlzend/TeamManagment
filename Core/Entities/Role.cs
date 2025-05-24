@@ -2,7 +2,7 @@
 
 public class Role : Entity
 {
-    public string RoleName { get; init; }
-    public ICollection<Claim> RoleClaims { get; init; }
-    public ICollection<Employee> EmployeesRoles { get; init; }
+    public string RoleName { get; set; }
+    public ICollection<Permission> Permissions { get; set; }
+    public ICollection<User> Users { get; set; }
 }

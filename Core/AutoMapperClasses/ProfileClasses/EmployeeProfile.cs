@@ -11,9 +11,9 @@ public class EmployeeProfile : Profile
     {
         CreateMap<CreateEmployeeDto, Employee>()
             .ForMember(dest => dest.Departments, opt => opt.Ignore())
-            .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
-            .ForMember(dest => dest.AssignedToEmployeeTasks, opt => opt.Ignore())
-            .ForMember(dest => dest.AssignedByEmployeeTasks, opt => opt.Ignore());
+            // .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTasks, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedTasks, opt => opt.Ignore());
 
         CreateMap<Employee, EmployeeDto>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
@@ -21,9 +21,9 @@ public class EmployeeProfile : Profile
 
         CreateMap<UpdateEmployeeDto, Employee>()
             .ForMember(dest => dest.Departments, opt => opt.Ignore()) 
-            .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
-            .ForMember(dest => dest.AssignedToEmployeeTasks, opt => opt.Ignore())
-            .ForMember(dest => dest.AssignedByEmployeeTasks, opt => opt.Ignore())
+            // .ForMember(dest => dest.EmployeesRoles, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTasks, opt => opt.Ignore())
+            .ForMember(dest => dest.AssignedTasks, opt => opt.Ignore())
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
     }
