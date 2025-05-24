@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAppDi(this IServiceCollection services,string connectionString,ConfigurationManager configuration)
     {
-        services.AddApplicationDi()
+        services.AddApplicationDependencyInjection()
                 .AddInfrastructureDi(connectionString,configuration)
                 .AddCoreDi();
         return services;

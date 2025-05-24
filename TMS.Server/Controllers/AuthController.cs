@@ -1,10 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using TMS.Application.Commands.AuthCommands;
+using TMS.Core;
 using TMS.Core.Entities.Models;
 using TMS.Core.Interfaces;
 
@@ -13,18 +9,12 @@ namespace TMS.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(ISender sender,IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(UserDto request)
+    public async Task<ApiResponse> Register(UserDto request)
     {
-        var user = await authService.RegisterAsync(request);
-        if (user is null)
-        {
-            return BadRequest("User already exists");
-        }
-
-        return Ok(user);
+        return await sender.Send(new RegisterUserCommand(request));
     }
 
     [HttpPost("login")]
