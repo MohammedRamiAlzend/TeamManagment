@@ -13,7 +13,7 @@ namespace TMS.Infrastructure.Services;
 
 public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfiguration configuration) : IAuthService
 {
-    public async Task<DbRequest<User>> RegisterAsync(UserDto request)
+    public async Task<DbRequest<User>> RegisterAsync(RegisterUserDto request)
     {
         if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
             return DbRequest<User>.Failure("Username and password are required.");
@@ -68,9 +68,11 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
             filter: department => departmentIds.Contains(department.Id)
         );
     }
-    public async Task<TokenResponseDto?> LoginAsync(UserDto request)
+    public async Task<TokenResponseDto?> LoginAsync(LoginUserDto request)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x=>x.UserName == request.UserName);
+        var user = await context.Users.Include(r=>r.Roles)
+            .ThenInclude(p=>p.Permissions)
+            .FirstOrDefaultAsync(x=>x.UserName == request.UserName);
         if (user is null)
             return null;
         
@@ -103,15 +105,14 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
 
     private string CreateToken(User user)
     {
-        var rolesAndPermissionsString
-            = BuildRolesAndPermissionsString(user);
+        var rolesAndPermissionsAsListOfClaims
+            = BuildRolesAndPermissionsClaimsList(user);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name,user.UserName) ,
-            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            new Claim(ClaimTypes.Role,rolesAndPermissionsString
-            )
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()), 
         };
+        claims.AddRange(rolesAndPermissionsAsListOfClaims);
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration["AppSettings:Token"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -124,12 +125,27 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         );
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }
-    private static string BuildRolesAndPermissionsString(User user)
+    private static List<Claim> BuildRolesAndPermissionsClaimsList(User user)
     {
-        var roles = user.Roles.Select(x => x.Name);
-        var permissions = user.Roles.SelectMany(x => x.Permissions).Select(x => x.Name);
-        return string.Join(",", roles.Concat(permissions));
+        var roles = user.Roles?.Select(x => x.Name).Distinct() ?? Enumerable.Empty<string>();
+    
+        var permissions = user.Roles?.SelectMany(x => x.Permissions).Select(x => x.Name).Distinct() ?? Enumerable.Empty<string>();
+    
+        var claims = new List<Claim>();
+    
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("Permissions", permission)); 
+        }
+
+        return claims;
     }
+
 
     private static string GenerateRefreshToken()
     {

@@ -12,13 +12,13 @@ namespace TMS.Server.Controllers;
 public class AuthController(ISender sender,IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ApiResponse> Register(UserDto request)
+    public async Task<ApiResponse> Register(RegisterUserDto request)
     {
         return await sender.Send(new RegisterUserCommand(request));
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
+    public async Task<ActionResult<TokenResponseDto>> Login(LoginUserDto request)
     {
         var result = await authService.LoginAsync(request);
         if (result is null)
@@ -49,7 +49,7 @@ public class AuthController(ISender sender,IAuthService authService) : Controlle
     }
 
     [HttpGet("admin-only")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] 
     public IActionResult AdminOnlyEndPoint()
     {
         return Ok("You Are Authenticated");

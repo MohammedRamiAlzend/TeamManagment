@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TMS.Core.Entities.Models;
 
-public class UserDto
+public class RegisterUserDto
 {
     public string UserName { get; set; } = string.Empty;
 
@@ -28,4 +28,10 @@ public class UserDto
     public ICollection<int>? DepartmentIds { get; set; }
     
     
+}
+
+public class LoginUserDto
+{
+    public string UserName { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }
