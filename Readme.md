@@ -16,13 +16,13 @@ The **Team Management System (TMS)** is a robust and scalable application design
     - [Setup](#setup)
     - [Installing dotnet ef](#installing-dotnet-ef)
     - [Creating and Applying Migrations](#creating-and-applying-migrations)
-3. [Technologies Used](#technologies-used)
-4. [Features](#features)
-5. [Directory Structure](#directory-structure)
-6. [Contributing](#contributing)
-7. [Contact](#contact)
+3. [Features](#features)
+4. [Directory Structure](#directory-structure)
+5. [Contributing](#contributing)
+6. [Contact](#contact)
 
 ---
+
 
 ## Project Structure
 
@@ -163,19 +163,29 @@ Once the migrations are applied, you can build and run the project as follows:
 
 ---
 
+## Default Users
 
-## Technologies Used
+This system includes default users seeded during initialization for easier testing and development purposes. Below are the default credentials:
 
-The following technologies and tools are utilized in the project:
+### Sign-in Credentials
 
-- **.NET Core**: Framework for cross-platform development.
-- **ASP.NET Core**: Backend development framework for building RESTful APIs and web applications.
-- **Entity Framework Core**: ORM framework for database interactions and migrations.
-- **MediatR**: Implements the CQRS pattern and request/response functionality.
-- **AutoMapper**: For seamless object mapping between models.
-- **Dependency Injection**: Used extensively across all layers for better testability and modularity.
+- **Admin User**
+    - Username: `rami`
+    - Password: `123`
+    - Roles: Admin, TeamLeader
 
----
+- **Employee User 1**
+    - Username: `ibrahim`
+    - Password: `123`
+    - Roles: Employee
+
+- **Employee User 2**
+    - Username: `rama`
+    - Password: `123`
+    - Roles: Employee
+
+The default user's basic personal information includes names, emails, and roles. These details can be customized or replaced in a production environment. For more information, refer to the `UsersSeeder` in the project codebase.
+
 
 ## Features
 
