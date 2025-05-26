@@ -15,7 +15,7 @@ public static class DependencyInjection
         services.AddEntityUpdationRegistration<Employee, UpdateEmployeeDto>();
         services.AddEntityRegistration<Employee, EmployeeDto>();
         
-        services.AddRequestHandler<RegisterUserCommand,ApiResponse,RegisterUserCommandHandler>();
+        services.AddRequestHandler<RegisterUserCommand,ApiResponse<User>,RegisterUserCommandHandler>();
         
         
         services.AddScoped<ISender, Sender>();
