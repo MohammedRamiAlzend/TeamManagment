@@ -10,6 +10,8 @@ public static class PermissionSettings
 {
     public static List<RoleModel> Roles { get; private set; }
     public static List<PermissionModel> Permissions { get; private set; }
+    public static  List<DepartmentModel> Departments { get; set; }
+    
     public static void LoadPermissionsConfig()
     {
         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "permissions.json");
@@ -23,11 +25,11 @@ public static class PermissionSettings
                 
                 Roles = config.Roles ?? [];
                 Permissions = config.Permissions ?? [];
+                Departments = config.Departments ?? [];
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
             }
         }
         else
@@ -70,9 +72,16 @@ public sealed class RoleModel
         };
     }
 }
+public sealed class DepartmentModel
+{
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+}
 
 public class PermissionsConfig
 {
     public List<RoleModel> Roles { get; set; }
     public  List<PermissionModel> Permissions { get; set; }
+    public  List<DepartmentModel> Departments { get; set; }
 }

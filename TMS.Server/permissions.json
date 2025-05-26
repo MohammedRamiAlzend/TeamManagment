@@ -316,5 +316,23 @@
         "Name": "TaskManagement.DeleteTask",
         "Description": "Permission to delete a task"
       }
-    ]
+    ],
+
+  "Departments":[
+    {
+      "Name": "ITSupport",
+      "Email": "ITSupport@mail.com",
+      "PhoneNumber" : "0115544331"
+    } ,
+    {
+      "Name": "HR",
+      "Email": "HR@mail.com",
+      "PhoneNumber" : "0115544332"
+    },
+    {
+      "Name": "Programming",
+      "Email": "Programming@mail.com",
+      "PhoneNumber" : "0115544333"
+    }
+  ] 
 }
