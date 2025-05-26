@@ -11,26 +11,63 @@ using TMS.Infrastructure.Data.DbContextTools;
 
 namespace TMS.Infrastructure.Services;
 
-public class AuthService(AppDbContext context, IConfiguration configuration) : IAuthService
+public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfiguration configuration) : IAuthService
 {
-    public async Task<User?> RegisterAsync(UserDto request)
+    public async Task<DbRequest<User>> RegisterAsync(UserDto request)
     {
-        if (await context.Users.AnyAsync(x => x.UserName == request.UserName))
-        {
-            return null;
-        }
-        
+        if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+            return DbRequest<User>.Failure("Username and password are required.");
+
+        if (await context.Users.AnyAsync(x => x.UserName.ToLower() == request.UserName.ToLower()))
+            return DbRequest<User>.Failure("User already exists");
+
         var user = new User();
-        var hashedPassword = new PasswordHasher<User>()
-            .HashPassword(user, request.Password);
+        var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
         user.UserName = request.UserName;
         user.PasswordHash = hashedPassword;
+        user.RefreshToken = null;
+        
+        var getDepartmentsRequest = await GetDepartmentsByIdAsync(request.DepartmentIds);
+        var departmentsList = getDepartmentsRequest.Data ?? [];
+        
+        user.Employee = new Employee()
+        {
+            Email = request.Email,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Phone = request.Phone,
+            BirthDate = request.BirthDate,
+            HireDate = request.HireDate,
+            NationalIdentificationNumber = request.NationalIdentificationNumber,
+            Departments = departmentsList
+        };
 
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
-        return user;
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        try
+        {
+            await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return DbRequest<User>.Failure("An error occurred while registering the user.");
+        }
+
+        return DbRequest<User>.Success(user, "User registered successfully");
     }
 
+    private async Task<DbRequest<List<Department>>> GetDepartmentsByIdAsync(ICollection<int>? departmentIds)
+    {
+        if (departmentIds is null)
+        {
+            return DbRequest<List<Department>>.Failure();
+        }
+        return await commiter.Departments.GetAllAsync(
+            filter: department => departmentIds.Contains(department.Id)
+        );
+    }
     public async Task<TokenResponseDto?> LoginAsync(UserDto request)
     {
         var user = await context.Users.FirstOrDefaultAsync(x=>x.UserName == request.UserName);
@@ -66,11 +103,14 @@ public class AuthService(AppDbContext context, IConfiguration configuration) : I
 
     private string CreateToken(User user)
     {
+        var rolesAndPermissionsString
+            = BuildRolesAndPermissionsString(user);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name,user.UserName) ,
             new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            // new Claim(ClaimTypes.Role,user.Role)
+            new Claim(ClaimTypes.Role,rolesAndPermissionsString
+            )
         };
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration["AppSettings:Token"]!));
@@ -84,8 +124,14 @@ public class AuthService(AppDbContext context, IConfiguration configuration) : I
         );
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }
+    private static string BuildRolesAndPermissionsString(User user)
+    {
+        var roles = user.Roles.Select(x => x.Name);
+        var permissions = user.Roles.SelectMany(x => x.Permissions).Select(x => x.Name);
+        return string.Join(",", roles.Concat(permissions));
+    }
 
-    private string GenerateRefreshToken()
+    private static string GenerateRefreshToken()
     {
         var randomNumner = new byte[32];
         using var rng = RandomNumberGenerator.Create();

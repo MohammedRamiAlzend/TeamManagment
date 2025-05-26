@@ -9,6 +9,9 @@ public class Employee : Entity
     public DateTime HireDate { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
+    
+    
+    public User User { get; set; }
     public ICollection<Department> Departments { get; set; }
     public ICollection<Project> Projects { get; set; }
     public ICollection<WorkTask> CreatedTasks { get; set; }

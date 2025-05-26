@@ -1,10 +1,10 @@
 ﻿using System.Net;
 namespace TMS.Core;
+
 public class DbRequest
 {
     public bool IsSuccess { get; set; }
     public string? Message { get; set; }
-    public object? Data { get; set; }
     public static DbRequest Success(params string[] messages)
     {
         return new DbRequest()
@@ -13,16 +13,6 @@ public class DbRequest
             Message = string.Join(", ", messages),
         };
     }
-    public static DbRequest Success<T>(T data, params string[] messages)
-    {
-        return new DbRequest()
-        {
-            Data = data,
-            IsSuccess = true,
-            Message = string.Join(", ", messages),
-        };
-    }
-
     public static DbRequest Failure(params string[] messages)
     {
         return new()
@@ -34,31 +24,66 @@ public class DbRequest
 
 }
 
-public class PaginatedDbRequest : DbRequest
+public class DbRequest<T>
+{
+    public bool IsSuccess { get; set; }
+    public string? Message { get; set; }
+    public T? Data { get; set; }
+    public static DbRequest<T> Success(params string[] messages)
+    {
+        return new DbRequest<T>()
+        {
+            IsSuccess = true,
+            Message = string.Join(", ", messages),
+        };
+    }
+    public static DbRequest<T> Success(T data, params string[] messages)
+    {
+        return new DbRequest<T>()
+        {
+            Data = data,
+            IsSuccess = true,
+            Message = string.Join(", ", messages),
+        };
+    }
+
+    public static DbRequest<T> Failure(params string[] messages)
+    {
+        return new DbRequest<T>()
+        {
+            IsSuccess = false,
+            Message = string.Join(", ", messages),
+        };
+    }
+
+}
+
+public class PaginatedDbRequest<T> : DbRequest<T>
 {
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public static PaginatedDbRequest Success<T>(
+    public List<T> Items { get; set; } = [];
+    public static PaginatedDbRequest<T> Success(
         List<T> items,
         int totalCount,
         int pageNumber,
         int pageSize,
         params string[] messages)
     {
-        return new PaginatedDbRequest()
+        return new PaginatedDbRequest<T>()
         {
             IsSuccess = true,
             Message = string.Join(", ", messages),
-            Data = items,
+            Items = items,
             TotalCount = totalCount,
             PageNumber = pageNumber,
             PageSize = pageSize,
         };
     }
-    public static new PaginatedDbRequest Failure(params string[] messages)
+    public static new PaginatedDbRequest<T> Failure(params string[] messages)
     {
-        return new PaginatedDbRequest()
+        return new PaginatedDbRequest<T>()
         {
             IsSuccess = false,
             Message = string.Join(", ", messages),

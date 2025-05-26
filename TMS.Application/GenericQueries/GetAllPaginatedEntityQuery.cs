@@ -5,7 +5,7 @@ public record GetAllPaginatedEntityQuery<TEntity, TEntityDto>(
     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderBy = null,
     int PageNumber = 1,
     int PageSize = 10
-) : IRequest<PaginatedApiResponse>
+) : IRequest<PaginatedApiResponse<TEntityDto>>
     where TEntity : Entity
     where TEntityDto : IDto;
 
@@ -13,11 +13,11 @@ public class GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
     ILogger<GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>> logger
-) : IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDto>, PaginatedApiResponse>
+) : IRequestHandler<GetAllPaginatedEntityQuery<TEntity, TEntityDto>, PaginatedApiResponse<TEntityDto>>
     where TEntity : Entity
     where TEntityDto : IDto
 {
-    public async Task<PaginatedApiResponse> Handle(GetAllPaginatedEntityQuery<TEntity, TEntityDto> request, CancellationToken cancellationToken)
+    public async Task<PaginatedApiResponse<TEntityDto>> Handle(GetAllPaginatedEntityQuery<TEntity, TEntityDto> request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Processing GetAllPaginatedEntityQuery for {EntityType}", typeof(TEntity).Name);
 
@@ -27,31 +27,31 @@ public class GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>(
             if (repository == null)
             {
                 logger.LogError("Repository for {EntityType} is null", typeof(TEntity).Name);
-                return PaginatedApiResponse.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
+                return PaginatedApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
             }
 
             var result = await repository.GetAllPaginatedAsync(request.Filter, request.Include, request.OrderBy, request.PageNumber, request.PageSize);
             if (!result.IsSuccess)
             {
                 logger.LogError("GetAllPaginated operation failed for {EntityType}: {Message}", typeof(TEntity).Name, result.Message);
-                return PaginatedApiResponse.Failure(HttpStatusCode.BadRequest, result.Message);
+                return PaginatedApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, result.Message);
             }
 
-            var dtoList = mapper.Map<List<TEntityDto>>((List<TEntity>)result.Data);
+            var dtoList = mapper.Map<List<TEntityDto>>(result.Data);
             logger.LogInformation("GetAllPaginatedEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
 
-            return PaginatedApiResponse.Success(
+            return PaginatedApiResponse<TEntityDto>.Success(
                 items: dtoList,
                 totalCount: result.TotalCount,
                 pageNumber: result.PageNumber,
                 pageSize: result.PageSize,
-                messages: result.Message
+                messages: result.Message ?? ""
             );
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while processing GetAllPaginatedEntityQuery for {EntityType}", typeof(TEntity).Name);
-            return PaginatedApiResponse.Failure(HttpStatusCode.InternalServerError, "An error occurred while retrieving the paginated entities.");
+            return PaginatedApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "An error occurred while retrieving the paginated entities.");
         }
     }
 }

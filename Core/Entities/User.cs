@@ -10,7 +10,6 @@ public class User
 
     public int EmployeeId { get; set; }
     public Employee Employee { get; set; }
-
     public ICollection<Role> Roles { get; set; }
     
 }

@@ -1,19 +1,19 @@
 ﻿namespace TMS.Application.GenericCommands;
-public record AddEntityCommand<TEntityDto>(TEntityDto EntityDto) : IRequest<ApiResponse> where TEntityDto : IDto;
+public record AddEntityCommand<TEntityDto>(TEntityDto EntityDto) : IRequest<ApiResponse<TEntityDto>> where TEntityDto : IDto;
 public class AddEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,
     ILogger<AddEntityCommandHandler<TEntity, TEntityDto>> logger
-) : IRequestHandler<AddEntityCommand<TEntityDto>, ApiResponse>
+) : IRequestHandler<AddEntityCommand<TEntityDto>, ApiResponse<TEntityDto>>
     where TEntity : Entity
     where TEntityDto : IDto
 {
-    public async Task<ApiResponse> Handle(AddEntityCommand<TEntityDto> request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<TEntityDto>> Handle(AddEntityCommand<TEntityDto> request, CancellationToken cancellationToken)
     {
         if (request.EntityDto == null)
         {
             logger.LogError("EntityDTO is null for {EntityType}", typeof(TEntityDto).Name);
-            return ApiResponse.Failure(HttpStatusCode.UnprocessableEntity, "Invalid entity data provided.");
+            return ApiResponse<TEntityDto>.Failure(HttpStatusCode.UnprocessableEntity, "Invalid entity data provided.");
         }
 
         logger.LogInformation("Processing AddEntityCommand for {EntityType}", typeof(TEntityDto).Name);
@@ -21,7 +21,7 @@ public class AddEntityCommandHandler<TEntity, TEntityDto>(
         TEntity entity = MapEntity(request.EntityDto);
         if (entity == null)
         {
-            return ApiResponse.Failure(HttpStatusCode.InternalServerError, "Entity mapping resulted in null.");
+            return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "Entity mapping resulted in null.");
         }
 
         return await AddEntityToRepositoryAsync(entity, request.EntityDto, cancellationToken);
@@ -41,7 +41,7 @@ public class AddEntityCommandHandler<TEntity, TEntityDto>(
         }
     }
 
-    private async Task<ApiResponse> AddEntityToRepositoryAsync(TEntity entity, TEntityDto entityDto, CancellationToken cancellationToken)
+    private async Task<ApiResponse<TEntityDto>> AddEntityToRepositoryAsync(TEntity entity, TEntityDto entityDto, CancellationToken cancellationToken)
     {
         try
         {
@@ -51,24 +51,24 @@ public class AddEntityCommandHandler<TEntity, TEntityDto>(
             if (repository == null)
             {
                 logger.LogError("Repository for {EntityType} is null", typeof(TEntity).Name);
-                return ApiResponse.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
             }
 
             var requestAdd = await repository.AddAsync(entity);
             if (!requestAdd.IsSuccess)
             {
                 logger.LogError("Repository addition failed for {EntityType}: {Message}", typeof(TEntity).Name, requestAdd.Message);
-                return ApiResponse.Failure(HttpStatusCode.BadRequest, requestAdd.Message);
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, requestAdd.Message);
             }
 
             await entityCommiter.CommitAsync(cancellationToken);
             logger.LogInformation("Entity added successfully: {Message}", requestAdd.Message);
-            return ApiResponse.Success(entityDto, HttpStatusCode.Created, requestAdd.Message);
+            return ApiResponse<TEntityDto>.Success(entityDto, HttpStatusCode.Created, requestAdd.Message);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while adding Entity of type {EntityType}", typeof(TEntity).Name);
-            return ApiResponse.Failure(HttpStatusCode.InternalServerError, "An error occurred while saving the entity.");
+            return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "An error occurred while saving the entity.");
         }
         finally
         {
