@@ -12,7 +12,7 @@ public class Sender(IServiceProvider serviceProvider) : ISender
         var requestType = request.GetType();
         var handlerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, typeof(TResponse));
 
-        dynamic handler = serviceProvider.GetService(handlerType);
+        dynamic? handler = serviceProvider.GetService(handlerType);
         return handler == null
             ? throw new InvalidOperationException($"No handler registered for request type {requestType.Name}")
             : (TResponse)await handler.Handle((dynamic)request, cancellationToken);

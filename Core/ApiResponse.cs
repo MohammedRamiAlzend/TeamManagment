@@ -28,8 +28,6 @@ public class ApiResponse
     
     public static implicit operator ApiResponse(DbRequest request)
     {
-        if (request is null) return null;
-
         return new ApiResponse
         {
             IsSuccess = request.IsSuccess,
@@ -76,8 +74,6 @@ public class ApiResponse<T> : ApiResponse
     
     public static implicit operator ApiResponse<T>(DbRequest<T> request)
     {
-        if (request is null) return null;
-
         return new ApiResponse<T>
         {
             IsSuccess = request.IsSuccess,
@@ -129,8 +125,6 @@ public class PaginatedApiResponse<T> :ApiResponse<T>
     
     public static implicit operator PaginatedApiResponse<T>(PaginatedDbRequest<T> request)
     {
-        if (request is null) return null;
-
         return new  PaginatedApiResponse<T>()
         {
             IsSuccess = request.IsSuccess,

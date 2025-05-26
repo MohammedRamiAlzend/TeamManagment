@@ -30,13 +30,13 @@ public class GetEntityQueryHandler<TEntity, TEntityDto>(
             if (!result.IsSuccess)
             {
                 logger.LogError("Get operation failed for {EntityType}: {Message}", typeof(TEntity).Name, result.Message);
-                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, result.Message);
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, result.Message??"");
             }
 
             var dto = mapper.Map<TEntityDto>(result.Data);
             logger.LogInformation("GetEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
 
-            return ApiResponse<TEntityDto>.Success(dto, HttpStatusCode.OK, result.Message);
+            return ApiResponse<TEntityDto>.Success(dto, HttpStatusCode.OK, result.Message??"");
         }
         catch (Exception ex)
         {

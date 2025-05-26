@@ -1,6 +1,4 @@
 ﻿using TMS.Application.Commands.AuthCommands;
-using TMS.Application.GenericCommands;
-using TMS.Application.GenericQueries;
 using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs;
 

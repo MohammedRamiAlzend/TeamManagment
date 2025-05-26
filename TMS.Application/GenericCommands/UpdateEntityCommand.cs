@@ -36,7 +36,7 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
             if (!existingEntityResult.IsSuccess)
             {
                 logger.LogWarning("Entity not found for update: {Message}", existingEntityResult.Message);
-                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, existingEntityResult.Message);
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, existingEntityResult.Message??"");
             }
 
             var existingEntity = existingEntityResult.Data;
