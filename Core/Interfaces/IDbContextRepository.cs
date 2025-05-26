@@ -4,12 +4,12 @@ using System.Linq.Expressions;
 namespace TMS.Core.Interfaces;
 public interface IDbContextRepository<T> where T : class
 {
-    Task<DbRequest> GetAsync(Expression<Func<T, bool>>? filter = null,
+    Task<DbRequest<T>> GetAsync(Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
-    Task<DbRequest> GetAllAsync(Expression<Func<T, bool>>? filter = null,
+    Task<DbRequest<List<T>>> GetAllAsync(Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderby = null);
-    Task<PaginatedDbRequest> GetAllPaginatedAsync(
+    Task<PaginatedDbRequest<T>> GetAllPaginatedAsync(
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,

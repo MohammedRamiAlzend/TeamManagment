@@ -1,4 +1,4 @@
-﻿namespace TMS.Application.Commands;
+﻿namespace TMS.Application.GenericCommands;
 
 public record DeleteEntityCommand<TEntity>(Expression<Func<TEntity, bool>> Filter) : IRequest<ApiResponse> where TEntity : Entity;
 

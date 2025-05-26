@@ -1,5 +1,6 @@
-using TMS.Application.Commands;
-using TMS.Application.Queries;
+using Microsoft.EntityFrameworkCore;
+using TMS.Application.GenericCommands;
+using TMS.Application.GenericQueries;
 
 namespace TMS.Server.Controllers;
 
@@ -17,7 +18,7 @@ public class EmployeesController(ISender sender) : ControllerBase
     [HttpGet("GetAllEmployees")]
     public async Task<IActionResult> GetAllEmployeesAsync()
     {
-        var result = await sender.Send(new GetAllEntityQuery<Employee,EmployeeDto>());
+        var result = await sender.Send(new GetAllEntityQuery<Employee,EmployeeDto>(Include:x=>x.Include(i=>i.Departments)));
         return Ok(result);
     }
     [HttpGet("GetAllEmployeesPaginated/{pageNumber}/{pageSize}")]

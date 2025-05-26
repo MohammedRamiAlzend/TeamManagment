@@ -10,11 +10,9 @@ public class EntityCommiter(AppDbContext appDbContext,ILogger<EntityCommiter> lo
     private readonly Dictionary<Type, object> _repos = [];
     public IDbContextRepository<Employee> Employees => GetRepository<Employee>();
     public IDbContextRepository<Department> Departments => GetRepository<Department>();
-    public IDbContextRepository<Claim> Claims => GetRepository<Claim>();
+    public IDbContextRepository<Permission> Claims => GetRepository<Permission>();
     public IDbContextRepository<Role> Roles => GetRepository<Role>();
     public IDbContextRepository<WorkTask> Tasks => GetRepository<WorkTask>();
-    public IDbContextRepository<TaskAssignment> TaskAssignments => GetRepository<TaskAssignment>();
-    public IDbContextRepository<Point> Points => GetRepository<Point>();
     public int Commit() => appDbContext.SaveChanges();
     public async Task<int> CommitAsync() => await appDbContext.SaveChangesAsync();
     public async Task<int> CommitAsync(CancellationToken cancellationToken)
