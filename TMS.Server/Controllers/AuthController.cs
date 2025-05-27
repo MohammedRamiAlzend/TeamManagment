@@ -9,7 +9,7 @@ namespace TMS.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController(ISender sender,IAuthService authService) : ControllerBase
+public class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<ApiResponse> Register(RegisterUserDto request)
