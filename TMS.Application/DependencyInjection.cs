@@ -1,6 +1,7 @@
 ﻿using TMS.Application.Commands.AuthCommands;
 using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
 using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs;
+using TMS.Core.Entities.Models;
 
 namespace TMS.Application;
 
@@ -14,6 +15,8 @@ public static class DependencyInjection
         services.AddEntityRegistration<Employee, EmployeeDto>();
         
         services.AddRequestHandler<RegisterUserCommand,ApiResponse<User>,RegisterUserCommandHandler>();
+        services.AddRequestHandler<LoginUserCommand,ApiResponse<TokenResponseDto>,LoginUserCommandHandler>();
+        services.AddRequestHandler<RefreshTokenCommand,ApiResponse<TokenResponseDto>,RefreshTokenCommandHandler>();
         
         
         services.AddScoped<ISender, Sender>();

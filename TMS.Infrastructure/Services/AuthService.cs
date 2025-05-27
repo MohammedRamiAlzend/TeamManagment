@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
@@ -68,21 +69,25 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
             filter: department => departmentIds.Contains(department.Id)
         );
     }
-    public async Task<TokenResponseDto?> LoginAsync(LoginUserDto request)
+    public async Task<ApiResponse<TokenResponseDto>> LoginAsync(LoginUserDto request)
     {
-        var user = await context.Users.Include(r=>r.Roles)
-            .ThenInclude(p=>p.Permissions)
-            .FirstOrDefaultAsync(x=>x.UserName == request.UserName);
-        if (user is null)
-            return null;
+        var user = await context.Users
+            .Include(r => r.Roles)
+            .ThenInclude(p => p.Permissions)
+            .FirstOrDefaultAsync(x => x.UserName == request.UserName);
         
-        if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password)
-            == PasswordVerificationResult.Failed)
+        var passwordAccepted = new PasswordHasher<User>()
+            .VerifyHashedPassword(user, user.PasswordHash, request.Password) != PasswordVerificationResult.Failed;
+        
+        if (user is null || !passwordAccepted)
         {
-            return null;
+            return ApiResponse<TokenResponseDto>.Failure(HttpStatusCode.Unauthorized, "Username or password is incorrect");
         }
-        return await GenerateTokenResponse(user);
+        var tokenResponse = await GenerateTokenResponse(user);
+        return ApiResponse<TokenResponseDto>.Success(tokenResponse);
     }
+
+
 
     private async Task<TokenResponseDto> GenerateTokenResponse(User user)
     {

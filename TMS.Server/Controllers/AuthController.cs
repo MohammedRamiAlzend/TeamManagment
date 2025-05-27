@@ -18,27 +18,15 @@ public class AuthController(ISender sender,IAuthService authService) : Controlle
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<TokenResponseDto>> Login(LoginUserDto request)
+    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> Login(LoginUserDto request)
     {
-        var result = await authService.LoginAsync(request);
-        if (result is null)
-        {
-            return BadRequest("Invalid username or password");
-        }
-
-        return Ok(result);
+        return await sender.Send(new LoginUserCommand(request));
     }
 
     [HttpPost("refresh-Token")]
-    public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request)
+    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> RefreshToken(RefreshTokenRequestDto request)
     {
-        var result = await authService.RefreshTokenAsync(request);
-        if (result is null || result.AccessToken is null || result.RefreshToken is null)
-        {
-            return BadRequest("Invalid refresh token");
-        }
-
-        return Ok(result);
+        return await sender.Send(new RefreshTokenCommand(request));
     }
 
     [HttpGet]
