@@ -1,4 +1,6 @@
-﻿namespace TMS.Core.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace TMS.Core.Entities;
 
 public class Employee : Entity
 {
@@ -10,7 +12,7 @@ public class Employee : Entity
     public string Phone { get; set; }
     public string Email { get; set; }
     
-    
+    [JsonIgnore]
     public User User { get; set; }
     public ICollection<Department> Departments { get; set; }
     public ICollection<Project> Projects { get; set; }

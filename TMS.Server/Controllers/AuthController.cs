@@ -12,7 +12,7 @@ namespace TMS.Server.Controllers;
 public class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ApiResponse> Register(RegisterUserDto request)
+    public async Task<ApiResponse<User>> Register([FromForm]RegisterUserDto request)
     {
         return await sender.Send(new RegisterUserCommand(request));
     }

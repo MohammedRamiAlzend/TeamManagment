@@ -9,9 +9,9 @@ public class EmployeeProfile : Profile
 {
     public EmployeeProfile()
     {
-        CreateMap<CreateEmployeeDto, Employee>()
-            .ForMember(dest => dest.CreatedTasks, opt => opt.Ignore())
-            .ForMember(dest => dest.AssignedTasks, opt => opt.Ignore());
+        // CreateMap<CreateEmployeeDto, Employee>()
+        //     .ForMember(dest => dest.CreatedTasks, opt => opt.Ignore())
+        //     .ForMember(dest => dest.AssignedTasks, opt => opt.Ignore());
 
         CreateMap<Department, DepartmentDto>();
     
