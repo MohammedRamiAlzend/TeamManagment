@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TMS.Core.AutoMapperClasses.DTOs.RequestDTOs;
+﻿namespace TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
 
 public class UpdateEmployeeDto : IDto
 {

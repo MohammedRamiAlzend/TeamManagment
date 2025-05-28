@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using TMS.Application.GenericCommands;
 using TMS.Application.GenericQueries;
 using TMS.Core;
+using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
+using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
 
 namespace TMS.Server.Controllers;
 

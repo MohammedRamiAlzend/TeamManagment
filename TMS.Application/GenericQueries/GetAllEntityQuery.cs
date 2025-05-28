@@ -37,6 +37,7 @@ public class GetAllEntityQueryHandler<TEntity, TEntityDto>(
             }
 
             var dtoList = mapper.Map<List<TEntityDto>>(result.Data);
+            
             logger.LogInformation("GetAllEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
 
             return ApiResponse<List<TEntityDto>>.Success(data: dtoList,HttpStatusCode.OK, result.Message??"");
