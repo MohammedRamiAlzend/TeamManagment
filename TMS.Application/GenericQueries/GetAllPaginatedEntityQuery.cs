@@ -37,7 +37,7 @@ public class GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>(
                 return PaginatedApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, result.Message??"");
             }
 
-            var dtoList = mapper.Map<List<TEntityDto>>(result.Data);
+            var dtoList = mapper.Map<List<TEntityDto>>(result.Items);
             logger.LogInformation("GetAllPaginatedEntityQuery completed successfully for {EntityType}", typeof(TEntity).Name);
 
             return PaginatedApiResponse<TEntityDto>.Success(

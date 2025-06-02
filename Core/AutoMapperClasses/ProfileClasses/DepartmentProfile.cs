@@ -15,9 +15,10 @@ public class DepartmentProfile : Profile
     public DepartmentProfile()
     {
         CreateMap<Department, DepartmentDto>()
+            .ForMember(dest=>dest.TeamLeaderName,opt=>opt.MapFrom(scr=> $"{scr.TeamLeader.FirstName} {scr.TeamLeader.LastName}"))
             .ForMember(dest => dest.EmployeesNames,
                 opt => opt.MapFrom(scr => MapEmployeeNames(scr.Employees)));
-
+        
         // CreateMap<List<Department>, List<DepartmentDto>>();
            
 

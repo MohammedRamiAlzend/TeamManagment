@@ -18,6 +18,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpPost("login")]
+    [Authorize]
     public async Task<ActionResult<ApiResponse<TokenResponseDto>>> Login(LoginUserDto request)
     {
         return await sender.Send(new LoginUserCommand(request));
