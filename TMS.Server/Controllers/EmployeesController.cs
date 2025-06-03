@@ -26,7 +26,7 @@ public class EmployeesController(ISender sender) : ControllerBase
         if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Invalid pagination parameters.");
 
       return await sender.Send(new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
-                                                                                PageNumber:pageNumber), token);
+                                                                                PageNumber:pageNumber,PageSize:pageSize), token);
     }
     [HttpGet("{employeeId:int}")]
     public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeByIdAsync(
