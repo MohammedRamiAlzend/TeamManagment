@@ -3,8 +3,6 @@ using TMS.Application.Commands.AuthCommands;
 using TMS.Core;
 using TMS.Core.Entities.Models;
 using TMS.Core.Interfaces;
-
-
 namespace TMS.Server.Controllers;
 
 [ApiController]
@@ -12,31 +10,30 @@ namespace TMS.Server.Controllers;
 public class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ApiResponse<User>> Register([FromForm]RegisterUserDto request)
+    public async Task<ApiResponse<User>> Register([FromForm]RegisterUserDto request,CancellationToken token)
     {
-        return await sender.Send(new RegisterUserCommand(request));
+        return await sender.Send(new RegisterUserCommand(request), token);
     }
 
     [HttpPost("login")]
     [Authorize]
-    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> Login(LoginUserDto request)
+    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> Login(LoginUserDto request,CancellationToken token)
     {
-        return await sender.Send(new LoginUserCommand(request));
+        return await sender.Send(new LoginUserCommand(request), token);
     }
-
     [HttpPost("refresh-Token")]
-    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> RefreshToken(RefreshTokenRequestDto request)
+    public async Task<ActionResult<ApiResponse<TokenResponseDto>>> RefreshToken(
+        RefreshTokenRequestDto request,
+        CancellationToken token)
     {
-        return await sender.Send(new RefreshTokenCommand(request));
+        return await sender.Send(new RefreshTokenCommand(request), token);
     }
-
     [HttpGet]
     [Authorize]
     public IActionResult AuthenticatedOnlyEndpoint()
     {
         return Ok("You Are Authenticated");
     }
-
     [HttpGet("admin-only")]
     [Authorize(Roles = "Admin")] 
     public IActionResult AdminOnlyEndPoint()
