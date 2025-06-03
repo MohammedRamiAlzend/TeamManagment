@@ -22,7 +22,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
         return await sender.Send(new GetAllEntityQuery<Department,DepartmentDto>(
             Include:x=>x.Include(i=>i.Employees)
                                               .Include(i2=>i2.SubDepartments)
-                                              .Include(x=>x.TeamLeader)), token);
+                                              .Include(i3=>i3.TeamLeader)), token);
     }
     [HttpGet("paginated")]
     public async Task<ActionResult<PaginatedApiResponse<DepartmentDto>>> GetAllDepartmentsPaginatedAsync(
