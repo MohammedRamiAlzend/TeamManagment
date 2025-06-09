@@ -1,15 +1,16 @@
-﻿using TMS.Core;
+﻿using TMS.Application;
 using TMS.Infrastructure;
-using TMS.Application;
+
 namespace TMS.Server;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddAppDependencyInjection(this IServiceCollection services,string connectionString,ConfigurationManager configuration)
+    public static IServiceCollection AddAppDependencyInjection(this IServiceCollection services,
+        string connectionString, ConfigurationManager configuration)
     {
         services.AddApplicationDependencyInjection()
-                .AddInfrastructureDependencyInjection(connectionString,configuration)
-                .AddCoreDependencyInjection();
+            .AddInfrastructureDependencyInjection(connectionString, configuration)
+            .AddCoreDependencyInjection();
         return services;
     }
 }

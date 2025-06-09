@@ -7,24 +7,26 @@ public class EmployeesController(ISender sender) : ControllerBase
     [HttpGet(ApiEndPoints.Employees.GetAll)]
     public async Task<ActionResult<ApiResponse<List<EmployeeDto>>>> GetAllEmployeesAsync(CancellationToken token)
     {
-        return await sender.Send(new GetAllEntityQuery<Employee,EmployeeDto>(
-            Include:x=>x.Include(i=>i.Departments)!
-                .ThenInclude(s=>s.SubDepartments)!), token);
+        return await sender.Send(new GetAllEntityQuery<Employee, EmployeeDto>(
+            Include: x => x.Include(i => i.Departments)!
+                .ThenInclude(s => s.SubDepartments)!), token);
     }
+
     [HttpGet(ApiEndPoints.Employees.GetAllPaginated)]
     public async Task<ActionResult<PaginatedApiResponse<EmployeeDto>>> GetAllEmployeesPaginatedAsync(
-        [FromQuery]int pageNumber,
-        [FromQuery]int pageSize,
+        [FromQuery] int pageNumber,
+        [FromQuery] int pageSize,
         CancellationToken token)
     {
         if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Invalid pagination parameters.");
 
-      return await sender.Send(
-          new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
-                        PageNumber:pageNumber,PageSize:pageSize
-                        ,Include: x=> x.Include(x=>x.Departments)!
-                            .ThenInclude(s=>s.SubDepartments)), token);
+        return await sender.Send(
+            new GetAllPaginatedEntityQuery<Employee, EmployeeDto>(
+                PageNumber: pageNumber, PageSize: pageSize
+                , Include: x => x.Include(x => x.Departments)!
+                    .ThenInclude(s => s.SubDepartments)), token);
     }
+
     [HttpGet(ApiEndPoints.Employees.Get)]
     public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeByIdAsync(
         [FromRoute] int employeeId,
@@ -33,9 +35,10 @@ public class EmployeesController(ISender sender) : ControllerBase
         if (employeeId <= 0) return BadRequest("Invalid employee ID.");
 
         return await sender.Send(new GetEntityQuery<Employee, EmployeeDto>(
-                Filter: x => x.Id == employeeId,Include: x=> x.Include(x=>x.Departments)!
-                    .ThenInclude(s=>s.SubDepartments)), token);
+            x => x.Id == employeeId, x => x.Include(x => x.Departments)!
+                .ThenInclude(s => s.SubDepartments)), token);
     }
+
     [HttpPut(ApiEndPoints.Employees.Update)]
     public async Task<ActionResult<ApiResponse<UpdateEmployeeDto>>> UpdateEmployeeAsync(
         [FromRoute] int employeeId,
@@ -43,10 +46,7 @@ public class EmployeesController(ISender sender) : ControllerBase
         CancellationToken token)
     {
         if (employee == null) return BadRequest("The employee data must not be null.");
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         return await sender.Send(new UpdateEntityCommand<Employee, UpdateEmployeeDto>(employeeId, employee), token);
     }
 

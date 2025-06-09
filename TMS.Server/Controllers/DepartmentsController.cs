@@ -4,30 +4,30 @@ namespace TMS.Server.Controllers;
 [Route("[controller]")]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
-    
     [HttpGet]
     public async Task<ActionResult<ApiResponse<List<DepartmentDto>>>> GetAllDepartmentsAsync(CancellationToken token)
     {
-        return await sender.Send(new GetAllEntityQuery<Department,DepartmentDto>(
-            Include:x=>x.Include(i=>i.Employees)
-                                              .Include(i2=>i2.SubDepartments)
-                                              .Include(i3=>i3.TeamLeader)), token);
+        return await sender.Send(new GetAllEntityQuery<Department, DepartmentDto>(
+            Include: x => x.Include(i => i.Employees)
+                .Include(i2 => i2.SubDepartments)
+                .Include(i3 => i3.TeamLeader)), token);
     }
+
     [HttpGet("paginated")]
     public async Task<ActionResult<PaginatedApiResponse<DepartmentDto>>> GetAllDepartmentsPaginatedAsync(
-        [FromQuery]int pageNumber
-        ,[FromQuery]int pageSize,
+        [FromQuery] int pageNumber
+        , [FromQuery] int pageSize,
         CancellationToken token)
     {
         if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Invalid pagination parameters.");
 
-      return await sender.Send(new GetAllPaginatedEntityQuery<Department, DepartmentDto>(
-          PageSize: pageSize,
-          PageNumber:pageNumber,
-          Include:x=>x.Include(i=>i.Employees)
-              .Include(i2=>i2.SubDepartments)
-              .Include(x=>x.TeamLeader)
-          ), token);
+        return await sender.Send(new GetAllPaginatedEntityQuery<Department, DepartmentDto>(
+            PageSize: pageSize,
+            PageNumber: pageNumber,
+            Include: x => x.Include(i => i.Employees)
+                .Include(i2 => i2.SubDepartments)
+                .Include(x => x.TeamLeader)
+        ), token);
     }
 
     [HttpGet("{departmentId:int}")]
@@ -39,7 +39,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
         if (departmentId <= 0) return BadRequest("Invalid Department ID.");
         return await sender.Send(new GetEntityQuery<Department, DepartmentDto>(
             Include: GetIncludes(includes),
-                Filter: x => x.Id == departmentId), token);
+            Filter: x => x.Id == departmentId), token);
     }
 
 
@@ -54,6 +54,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
         };
         return Ok(includes);
     }
+
     [HttpPut("{departmentId:int}")]
     public async Task<ActionResult<ApiResponse<UpdateDepartmentDto>>> UpdateDepartmentAsync(
         [FromRoute] int departmentId,
@@ -61,11 +62,9 @@ public class DepartmentsController(ISender sender) : ControllerBase
         CancellationToken token)
     {
         if (department == null) return BadRequest("The Department data must not be null.");
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentDto>(departmentId, department), token);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentDto>(departmentId, department),
+            token);
     }
 
     [HttpDelete("{departmentId:int}")]
@@ -75,12 +74,10 @@ public class DepartmentsController(ISender sender) : ControllerBase
     {
         return await sender.Send(new DeleteEntityCommand<Department>(x => x.Id == departmentId), token);
     }
-    
-    
-    
-    
-    
-    private static Func<IQueryable<Department>, IIncludableQueryable<Department, object>>? GetIncludes(string[]? includeProperties)
+
+
+    private static Func<IQueryable<Department>, IIncludableQueryable<Department, object>>? GetIncludes(
+        string[]? includeProperties)
     {
         if (includeProperties is null || includeProperties.Length == 0) return null;
 

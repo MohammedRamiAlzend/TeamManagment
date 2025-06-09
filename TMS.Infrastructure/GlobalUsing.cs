@@ -7,5 +7,3 @@ global using Microsoft.EntityFrameworkCore;
 global using TMS.Core;
 global using TMS.Core.Entities.Interfaces;
 global using TMS.Core.Interfaces;
-
-

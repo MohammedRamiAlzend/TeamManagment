@@ -1,7 +1,5 @@
 ﻿global using TMS.Core.Interfaces;
 global using TMS.Core;
-global using System.Linq.Expressions;
-global using Microsoft.EntityFrameworkCore.Query;
 global using AutoMapper;
 global using TMS.Core.MediatR.Interfaces;
 global using TMS.Core.Entities;
@@ -12,3 +10,10 @@ global using System.Net;
 global using Microsoft.Extensions.Logging;
 global using TMS.Core.Entities.Interfaces;
 global using Contracts.CQRS.GenericCommands;
+global using Contracts.CQRS.Commands.AuthCommands;
+global using TMS.Application.Commands.AuthCommands;
+global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
+global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
+global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
+global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
+global using TMS.Core.Entities.Models;

@@ -1,5 +1,3 @@
-using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
-
 namespace TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
 
 public class DepartmentDto : IDto

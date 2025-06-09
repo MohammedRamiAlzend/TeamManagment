@@ -7,16 +7,12 @@ namespace TMS.Infrastructure.Repositories;
 public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContextRepository<T>
     where T : Entity
 {
-
     /// <summary>
-    /// Adds a new entity to the database asynchronously.
+    ///     Adds a new entity to the database asynchronously.
     /// </summary>
     public async Task<DbRequest> AddAsync(T entity)
     {
-        if (entity == null)
-        {
-            return DbRequest.Failure("Entity cannot be null.");
-        }
+        if (entity == null) return DbRequest.Failure("Entity cannot be null.");
 
         return await ExecuteOperationAsync(
             async () =>
@@ -30,7 +26,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     }
 
     /// <summary>
-    /// Retrieves all entities from the database asynchronously, with optional filtering, including, and ordering.
+    ///     Retrieves all entities from the database asynchronously, with optional filtering, including, and ordering.
     /// </summary>
     public async Task<DbRequest<List<T>>> GetAllAsync(
         Expression<Func<T, bool>>? filter = null,
@@ -46,8 +42,8 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             if (orderBy != null) query = orderBy(query);
 
             var result = await query.ToListAsync();
-            return result.Count == 0 
-                ? DbRequest<List<T>>.Failure($"No entities of type {typeof(T).Name} found.") 
+            return result.Count == 0
+                ? DbRequest<List<T>>.Failure($"No entities of type {typeof(T).Name} found.")
                 : DbRequest<List<T>>.Success(result, "Entities retrieved successfully.");
         }
         catch (Exception e)
@@ -59,7 +55,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     }
 
     /// <summary>
-    /// Retrieves all entities from the database asynchronously with pagination, filtering, including, and ordering.
+    ///     Retrieves all entities from the database asynchronously with pagination, filtering, including, and ordering.
     /// </summary>
     public async Task<PaginatedDbRequest<T>> GetAllPaginatedAsync(
         Expression<Func<T, bool>>? filter = null,
@@ -69,9 +65,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         int pageSize = 10)
     {
         if (pageNumber <= 0 || pageSize <= 0)
-        {
             return PaginatedDbRequest<T>.Failure("Page number and size must be greater than zero.");
-        }
 
         IQueryable<T> query = dbSet;
 
@@ -84,10 +78,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             var totalCount = await query.CountAsync();
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            if (items.Count == 0)
-            {
-                return PaginatedDbRequest<T>.Failure($"No entities of type {typeof(T).Name} found.");
-            }
+            if (items.Count == 0) return PaginatedDbRequest<T>.Failure($"No entities of type {typeof(T).Name} found.");
 
             return PaginatedDbRequest<T>.Success(
                 items,
@@ -105,7 +96,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     }
 
     /// <summary>
-    /// Retrieves a single entity from the database asynchronously, with optional filtering and including related entities.
+    ///     Retrieves a single entity from the database asynchronously, with optional filtering and including related entities.
     /// </summary>
     public async Task<DbRequest<T>> GetAsync(
         Expression<Func<T, bool>>? filter = null,
@@ -119,8 +110,8 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             if (include != null) query = include(query);
 
             var entity = await query.FirstOrDefaultAsync();
-            return entity == null 
-                ? DbRequest<T>.Failure($"Entity of type {typeof(T).Name} was not found.") 
+            return entity == null
+                ? DbRequest<T>.Failure($"Entity of type {typeof(T).Name} was not found.")
                 : DbRequest<T>.Success(entity, $"Entity with ID {entity.Id} has been retrieved successfully.");
         }
         catch (Exception e)
@@ -132,20 +123,14 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     }
 
     /// <summary>
-    /// Removes an entity from the database asynchronously.
+    ///     Removes an entity from the database asynchronously.
     /// </summary>
     public async Task<DbRequest> RemoveAsync(Expression<Func<T, bool>> filter)
     {
-        if (filter == null)
-        {
-            return DbRequest.Failure("Filter cannot be null.");
-        }
+        if (filter == null) return DbRequest.Failure("Filter cannot be null.");
 
         var getEntity = await GetAsync(filter);
-        if (!getEntity.IsSuccess || getEntity.Data == null)
-        {
-            return DbRequest.Failure("Entity not found.");
-        }
+        if (!getEntity.IsSuccess || getEntity.Data == null) return DbRequest.Failure("Entity not found.");
 
         return await ExecuteOperationAsync(
             async () =>
@@ -157,15 +142,13 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
             $"Failed to delete entity of type {typeof(T).Name}."
         );
     }
+
     /// <summary>
-    /// Updates an entity in the database asynchronously.
+    ///     Updates an entity in the database asynchronously.
     /// </summary>
     public async Task<DbRequest> UpdateAsync(T entity)
     {
-        if (entity == null)
-        {
-            return DbRequest.Failure("Entity cannot be null.");
-        }
+        if (entity == null) return DbRequest.Failure("Entity cannot be null.");
 
         return await ExecuteOperationAsync(
             async () =>
@@ -180,11 +163,11 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     }
 
     /// <summary>
-    /// Executes a database operation asynchronously and returns a standardized response.
+    ///     Executes a database operation asynchronously and returns a standardized response.
     /// </summary>
     private async Task<DbRequest> ExecuteOperationAsync(Func<Task<DbRequest>> operation,
-                                                        string successMessage = "",
-                                                        string errorMessage = "")
+        string successMessage = "",
+        string errorMessage = "")
     {
         try
         {

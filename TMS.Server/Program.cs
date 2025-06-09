@@ -1,17 +1,17 @@
-
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    });
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 builder.Services.AddOpenApi();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
-builder.Services.AddAppDependencyInjection(connectionString,builder.Configuration);
+builder.Services.AddAppDependencyInjection(connectionString, builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -35,6 +35,7 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred during database seeding.");
     }
 }
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

@@ -1,7 +1,4 @@
-﻿using Azure.Core;
-
-namespace TMS.Application.GenericCommands;
-
+﻿namespace TMS.Application.GenericCommandHandlers;
 
 public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
@@ -11,7 +8,8 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
     where TEntity : Entity
     where TEntityDto : IDto
 {
-    public async Task<ApiResponse<TEntityDto>> Handle(UpdateEntityCommand<TEntity, TEntityDto> request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<TEntityDto>> Handle(UpdateEntityCommand<TEntity, TEntityDto> request,
+        CancellationToken cancellationToken)
     {
         if (request.Entity == null)
         {
@@ -27,14 +25,15 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
             if (repository == null)
             {
                 logger.LogError("Repository for {EntityType} is null", typeof(TEntity).Name);
-                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "Repository is unavailable.");
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError,
+                    "Repository is unavailable.");
             }
 
             var existingEntityResult = await repository.GetAsync(x => x.Id == request.Id);
             if (!existingEntityResult.IsSuccess)
             {
                 logger.LogWarning("Entity not found for update: {Message}", existingEntityResult.Message);
-                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, existingEntityResult.Message??"");
+                return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, existingEntityResult.Message ?? "");
             }
 
             var existingEntity = existingEntityResult.Data;
@@ -43,7 +42,8 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
             var updateResult = await repository.UpdateAsync((TEntity)existingEntity);
             if (!updateResult.IsSuccess)
             {
-                logger.LogWarning("Update failed for {EntityType}: {Message}", typeof(TEntity).Name, updateResult.Message);
+                logger.LogWarning("Update failed for {EntityType}: {Message}", typeof(TEntity).Name,
+                    updateResult.Message);
                 return ApiResponse<TEntityDto>.Failure(HttpStatusCode.BadRequest, updateResult.Message ?? "");
             }
 
@@ -51,7 +51,7 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
             if (saveResult > 0)
             {
                 logger.LogInformation("Entity updated successfully: {Message}", updateResult.Message);
-                return ApiResponse<TEntityDto>.Success(HttpStatusCode.OK, updateResult.Message??"");
+                return ApiResponse<TEntityDto>.Success(HttpStatusCode.OK, updateResult.Message ?? "");
             }
             else
             {
@@ -61,7 +61,8 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while updating Entity of type {EntityType}", typeof(TEntity).Name);
-            return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError, "An error occurred while updating the entity.");
+            return ApiResponse<TEntityDto>.Failure(HttpStatusCode.InternalServerError,
+                "An error occurred while updating the entity.");
         }
         finally
         {

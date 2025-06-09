@@ -13,5 +13,5 @@ public enum EnvironmentEnum
 {
     Development,
     Production,
-    All,
+    All
 }

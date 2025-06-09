@@ -1,7 +1,7 @@
 {
   "Roles": [
     {
-      "Name":"Admin" ,
+      "Name": "Admin",
       "Permissions": [
         {
           "Name": "UserManagement.GetUser",
@@ -78,84 +78,84 @@
       ]
     },
     {
-      "Name":"Manager",
+      "Name": "Manager",
       "Permissions": [
-      {
-        "Name": "UserManagement.GetUser",
-        "Description": "Permission to view user details"
-      },
-      {
-        "Name": "UserManagement.AddUser",
-        "Description": "Permission to add a new user"
-      },
-      {
-        "Name": "UserManagement.UpdateUser",
-        "Description": "Permission to update user details"
-      },
-      {
-        "Name": "UserManagement.DeleteUser",
-        "Description": "Permission to delete a user"
-      },
-      {
-        "Name": "RoleManagement.GetRole",
-        "Description": "Permission to view role details"
-      },
-      {
-        "Name": "RoleManagement.UpdateRole",
-        "Description": "Permission to update a role"
-      },
-      {
-        "Name": "RoleManagement.GetPermission",
-        "Description": "Permission to view permission details"
-      },
-      {
-        "Name": "RoleManagement.AddPermission",
-        "Description": "Permission to add a new permission"
-      },
-      {
-        "Name": "RoleManagement.UpdatePermission",
-        "Description": "Permission to update a permission"
-      },
-      {
-        "Name": "RoleManagement.RemovePermission",
-        "Description": "Permission to remove a permission"
-      },
-      {
-        "Name": "ProjectManagement.GetProject",
-        "Description": "Permission to view project details"
-      },
-      {
-        "Name": "ProjectManagement.AddProject",
-        "Description": "Permission to create a new project"
-      },
-      {
-        "Name": "ProjectManagement.UpdateProject",
-        "Description": "Permission to update project details"
-      },
-      {
-        "Name": "ProjectManagement.DeleteProject",
-        "Description": "Permission to delete a project"
-      },
-      {
-        "Name": "TaskManagement.GetTask",
-        "Description": "Permission to view task details"
-      },
-      {
-        "Name": "TaskManagement.AddTask",
-        "Description": "Permission to create a new task"
-      },
-      {
-        "Name": "TaskManagement.UpdateTask",
-        "Description": "Permission to update task details"
-      },
-      {
-        "Name": "TaskManagement.DeleteTask",
-        "Description": "Permission to delete a task"
-      }
-    ]
+        {
+          "Name": "UserManagement.GetUser",
+          "Description": "Permission to view user details"
+        },
+        {
+          "Name": "UserManagement.AddUser",
+          "Description": "Permission to add a new user"
+        },
+        {
+          "Name": "UserManagement.UpdateUser",
+          "Description": "Permission to update user details"
+        },
+        {
+          "Name": "UserManagement.DeleteUser",
+          "Description": "Permission to delete a user"
+        },
+        {
+          "Name": "RoleManagement.GetRole",
+          "Description": "Permission to view role details"
+        },
+        {
+          "Name": "RoleManagement.UpdateRole",
+          "Description": "Permission to update a role"
+        },
+        {
+          "Name": "RoleManagement.GetPermission",
+          "Description": "Permission to view permission details"
+        },
+        {
+          "Name": "RoleManagement.AddPermission",
+          "Description": "Permission to add a new permission"
+        },
+        {
+          "Name": "RoleManagement.UpdatePermission",
+          "Description": "Permission to update a permission"
+        },
+        {
+          "Name": "RoleManagement.RemovePermission",
+          "Description": "Permission to remove a permission"
+        },
+        {
+          "Name": "ProjectManagement.GetProject",
+          "Description": "Permission to view project details"
+        },
+        {
+          "Name": "ProjectManagement.AddProject",
+          "Description": "Permission to create a new project"
+        },
+        {
+          "Name": "ProjectManagement.UpdateProject",
+          "Description": "Permission to update project details"
+        },
+        {
+          "Name": "ProjectManagement.DeleteProject",
+          "Description": "Permission to delete a project"
+        },
+        {
+          "Name": "TaskManagement.GetTask",
+          "Description": "Permission to view task details"
+        },
+        {
+          "Name": "TaskManagement.AddTask",
+          "Description": "Permission to create a new task"
+        },
+        {
+          "Name": "TaskManagement.UpdateTask",
+          "Description": "Permission to update task details"
+        },
+        {
+          "Name": "TaskManagement.DeleteTask",
+          "Description": "Permission to delete a task"
+        }
+      ]
     },
     {
-      "Name":"TeamLeader",
+      "Name": "TeamLeader",
       "Permissions": [
         {
           "Name": "UserManagement.GetUser",
@@ -208,7 +208,7 @@
       ]
     },
     {
-      "Name":"Observer",
+      "Name": "Observer",
       "Permissions": [
         {
           "Name": "UserManagement.GetUser",
@@ -223,10 +223,9 @@
           "Description": "Permission to view task details"
         }
       ]
-      
     },
     {
-      "Name":"Employee",
+      "Name": "Employee",
       "Permissions": [
         {
           "Name": "UserManagement.GetUser",
@@ -241,98 +240,97 @@
           "Description": "Permission to view task details"
         }
       ]
-    }],
-  
+    }
+  ],
   "Permissions": [
-      {
-        "Name": "UserManagement.GetUser",
-        "Description": "Permission to view user details"
-      },
-      {
-        "Name": "UserManagement.AddUser",
-        "Description": "Permission to add a new user"
-      },
-      {
-        "Name": "UserManagement.UpdateUser",
-        "Description": "Permission to update user details"
-      },
-      {
-        "Name": "UserManagement.DeleteUser",
-        "Description": "Permission to delete a user"
-      },
-      {
-        "Name": "RoleManagement.GetRole",
-        "Description": "Permission to view role details"
-      },
-      {
-        "Name": "RoleManagement.UpdateRole",
-        "Description": "Permission to update a role"
-      },
-      {
-        "Name": "RoleManagement.GetPermission",
-        "Description": "Permission to view permission details"
-      },
-      {
-        "Name": "RoleManagement.AddPermission",
-        "Description": "Permission to add a new permission"
-      },
-      {
-        "Name": "RoleManagement.UpdatePermission",
-        "Description": "Permission to update a permission"
-      },
-      {
-        "Name": "RoleManagement.RemovePermission",
-        "Description": "Permission to remove a permission"
-      },
-      {
-        "Name": "ProjectManagement.GetProject",
-        "Description": "Permission to view project details"
-      },
-      {
-        "Name": "ProjectManagement.AddProject",
-        "Description": "Permission to create a new project"
-      },
-      {
-        "Name": "ProjectManagement.UpdateProject",
-        "Description": "Permission to update project details"
-      },
-      {
-        "Name": "ProjectManagement.DeleteProject",
-        "Description": "Permission to delete a project"
-      },
-      {
-        "Name": "TaskManagement.GetTask",
-        "Description": "Permission to view task details"
-      },
-      {
-        "Name": "TaskManagement.AddTask",
-        "Description": "Permission to create a new task"
-      },
-      {
-        "Name": "TaskManagement.UpdateTask",
-        "Description": "Permission to update task details"
-      },
-      {
-        "Name": "TaskManagement.DeleteTask",
-        "Description": "Permission to delete a task"
-      }
-    ],
-
-  "Departments":[
+    {
+      "Name": "UserManagement.GetUser",
+      "Description": "Permission to view user details"
+    },
+    {
+      "Name": "UserManagement.AddUser",
+      "Description": "Permission to add a new user"
+    },
+    {
+      "Name": "UserManagement.UpdateUser",
+      "Description": "Permission to update user details"
+    },
+    {
+      "Name": "UserManagement.DeleteUser",
+      "Description": "Permission to delete a user"
+    },
+    {
+      "Name": "RoleManagement.GetRole",
+      "Description": "Permission to view role details"
+    },
+    {
+      "Name": "RoleManagement.UpdateRole",
+      "Description": "Permission to update a role"
+    },
+    {
+      "Name": "RoleManagement.GetPermission",
+      "Description": "Permission to view permission details"
+    },
+    {
+      "Name": "RoleManagement.AddPermission",
+      "Description": "Permission to add a new permission"
+    },
+    {
+      "Name": "RoleManagement.UpdatePermission",
+      "Description": "Permission to update a permission"
+    },
+    {
+      "Name": "RoleManagement.RemovePermission",
+      "Description": "Permission to remove a permission"
+    },
+    {
+      "Name": "ProjectManagement.GetProject",
+      "Description": "Permission to view project details"
+    },
+    {
+      "Name": "ProjectManagement.AddProject",
+      "Description": "Permission to create a new project"
+    },
+    {
+      "Name": "ProjectManagement.UpdateProject",
+      "Description": "Permission to update project details"
+    },
+    {
+      "Name": "ProjectManagement.DeleteProject",
+      "Description": "Permission to delete a project"
+    },
+    {
+      "Name": "TaskManagement.GetTask",
+      "Description": "Permission to view task details"
+    },
+    {
+      "Name": "TaskManagement.AddTask",
+      "Description": "Permission to create a new task"
+    },
+    {
+      "Name": "TaskManagement.UpdateTask",
+      "Description": "Permission to update task details"
+    },
+    {
+      "Name": "TaskManagement.DeleteTask",
+      "Description": "Permission to delete a task"
+    }
+  ],
+  "Departments": [
     {
       "Name": "ITSupport",
       "Email": "ITSupport@mail.com",
-      "PhoneNumber" : "0115544331"
-    } ,
+      "PhoneNumber": "0115544331"
+    },
     {
       "Name": "HR",
       "Email": "HR@mail.com",
-      "PhoneNumber" : "0115544332"
+      "PhoneNumber": "0115544332"
     },
     {
       "Name": "Programming",
       "Email": "Programming@mail.com",
-      "PhoneNumber" : "0115544333"
+      "PhoneNumber": "0115544333"
     }
-  ] 
+  ]
 }

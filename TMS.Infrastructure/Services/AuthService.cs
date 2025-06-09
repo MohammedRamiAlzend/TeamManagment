@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TMS.Core.Entities;
 using TMS.Core.Entities.Models;
@@ -27,11 +26,11 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         user.UserName = request.UserName;
         user.PasswordHash = hashedPassword;
         user.RefreshToken = null;
-        
+
         var getDepartmentsRequest = await GetDepartmentsByIdAsync(request.DepartmentIds);
         var departmentsList = getDepartmentsRequest.Data ?? [];
-        
-        user.Employee = new Employee()
+
+        user.Employee = new Employee
         {
             Email = request.Email,
             FirstName = request.FirstName,
@@ -59,34 +58,47 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         return DbRequest<User>.Success(user, "User registered successfully");
     }
 
-    private async Task<DbRequest<List<Department>>> GetDepartmentsByIdAsync(ICollection<int>? departmentIds)
-    {
-        if (departmentIds is null)
-        {
-            return DbRequest<List<Department>>.Failure();
-        }
-        return await commiter.Departments.GetAllAsync(
-            filter: department => departmentIds.Contains(department.Id)
-        );
-    }
     public async Task<ApiResponse<TokenResponseDto>> LoginAsync(LoginUserDto request)
     {
         var user = await context.Users
             .Include(r => r.Roles)
             .ThenInclude(p => p.Permissions)
             .FirstOrDefaultAsync(x => x.UserName == request.UserName);
-        
+
         var passwordAccepted = new PasswordHasher<User>()
             .VerifyHashedPassword(user, user.PasswordHash, request.Password) != PasswordVerificationResult.Failed;
-        
+
         if (user is null || !passwordAccepted)
-        {
-            return ApiResponse<TokenResponseDto>.Failure(HttpStatusCode.Unauthorized, "Username or password is incorrect");
-        }
+            return ApiResponse<TokenResponseDto>.Failure(HttpStatusCode.Unauthorized,
+                "Username or password is incorrect");
         var tokenResponse = await GenerateTokenResponse(user);
         return ApiResponse<TokenResponseDto>.Success(tokenResponse);
     }
 
+    public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request)
+    {
+        var user = await ValidateRefreshTokenAsync(request.Id, request.RefreshToken);
+        if (user is null) return null;
+        return await GenerateTokenResponse(user);
+    }
+
+
+    public async Task<User?> ValidateRefreshTokenAsync(Guid userId, string refreshToken)
+    {
+        var user = await context.Users.FindAsync(userId);
+        if (user is null
+            || user.RefreshToken != refreshToken
+            || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            return null;
+        return user;
+    }
+
+    private async Task<DbRequest<List<Department>>> GetDepartmentsByIdAsync(ICollection<int>? departmentIds)
+    {
+        if (departmentIds is null) return DbRequest<List<Department>>.Failure();
+        return await commiter.Departments.GetAllAsync(department => departmentIds.Contains(department.Id)
+        );
+    }
 
 
     private async Task<TokenResponseDto> GenerateTokenResponse(User user)
@@ -98,55 +110,41 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         };
     }
 
-    public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request)
-    {
-        var user = await ValidateRefreshTokenAsync(request.Id, request.RefreshToken);
-        if(user is null)
-        {
-            return null;
-        }
-        return await GenerateTokenResponse(user);
-    }
-
     private string CreateToken(User user)
     {
         var rolesAndPermissionsAsListOfClaims
             = BuildRolesAndPermissionsClaimsList(user);
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name,user.UserName) ,
-            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()), 
+            new(ClaimTypes.Name, user.UserName),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
         claims.AddRange(rolesAndPermissionsAsListOfClaims);
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration["AppSettings:Token"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new JwtSecurityToken(
-            issuer: configuration["AppSettings:Issuer"],
-            audience: configuration["AppSettings:Audience"],
-            claims: claims,
+            configuration["AppSettings:Issuer"],
+            configuration["AppSettings:Audience"],
+            claims,
             expires: DateTime.UtcNow.AddDays(1),
             signingCredentials: creds
         );
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }
+
     private static List<Claim> BuildRolesAndPermissionsClaimsList(User user)
     {
         var roles = user.Roles?.Select(x => x.Name).Distinct() ?? Enumerable.Empty<string>();
-    
-        var permissions = user.Roles?.SelectMany(x => x.Permissions).Select(x => x.Name).Distinct() ?? Enumerable.Empty<string>();
-    
-        var claims = new List<Claim>();
-    
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
 
-        foreach (var permission in permissions)
-        {
-            claims.Add(new Claim("Permissions", permission)); 
-        }
+        var permissions = user.Roles?.SelectMany(x => x.Permissions).Select(x => x.Name).Distinct() ??
+                          Enumerable.Empty<string>();
+
+        var claims = new List<Claim>();
+
+        foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
+
+        foreach (var permission in permissions) claims.Add(new Claim("Permissions", permission));
 
         return claims;
     }
@@ -157,19 +155,6 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         var randomNumner = new byte[32];
         using var rng = RandomNumberGenerator.Create();
         return Convert.ToBase64String(randomNumner);
-    }
-
-
-    public async Task<User?> ValidateRefreshTokenAsync(Guid userId,string refreshToken)
-    {
-        var user =  await context.Users.FindAsync(userId);
-        if (user is null 
-            || user.RefreshToken != refreshToken 
-            || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-        {
-            return null;
-        }
-        return user;
     }
 
     private async Task<string> GenerateAndSaveRefreshToken(User user)

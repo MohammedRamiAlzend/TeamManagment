@@ -15,13 +15,12 @@ public class WorkTask : Entity
     public DateTime DeadLine { get; set; }
     public bool Accepted { get; set; }
     public int PointsValue { get; set; }
-    
+
     public int CreatedByEmployeeId { get; set; }
     public Employee CreatedBy { get; set; }
-    
+
     public int AssignedToEmployeeId { get; set; }
     public Employee AssignedTo { get; set; }
 
     public ICollection<Project> Projects { get; set; }
-    
 }

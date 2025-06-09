@@ -17,6 +17,6 @@ global using TMS.Application.Commands.AuthCommands;
 global using TMS.Core;
 global using TMS.Core.Entities.Models;
 global using TMS.Core.Interfaces;
-
 global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
 global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
+global using Contracts.CQRS.Commands.AuthCommands;

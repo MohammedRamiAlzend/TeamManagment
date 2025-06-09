@@ -9,17 +9,18 @@ public class RoleSeeder : IDataSeeder
 {
     public int Priority => 2;
     public EnvironmentEnum Environment => EnvironmentEnum.All;
+
     public async Task<DbRequest> SeedAsync(AppDbContext context)
     {
         try
         {
             if (await context.Roles.AnyAsync()) return DbRequest.Success("Nothing To add");
-            
-            var roles = PermissionSettings.Roles.Select(x => new Role { Name = x.Name});
-            
+
+            var roles = PermissionSettings.Roles.Select(x => new Role { Name = x.Name });
+
             await context.Roles.AddRangeAsync(roles);
             var result = await context.SaveChangesAsync();
-            
+
             return result > 0 ? DbRequest.Success() : DbRequest.Failure("Error according to roles");
         }
         catch (Exception e)

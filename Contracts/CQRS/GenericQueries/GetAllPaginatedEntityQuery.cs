@@ -1,4 +1,5 @@
 namespace Contracts.CQRS.GenericQueries;
+
 public record GetAllPaginatedEntityQuery<TEntity, TEntityDto>(
     Expression<Func<TEntity, bool>>? Filter = null,
     Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null,

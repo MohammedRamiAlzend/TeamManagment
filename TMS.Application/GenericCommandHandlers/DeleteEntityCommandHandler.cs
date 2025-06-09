@@ -1,5 +1,4 @@
-﻿namespace TMS.Application.GenericCommands;
-
+﻿namespace TMS.Application.GenericCommandHandlers;
 
 public class DeleteEntityCommandHandler<TEntity>(
     IEntityCommiter entityCommiter,
@@ -29,7 +28,8 @@ public class DeleteEntityCommandHandler<TEntity>(
             var result = await repository.RemoveAsync(request.Filter);
             if (!result.IsSuccess)
             {
-                logger.LogError("Delete operation failed for {EntityType}: {Message}", typeof(TEntity).Name, result.Message);
+                logger.LogError("Delete operation failed for {EntityType}: {Message}", typeof(TEntity).Name,
+                    result.Message);
                 return ApiResponse.Failure(HttpStatusCode.BadRequest, result.Message);
             }
 
@@ -41,7 +41,8 @@ public class DeleteEntityCommandHandler<TEntity>(
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while deleting Entity of type {EntityType}", typeof(TEntity).Name);
-            return ApiResponse.Failure(HttpStatusCode.InternalServerError, "An error occurred while deleting the entity.");
+            return ApiResponse.Failure(HttpStatusCode.InternalServerError,
+                "An error occurred while deleting the entity.");
         }
         finally
         {
