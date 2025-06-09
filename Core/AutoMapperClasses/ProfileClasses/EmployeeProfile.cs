@@ -14,9 +14,18 @@ public class EmployeeProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         
         CreateMap<Employee,GetEmployeeResponse>()
-            .ForMember(dest => dest.Roles, opt => opt.MapFrom(scr => scr.User.Roles.Select(s=>s.Name)))
-            .ForMember(dest => dest.Departments, opt => opt.MapFrom(scr => scr.Departments.Select(s=>s.Name)));
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(scr => MapRoleNames(scr.User.Roles)))
+            .ForMember(dest => dest.Departments, opt => opt.MapFrom(scr => MapDepartmentNames(scr.Departments)));
         
         
+    }
+    private static List<string> MapDepartmentNames(ICollection<Department> departments)
+    {
+        return departments?.Select(department => department.Name).ToList() ?? [];
+    }
+    private static List<string> MapRoleNames(ICollection<Role> roles)
+    {
+        return roles?.Select(role => role.Name).ToList() ?? [];
     }
 }

@@ -9,7 +9,9 @@ public class EmployeesController(ISender sender) : ControllerBase
     {
         return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(
             Include: x => x.Include(i => i.Departments)!
-                .ThenInclude(s => s.SubDepartments)!), token);
+                .ThenInclude(s => s.SubDepartments)!
+                .Include(u=>u.User)
+                .ThenInclude(r=>r.Roles)), token);
     }
 
     [HttpGet(ApiEndPoints.Employees.GetAllPaginated)]

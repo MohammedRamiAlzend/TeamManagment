@@ -24,4 +24,5 @@ public class DepartmentProfile : Profile
     {
         return employees?.Select(employee => $"{employee.FirstName} {employee.LastName}").ToList() ?? [];
     }
+
 }
