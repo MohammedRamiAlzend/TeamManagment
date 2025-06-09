@@ -1,4 +1,4 @@
-using Contracts.Requests.GenericRequests;
+using Contracts.CQRS.GenericQueries;
 using TMS.Application.GenericCommands;
 using TMS.Application.GenericQueries;
 

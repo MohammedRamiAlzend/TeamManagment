@@ -1,0 +1,22 @@
+global using Contracts.CQRS.GenericCommands;
+global using Contracts.CQRS.GenericQueries;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Query;
+global using TMS.Core;
+global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
+global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
+global using TMS.Core.Entities;
+global using TMS.Core.MediatR.Interfaces;
+global using TMS.Infrastructure.AppConfigurations;
+global using TMS.Infrastructure.DataSeeder;
+global using TMS.Server;
+global using Scalar.AspNetCore;
+global using Microsoft.AspNetCore.Authorization;
+global using TMS.Application.Commands.AuthCommands;
+global using TMS.Core;
+global using TMS.Core.Entities.Models;
+global using TMS.Core.Interfaces;
+
+global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
+global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;

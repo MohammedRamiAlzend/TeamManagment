@@ -1,6 +1,7 @@
-﻿using Contracts.Requests.GenericRequests;
+﻿using Contracts.CQRS.GenericQueries;
 
 namespace TMS.Application.GenericQueries;
+
 public class GetEntityQueryHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,

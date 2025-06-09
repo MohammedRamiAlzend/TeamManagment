@@ -1,5 +1,4 @@
 ﻿namespace TMS.Application.GenericCommands;
-public record AddEntityCommand<TEntityDto>(TEntityDto EntityDto) : IRequest<ApiResponse<TEntityDto>> where TEntityDto : IDto;
 public class AddEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
     IMapper mapper,

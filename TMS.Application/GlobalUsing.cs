@@ -11,3 +11,4 @@ global using TMS.Core.AutoMapperClasses.DTOs;
 global using System.Net;
 global using Microsoft.Extensions.Logging;
 global using TMS.Core.Entities.Interfaces;
+global using Contracts.CQRS.GenericCommands;

@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using TMS.Application.Commands.AuthCommands;
-using TMS.Core;
-using TMS.Core.Entities.Models;
-using TMS.Core.Interfaces;
 namespace TMS.Server.Controllers;
 
 [ApiController]

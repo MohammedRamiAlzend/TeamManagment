@@ -1,7 +1,5 @@
-using TMS.Infrastructure.AppConfigurations;
-using TMS.Infrastructure.DataSeeder;
-using TMS.Server;
-using Newtonsoft.Json;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 

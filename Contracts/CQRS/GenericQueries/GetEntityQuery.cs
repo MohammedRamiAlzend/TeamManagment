@@ -1,11 +1,4 @@
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
-using TMS.Core;
-using TMS.Core.AutoMapperClasses.DTOs;
-using TMS.Core.Entities.Interfaces;
-using TMS.Core.MediatR.Interfaces;
-
-namespace Contracts.Requests.GenericRequests;
+namespace Contracts.CQRS.GenericQueries;
 
 public record GetEntityQuery<TEntity, TEntityDto>(
     Expression<Func<TEntity, bool>>? Filter = null,

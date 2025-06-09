@@ -1,9 +1,7 @@
 ﻿using Azure.Core;
 
 namespace TMS.Application.GenericCommands;
-public record UpdateEntityCommand<TEntity, TEntityDto>(int Id, TEntityDto Entity) : IRequest<ApiResponse<TEntityDto>>
-    where TEntity : Entity
-    where TEntityDto : IDto;
+
 
 public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,

@@ -1,15 +1,3 @@
-using Contracts.Requests.GenericRequests;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using TMS.Application.GenericCommands;
-using TMS.Application.GenericQueries;
-using TMS.Core;
-using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
-using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
-using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
-using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
-
 namespace TMS.Server.Controllers;
 
 [ApiController]
