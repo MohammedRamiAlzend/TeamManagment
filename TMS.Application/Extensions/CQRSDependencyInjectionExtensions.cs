@@ -1,7 +1,7 @@
-using Contracts.CQRS.GenericQueries;
-using TMS.Application.Commands.GenericCommandHandlers;
-using TMS.Application.Queries.GenericQueryHandlers;
-using TMS.Core.CommunicationModels;
+using TMS.Application.CQRS.GenericCommands;
+using TMS.Application.CQRS.GenericQueries;
+using TMS.Application.Handlers.GenericCommandHandlers;
+using TMS.Application.Handlers.GenericQueryHandlers;
 
 namespace TMS.Application.Extensions;
 

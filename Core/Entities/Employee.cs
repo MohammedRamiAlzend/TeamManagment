@@ -11,6 +11,8 @@ public class Employee : Entity
     public DateTime HireDate { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
+    
+    public string ImagePath { get; set; } = string.Empty;
 
     [JsonIgnore] public User User { get; set; }
 

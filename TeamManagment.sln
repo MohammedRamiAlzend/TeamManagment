@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Infrastructure", "TMS.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Application", "TMS.Application\TMS.Application.csproj", "{78865F06-2C3E-4475-A0D0-68A113050526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{B29D9D12-F694-4A47-8CF9-FF07206A286E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Contract", "TMS.Contract\TMS.Contract.csproj", "{468F2DD1-D27F-42F0-8466-B5D3A4067D76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{78865F06-2C3E-4475-A0D0-68A113050526}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78865F06-2C3E-4475-A0D0-68A113050526}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78865F06-2C3E-4475-A0D0-68A113050526}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B29D9D12-F694-4A47-8CF9-FF07206A286E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B29D9D12-F694-4A47-8CF9-FF07206A286E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B29D9D12-F694-4A47-8CF9-FF07206A286E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B29D9D12-F694-4A47-8CF9-FF07206A286E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{468F2DD1-D27F-42F0-8466-B5D3A4067D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{468F2DD1-D27F-42F0-8466-B5D3A4067D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{468F2DD1-D27F-42F0-8466-B5D3A4067D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{468F2DD1-D27F-42F0-8466-B5D3A4067D76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

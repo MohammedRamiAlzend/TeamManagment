@@ -2,8 +2,12 @@
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
-global using System.ComponentModel.DataAnnotations.Schema;
 global using AutoMapper;
 global using TMS.Core.Entities;
 global using TMS.Core.MediatR.Interfaces;
 global using TMS.Core.Entities.Interfaces;
+global using TMS.Contract.Responses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
+global using TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
+global using TMS.Contract.Responses;
+global using TMS.Contract.Responses.DTOs.RequestDTOs.RequestEmployeeDTOS;
+global using TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;

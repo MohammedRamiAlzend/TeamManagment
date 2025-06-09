@@ -1,5 +1,3 @@
-using TMS.Core.CommunicationModels;
-
 namespace TMS.Server.Controllers;
 
 [ApiController]
@@ -7,9 +5,9 @@ namespace TMS.Server.Controllers;
 public class EmployeesController(ISender sender) : ControllerBase
 {
     [HttpGet(ApiEndPoints.Employees.GetAll)]
-    public async Task<ActionResult<ApiResponse<List<EmployeeDto>>>> GetAllEmployeesAsync(CancellationToken token)
+    public async Task<ActionResult<ApiResponse<List<GetEmployeeResponse>>>> GetAllEmployeesAsync(CancellationToken token)
     {
-        return await sender.Send(new GetAllEntityQuery<Employee, EmployeeDto>(
+        return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(
             Include: x => x.Include(i => i.Departments)!
                 .ThenInclude(s => s.SubDepartments)!), token);
     }

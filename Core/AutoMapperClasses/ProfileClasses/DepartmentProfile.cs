@@ -1,6 +1,3 @@
-using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
-using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
-
 namespace TMS.Core.AutoMapperClasses.ProfileClasses;
 
 public class DepartmentProfile : Profile

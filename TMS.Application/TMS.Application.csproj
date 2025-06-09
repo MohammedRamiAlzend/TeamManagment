@@ -12,12 +12,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Contracts\Contracts.csproj"/>
         <ProjectReference Include="..\Core\TMS.Core.csproj"/>
+        <ProjectReference Include="..\TMS.Contract\TMS.Contract.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Queries\" />
+        <Folder Include="Queries\"/>
     </ItemGroup>
 
 </Project>

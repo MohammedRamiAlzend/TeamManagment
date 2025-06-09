@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <Folder Include="Requests\"/>
-        <Folder Include="Responses\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -17,8 +16,6 @@
         </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Core\TMS.Core.csproj"/>
-    </ItemGroup>
+ 
 
 </Project>
