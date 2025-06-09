@@ -19,8 +19,6 @@ public class DepartmentProfile : Profile
             .ForMember(dest => dest.EmployeesNames,
                 opt => opt.MapFrom(scr => MapEmployeeNames(scr.Employees)));
         
-        // CreateMap<List<Department>, List<DepartmentDto>>();
-           
 
         CreateMap<Department, CreateDepartmentDto>();
        

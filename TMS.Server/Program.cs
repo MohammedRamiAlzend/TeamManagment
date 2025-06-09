@@ -13,7 +13,7 @@ builder.Services.AddOpenApi();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
-builder.Services.AddAppDi(connectionString,builder.Configuration);
+builder.Services.AddAppDependencyInjection(connectionString,builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

@@ -13,7 +13,7 @@ namespace TMS.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureDi(this IServiceCollection services , string connectionString , ConfigurationManager configuration)
+    public static IServiceCollection AddInfrastructureDependencyInjection(this IServiceCollection services , string connectionString , ConfigurationManager configuration)
     {
 
         services.AddDbContext<AppDbContext>(
