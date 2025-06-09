@@ -1,4 +1,6 @@
-namespace TMS.Application.Commands.AuthCommands;
+using TMS.Core.CommunicationModels;
+
+namespace TMS.Application.Commands.AuthHandlers;
 
 public class RegisterUserCommandHandler(IAuthService authService)
     : IRequestHandler<RegisterUserCommand, ApiResponse<User>>

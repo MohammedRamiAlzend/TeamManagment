@@ -1,3 +1,5 @@
+using TMS.Core.CommunicationModels;
+
 namespace Contracts.CQRS.GenericQueries;
 
 public record GetAllPaginatedEntityQuery<TEntity, TEntityDto>(

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
+using TMS.Core.CommunicationModels;
 
 namespace TMS.Core.Interfaces;
 

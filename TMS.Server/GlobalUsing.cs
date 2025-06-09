@@ -13,7 +13,7 @@ global using TMS.Infrastructure.DataSeeder;
 global using TMS.Server;
 global using Scalar.AspNetCore;
 global using Microsoft.AspNetCore.Authorization;
-global using TMS.Application.Commands.AuthCommands;
+global using TMS.Application.Commands.AuthHandlers;
 global using TMS.Core;
 global using TMS.Core.Entities.Models;
 global using TMS.Core.Interfaces;

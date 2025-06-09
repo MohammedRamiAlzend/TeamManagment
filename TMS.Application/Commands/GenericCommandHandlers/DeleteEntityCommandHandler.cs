@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.GenericCommandHandlers;
+﻿using TMS.Core.CommunicationModels;
+
+namespace TMS.Application.Commands.GenericCommandHandlers;
 
 public class DeleteEntityCommandHandler<TEntity>(
     IEntityCommiter entityCommiter,

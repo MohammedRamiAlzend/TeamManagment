@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using TMS.Core.CommunicationModels;
 using TMS.Core.Entities;
 using TMS.Core.Entities.Models;
 using TMS.Infrastructure.Data.DbContextTools;

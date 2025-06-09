@@ -1,3 +1,4 @@
+using TMS.Core.CommunicationModels;
 using TMS.Core.Entities.Models;
 
 namespace TMS.Core.Interfaces;

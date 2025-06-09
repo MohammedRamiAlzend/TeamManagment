@@ -1,4 +1,6 @@
-﻿namespace TMS.Application;
+﻿using TMS.Core.CommunicationModels;
+
+namespace TMS.Application.Extensions;
 
 public static class DependencyInjection
 {
@@ -13,7 +15,8 @@ public static class DependencyInjection
         services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
         services.AddEntityUpdationRegistration<Department, UpdateDepartmentDto>();
         services.AddEntityRegistration<Department, DepartmentDto>();
-
+        
+        //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();
         services.AddRequestHandler<LoginUserCommand, ApiResponse<TokenResponseDto>, LoginUserCommandHandler>();
         services.AddRequestHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>, RefreshTokenCommandHandler>();

@@ -1,3 +1,4 @@
+using TMS.Core.CommunicationModels;
 using TMS.Infrastructure.Data.DbContextTools;
 using TMS.Infrastructure.DataSeeder.Interfaces;
 

@@ -11,7 +11,7 @@ global using Microsoft.Extensions.Logging;
 global using TMS.Core.Entities.Interfaces;
 global using Contracts.CQRS.GenericCommands;
 global using Contracts.CQRS.Commands.AuthCommands;
-global using TMS.Application.Commands.AuthCommands;
+global using TMS.Application.Commands.AuthHandlers;
 global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
 global using TMS.Core.AutoMapperClasses.DTOs.RequestDTOs.RequestEmployeeDTOS;
 global using TMS.Core.AutoMapperClasses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;

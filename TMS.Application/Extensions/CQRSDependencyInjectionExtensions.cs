@@ -1,8 +1,9 @@
 using Contracts.CQRS.GenericQueries;
-using TMS.Application.GenericCommandHandlers;
-using TMS.Application.GenericQueryHandlers;
+using TMS.Application.Commands.GenericCommandHandlers;
+using TMS.Application.Queries.GenericQueryHandlers;
+using TMS.Core.CommunicationModels;
 
-namespace TMS.Application;
+namespace TMS.Application.Extensions;
 
 public static class CqrsDependencyInjectionExtensions
 {

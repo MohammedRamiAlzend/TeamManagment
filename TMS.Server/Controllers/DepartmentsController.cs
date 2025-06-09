@@ -1,3 +1,5 @@
+using TMS.Core.CommunicationModels;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]

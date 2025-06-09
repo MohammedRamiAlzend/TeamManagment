@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
+using TMS.Core.CommunicationModels;
 
 namespace TMS.Infrastructure.Repositories;
 

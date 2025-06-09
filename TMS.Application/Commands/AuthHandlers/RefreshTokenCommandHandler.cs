@@ -1,4 +1,6 @@
-namespace TMS.Application.Commands.AuthCommands;
+using TMS.Core.CommunicationModels;
+
+namespace TMS.Application.Commands.AuthHandlers;
 
 public class RefreshTokenCommandHandler(IAuthService authService)
     : IRequestHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>>

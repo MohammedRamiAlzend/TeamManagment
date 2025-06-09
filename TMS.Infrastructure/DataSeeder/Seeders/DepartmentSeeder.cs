@@ -1,3 +1,4 @@
+using TMS.Core.CommunicationModels;
 using TMS.Core.Entities;
 using TMS.Infrastructure.AppConfigurations;
 using TMS.Infrastructure.Data.DbContextTools;

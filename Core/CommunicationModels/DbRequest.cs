@@ -1,4 +1,4 @@
-﻿namespace TMS.Core;
+﻿namespace TMS.Core.CommunicationModels;
 
 public class DbRequest
 {
