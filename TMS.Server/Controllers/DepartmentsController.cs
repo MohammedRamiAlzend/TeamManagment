@@ -1,3 +1,4 @@
+using Contracts.Requests.GenericRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
