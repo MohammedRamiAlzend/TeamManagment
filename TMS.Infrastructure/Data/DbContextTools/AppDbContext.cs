@@ -8,7 +8,7 @@ namespace TMS.Infrastructure.Data.DbContextTools;
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=lenovo;Database=TMS;User Id=sa;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;"); 
+            optionsBuilder.UseSqlServer("Server=DESKTOP-MJIUN3T;Database=TMS;User Id=sa;Password=123;Encrypt=True;TrustServerCertificate=True;"); 
 
             return new AppDbContext(optionsBuilder.Options);
         }
