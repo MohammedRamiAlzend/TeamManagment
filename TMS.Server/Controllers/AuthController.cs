@@ -1,8 +1,12 @@
 
+using TMS.Infrastructure.Services;
+using TMS.Server.PermissionsAndRolesConfig;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize] 
 public class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
@@ -12,7 +16,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpPost("login")]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<TokenResponseDto>>> Login(LoginUserDto request, CancellationToken token)
     {
         return await sender.Send(new LoginUserCommand(request), token);
@@ -27,7 +31,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [HasPermission(AppPermissions.UserManagement.AddUser)]
     public IActionResult AuthenticatedOnlyEndpoint()
     {
         return Ok("You Are Authenticated");

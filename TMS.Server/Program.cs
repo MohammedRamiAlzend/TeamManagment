@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using TMS.Server.PermissionsAndRolesConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,17 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+}
+
+const string jsonFileName = "AppPermission.json";
+var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../"));
+var jsonFilePath = Path.Combine(projectRoot, jsonFileName);
+try
+{
+    DataSynchronizer.Synchronize(jsonFilePath);
+}
+catch (Exception ex)
+{
 }
 
 PermissionSettings.LoadPermissionsConfig();

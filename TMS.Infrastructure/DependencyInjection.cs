@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructureDependencyInjection(this IServiceCollection services,
         string connectionString, ConfigurationManager configuration)
     {
+        services.AddMemoryCache();
+
         services.AddDbContext<AppDbContext>(opt => { opt.UseSqlServer(connectionString); });
         services.AddScoped<IEntityCommiter, EntityCommiter>()
             .AddScoped(typeof(IDbContextRepository<>), typeof(DbContextRepository<>));
@@ -37,6 +40,10 @@ public static class DependencyInjection
                         Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!))
                 };
             });
+
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddSingleton<IAuthorizationHandler, LogicalPermissionHandler>();
+
 
         services.AddSingleton<DataSeederFactory>();
         services.AddScoped<SeederRunner>();

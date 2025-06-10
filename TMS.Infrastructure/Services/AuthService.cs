@@ -136,16 +136,21 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
 
     private static List<Claim> BuildRolesAndPermissionsClaimsList(User user)
     {
-        var roles = user.Roles?.Select(x => x.Name).Distinct() ?? Enumerable.Empty<string>();
+        var roles = 
+            user.Roles?.Select(x => x.Name).Distinct().ToList() ?? [];
 
-        var permissions = user.Roles?.SelectMany(x => x.Permissions).Select(x => x.Name).Distinct() ??
-                          Enumerable.Empty<string>();
+        var permissions = 
+            user.Roles?.SelectMany(x => x.Permissions).
+                Select(x => x.Name).Distinct().ToList() 
+            ?? [];
 
-        var claims = new List<Claim>();
-
-        foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
-
-        foreach (var permission in permissions) claims.Add(new Claim("Permissions", permission));
+        var claims = new List<Claim>()
+        {
+            new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
+        };
+        
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.AddRange(permissions.Select(permission => new Claim("permission", permission)));
 
         return claims;
     }

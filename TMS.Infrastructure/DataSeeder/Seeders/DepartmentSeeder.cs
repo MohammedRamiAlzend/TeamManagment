@@ -16,24 +16,36 @@ public class DepartmentSeeder : IDataSeeder
         if (await context.Departments.AnyAsync()) return DbRequest.Success("Nothing To add");
         try
         {
-            var departmentsModel = PermissionSettings.Departments;
             var departmentsList = new List<Department>();
             var getTeamLeader = context.Users.Include(user => user.Employee)
                 .FirstOrDefault(x => x.Roles.Any(y => y.Name.ToLower() == "teamleader"));
             if (getTeamLeader is null) return DbRequest.Failure("TeamLeader not found");
-            // foreach (var department in departmentsModel)
-            // {
             var getEmployees = await context.Users.Where(x => x.Roles.Any(y => y.Name.ToLower() == "employee"))
                 .Select(x => x.Employee).ToListAsync();
             departmentsList.Add(new Department
             {
-                Name = departmentsModel[0].Name,
+                Name = "ITSupport",
                 TeamLeader = getTeamLeader.Employee,
                 Employees = getEmployees,
-                Email = departmentsModel[0].Email,
-                PhoneNumber = departmentsModel[0].PhoneNumber
+                Email = "ITSupport@mail.com",
+                PhoneNumber = "123"
             });
-            // }
+            departmentsList.Add(new Department
+            {
+                Name = "HR",
+                TeamLeader = getTeamLeader.Employee,
+                Employees = getEmployees,
+                Email = "HR@mail.com",
+                PhoneNumber = "124"
+            });
+            departmentsList.Add(new Department
+            {
+                Name = "Programming",
+                TeamLeader = getTeamLeader.Employee,
+                Employees = getEmployees,
+                Email = "Programming@mail.com",
+                PhoneNumber = "124"
+            });
 
             await context.AddRangeAsync(departmentsList);
 
