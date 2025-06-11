@@ -1,5 +1,5 @@
 {
-  "Version": 3,
+  "Version": 4,
   "Roles": [
     {
       "Name": "Admin",
@@ -66,6 +66,10 @@
         },
         {
           "Name": "UserManagement.DeleteUser",
+          "Description": ""
+        },
+        {
+          "Name": "UserManagement.DeleteUser2",
           "Description": ""
         },
         {
@@ -298,6 +302,10 @@
     },
     {
       "Name": "UserManagement.DeleteUser",
+      "Description": ""
+    },
+    {
+      "Name": "UserManagement.DeleteUser2",
       "Description": ""
     },
     {

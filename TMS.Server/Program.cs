@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using TMS.Server.Helpers;
 using TMS.Server.PermissionsAndRolesConfig;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
 builder.Services.AddOpenApi();
-
+builder.Services.AddHostedService<DatabaseSyncService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
 builder.Services.AddAppDependencyInjection(connectionString, builder.Configuration);
@@ -21,9 +22,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-const string jsonFileName = "AppPermission.json";
 var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../"));
-var jsonFilePath = Path.Combine(projectRoot, jsonFileName);
+var jsonFilePath = Path.Combine(projectRoot, ConfigHelper.PermissionsRolesFileName);
 try
 {
     DataSynchronizer.Synchronize(jsonFilePath);
@@ -32,7 +32,6 @@ catch (Exception ex)
 {
 }
 
-PermissionSettings.LoadPermissionsConfig();
 using (var scope = app.Services.CreateScope())
 {
     var runner = scope.ServiceProvider.GetRequiredService<SeederRunner>();

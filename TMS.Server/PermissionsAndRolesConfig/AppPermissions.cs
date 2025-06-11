@@ -10,6 +10,7 @@ public static class AppPermissions
         public const string AddUser = "UserManagement.AddUser";
         public const string UpdateUser = "UserManagement.UpdateUser";
         public const string DeleteUser = "UserManagement.DeleteUser";
+        public const string DeleteUser2 = "UserManagement.DeleteUser2";
     }
     public static class RoleManagement
     {

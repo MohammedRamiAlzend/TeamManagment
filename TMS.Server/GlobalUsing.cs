@@ -9,7 +9,6 @@ global using TMS.Core.CommunicationModels;
 global using TMS.Core.MediatR.Interfaces;
 global using TMS.Core.Entities;
 global using TMS.Core.Entities.Models;
-global using TMS.Infrastructure.AppConfigurations;
 global using TMS.Infrastructure.DataSeeder;
 global using TMS.Application.CQRS.GenericCommands;
 global using TMS.Application.CQRS.GenericQueries;
