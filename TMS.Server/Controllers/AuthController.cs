@@ -28,7 +28,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
-    [HasPermission(AppPermissions.UserManagement.AddUser)]
+    [HasPermission(AppPermissions.UserManagement.Add)]
     public IActionResult AuthenticatedOnlyEndpoint()
     {
         return Ok("You Are Authenticated");

@@ -1,38 +1,42 @@
+using System.Runtime.CompilerServices;
+
 namespace TMS.Server.PermissionsAndRolesConfig;
 
 public static class AppPermissions
 {
     public static class UserManagement
     {
-        public const string GetUser = "UserManagement.GetUser";
-        public const string AddUser = "UserManagement.AddUser";
-        public const string UpdateUser = "UserManagement.UpdateUser";
-        public const string DeleteUser = "UserManagement.DeleteUser";
+        private const string GetPrefix = nameof(UserManagement);
+        public const string Get = $"{GetPrefix}.Get";
+        public const string Add = $"{GetPrefix}.Add";
+        public const string Update = $"{GetPrefix}.Update";
+        public const string Delete = $"{GetPrefix}.Delete";
     }
+    
     public static class RoleManagement
     {
-        public const string GetRole = "RoleManagement.GetRole";
-        public const string UpdateRole = "RoleManagement.UpdateRole";
-        public const string GetPermission = "RoleManagement.GetPermission";
-        public const string AddPermission = "RoleManagement.AddPermission";
-        public const string UpdatePermission = "RoleManagement.UpdatePermission";
-        public const string RemovePermission = "RoleManagement.RemovePermission";
+        private const string GetPrefix = nameof(RoleManagement);
+        public const string Add = $"{GetPrefix}.Add";
+        public const string Get = $"{GetPrefix}.Get";
+        public const string Update = $"{GetPrefix}.Update";
     }
 
     public static class ProjectManagement
     {
-        public const string GetProject = "ProjectManagement.GetProject";
-        public const string AddProject = "ProjectManagement.AddProject";
-        public const string UpdateProject = "ProjectManagement.UpdateProject";
-        public const string DeleteProject = "ProjectManagement.DeleteProject";
+        private const string GetPrefix = nameof(ProjectManagement);
+        public const string Get = $"{GetPrefix}.Get";
+        public const string Add = $"{GetPrefix}.Add";
+        public const string Update = $"{GetPrefix}.Update";
+        public const string Delete = $"{GetPrefix}.Delete";
     }
 
     public static class TaskManagement
     {
-        public const string GetTask = "TaskManagement.GetTask";
-        public const string AddTask = "TaskManagement.AddTask";
-        public const string UpdateTask = "TaskManagement.UpdateTask";
-        public const string DeleteTask = "TaskManagement.DeleteTask";
+        private const string GetPrefix = nameof(TaskManagement);
+        public const string Get = $"{GetPrefix}.Get";
+        public const string Add = $"{GetPrefix}.Add";
+        public const string Update = $"{GetPrefix}.Update";
+        public const string Delete = $"{GetPrefix}.Delete";
     }
     public static IEnumerable<string> GetAllPermissions()
     {

@@ -13,10 +13,10 @@ public static class AppRoles
         Name = "Manager",
         Permissions = new List<string>
         {
-            UserManagement.GetUser, UserManagement.AddUser, UserManagement.UpdateUser, UserManagement.DeleteUser,
-            RoleManagement.GetRole, RoleManagement.UpdateRole,
-            ProjectManagement.GetProject, ProjectManagement.AddProject, ProjectManagement.UpdateProject, ProjectManagement.DeleteProject,
-            TaskManagement.GetTask, TaskManagement.AddTask, TaskManagement.UpdateTask, TaskManagement.DeleteTask
+            UserManagement.Get, UserManagement.Add, UserManagement.Update, UserManagement.Delete,
+            RoleManagement.Get, RoleManagement.Update,
+            ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update, ProjectManagement.Delete,
+            TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
         }
     };
     
@@ -25,9 +25,9 @@ public static class AppRoles
         Name = "TeamLeader",
         Permissions = new List<string>
         {
-            UserManagement.GetUser, UserManagement.AddUser, UserManagement.UpdateUser,
-            ProjectManagement.GetProject, ProjectManagement.AddProject, ProjectManagement.UpdateProject,
-            TaskManagement.GetTask, TaskManagement.AddTask, TaskManagement.UpdateTask, TaskManagement.DeleteTask
+            UserManagement.Get, UserManagement.Add, UserManagement.Update,
+            ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update,
+            TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
         }
     };
 
@@ -36,10 +36,10 @@ public static class AppRoles
         Name = "Employee",
         Permissions = new List<string>
         {
-            UserManagement.GetUser,
-            ProjectManagement.GetProject,
-            TaskManagement.GetTask, TaskManagement.UpdateTask,
-            UserManagement.DeleteUser
+            UserManagement.Get,
+            ProjectManagement.Get,
+            TaskManagement.Get, TaskManagement.Update,
+            UserManagement.Delete
         }
     };
     public static readonly RoleDefinition Observer = new()
@@ -47,10 +47,10 @@ public static class AppRoles
         Name = "Observer",
         Permissions = new List<string>
         {
-            UserManagement.GetUser,
-            ProjectManagement.GetProject,
-            TaskManagement.GetTask, TaskManagement.UpdateTask,
-            UserManagement.DeleteUser
+            UserManagement.Get,
+            ProjectManagement.Get,
+            TaskManagement.Get, TaskManagement.Update,
+            UserManagement.Delete
         }
     };
     
