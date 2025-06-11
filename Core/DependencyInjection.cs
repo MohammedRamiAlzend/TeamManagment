@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace TMS.Core;
+﻿namespace TMS.Core;
 
 public static class DependencyInjection
 {

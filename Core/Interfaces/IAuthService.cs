@@ -1,6 +1,3 @@
-using TMS.Core.Entities.Models;
-using TMS.Core.CommunicationModels;
-
 namespace TMS.Core.Interfaces;
 
 public interface IAuthService

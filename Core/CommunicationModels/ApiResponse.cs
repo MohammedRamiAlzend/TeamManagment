@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace TMS.Core.CommunicationModels;
+﻿namespace TMS.Core.CommunicationModels;
 
 public class ApiResponse
 {

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TMS.Core.Entities.Models;
 
 public class RegisterUserDto

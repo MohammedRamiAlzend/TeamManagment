@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TMS.Core.Entities;
+﻿namespace TMS.Core.Entities;
 
 public class Employee : Entity
 {
