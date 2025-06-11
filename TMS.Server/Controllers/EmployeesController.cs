@@ -2,9 +2,11 @@ namespace TMS.Server.Controllers;
 
 [ApiController]
 [Route($"{ApiEndPoints.ApiBase}/[controller]")]
+[Authorize]
 public class EmployeesController(ISender sender) : ControllerBase
 {
     [HttpGet(ApiEndPoints.Employees.GetAll)]
+    [HasPermission(EmployeeManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<GetEmployeeResponse>>>> GetAllEmployeesAsync(CancellationToken token)
     {
         return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(
@@ -15,6 +17,8 @@ public class EmployeesController(ISender sender) : ControllerBase
     }
 
     [HttpGet(ApiEndPoints.Employees.GetAllPaginated)]
+    [HasPermission(EmployeeManagement.Get)]
+    
     public async Task<ActionResult<PaginatedApiResponse<EmployeeDto>>> GetAllEmployeesPaginatedAsync(
         [FromQuery] int pageNumber,
         [FromQuery] int pageSize,
@@ -30,6 +34,7 @@ public class EmployeesController(ISender sender) : ControllerBase
     }
 
     [HttpGet(ApiEndPoints.Employees.Get)]
+    [HasPermission(EmployeeManagement.Get)]
     public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeByIdAsync(
         [FromRoute] int employeeId,
         CancellationToken token)
@@ -42,6 +47,7 @@ public class EmployeesController(ISender sender) : ControllerBase
     }
 
     [HttpPut(ApiEndPoints.Employees.Update)]
+    [HasPermission(EmployeeManagement.Update)]
     public async Task<ActionResult<ApiResponse<UpdateEmployeeDto>>> UpdateEmployeeAsync(
         [FromRoute] int employeeId,
         [FromBody] UpdateEmployeeDto employee,
@@ -53,6 +59,7 @@ public class EmployeesController(ISender sender) : ControllerBase
     }
 
     [HttpDelete(ApiEndPoints.Employees.Delete)]
+    [HasPermission(EmployeeManagement.Delete)]
     public async Task<ActionResult<ApiResponse>> DeleteEmployeeAsync(
         [FromRoute] int employeeId,
         CancellationToken token)

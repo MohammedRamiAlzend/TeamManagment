@@ -4,9 +4,11 @@ namespace TMS.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
     [HttpGet]
+    [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<DepartmentDto>>>> GetAllDepartmentsAsync(CancellationToken token)
     {
         return await sender.Send(new GetAllEntityQuery<Department, DepartmentDto>(
@@ -16,6 +18,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("paginated")]
+    [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<PaginatedApiResponse<DepartmentDto>>> GetAllDepartmentsPaginatedAsync(
         [FromQuery] int pageNumber
         , [FromQuery] int pageSize,
@@ -33,6 +36,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{departmentId:int}")]
+    [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<ApiResponse<DepartmentDto>>> GetDepartmentByIdAsync(
         [FromRoute] int departmentId,
         [FromQuery] string[]? includes,
@@ -45,19 +49,9 @@ public class DepartmentsController(ISender sender) : ControllerBase
     }
 
 
-    [HttpGet("departments/includes")]
-    public ActionResult<IEnumerable<string>> GetDepartmentIncludes()
-    {
-        var includes = new[]
-        {
-            nameof(Department.Employees),
-            nameof(Department.SubDepartments),
-            nameof(Department.TeamLeader)
-        };
-        return Ok(includes);
-    }
 
     [HttpPut("{departmentId:int}")]
+    [HasPermission(DepartmentManagement.Update)]
     public async Task<ActionResult<ApiResponse<UpdateDepartmentDto>>> UpdateDepartmentAsync(
         [FromRoute] int departmentId,
         [FromBody] UpdateDepartmentDto department,
@@ -70,6 +64,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{departmentId:int}")]
+    [HasPermission(DepartmentManagement.Delete)]
     public async Task<ActionResult<ApiResponse>> DeleteDepartmentAsync(
         [FromRoute] int departmentId,
         CancellationToken token)
@@ -78,6 +73,18 @@ public class DepartmentsController(ISender sender) : ControllerBase
     }
 
 
+    [HttpGet("departments/includes")]
+    [AllowAnonymous]
+    public ActionResult<IEnumerable<string>> GetDepartmentIncludes()
+    {
+        var includes = new[]
+        {
+            nameof(Department.Employees),
+            nameof(Department.SubDepartments),
+            nameof(Department.TeamLeader)
+        };
+        return Ok(includes);
+    }
     private static Func<IQueryable<Department>, IIncludableQueryable<Department, object>>? GetIncludes(
         string[]? includeProperties)
     {

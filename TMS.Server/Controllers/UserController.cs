@@ -7,6 +7,7 @@ namespace TMS.Server.Controllers;
 public class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
+    [HasPermission(UserManagement.Register)]
     public async Task<ApiResponse<User>> Register([FromForm] RegisterUserDto request, CancellationToken token)
     {
         return await sender.Send(new RegisterUserCommand(request), token);
@@ -20,6 +21,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpPost("refresh-Token")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<TokenResponseDto>>> RefreshToken(
         RefreshTokenRequestDto request,
         CancellationToken token)
@@ -28,7 +30,7 @@ public class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
-    [HasPermission(AppPermissions.UserManagement.Add)]
+    [HasPermission(UserManagement.Register)]
     public IActionResult AuthenticatedOnlyEndpoint()
     {
         return Ok("You Are Authenticated");

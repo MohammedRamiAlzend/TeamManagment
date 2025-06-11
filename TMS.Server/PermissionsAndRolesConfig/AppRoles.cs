@@ -13,7 +13,7 @@ public static class AppRoles
         Name = "Manager",
         Permissions = new List<string>
         {
-            UserManagement.Get, UserManagement.Add, UserManagement.Update, UserManagement.Delete,
+            UserManagement.Get, UserManagement.Register, UserManagement.Update, UserManagement.Delete,
             RoleManagement.Get, RoleManagement.Update,
             ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update, ProjectManagement.Delete,
             TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
@@ -25,7 +25,7 @@ public static class AppRoles
         Name = "TeamLeader",
         Permissions = new List<string>
         {
-            UserManagement.Get, UserManagement.Add, UserManagement.Update,
+            UserManagement.Get, UserManagement.Register, UserManagement.Update,
             ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update,
             TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
         }

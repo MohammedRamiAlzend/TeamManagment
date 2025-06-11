@@ -8,11 +8,25 @@ public static class AppPermissions
     {
         private const string GetPrefix = nameof(UserManagement);
         public const string Get = $"{GetPrefix}.Get";
+        public const string Register = $"{GetPrefix}.Register";
+        public const string Update = $"{GetPrefix}.Update";
+        public const string Delete = $"{GetPrefix}.Delete";
+    }
+    public static class DepartmentManagement
+    {
+        private const string GetPrefix = nameof(DepartmentManagement);
+        public const string Get = $"{GetPrefix}.Get";
         public const string Add = $"{GetPrefix}.Add";
         public const string Update = $"{GetPrefix}.Update";
         public const string Delete = $"{GetPrefix}.Delete";
     }
-    
+    public static class EmployeeManagement
+    {
+        private const string GetPrefix = nameof(EmployeeManagement);
+        public const string Get = $"{GetPrefix}.Get";
+        public const string Update = $"{GetPrefix}.Update";
+        public const string Delete = $"{GetPrefix}.Delete";
+    }
     public static class RoleManagement
     {
         private const string GetPrefix = nameof(RoleManagement);
