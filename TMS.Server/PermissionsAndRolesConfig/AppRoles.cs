@@ -11,47 +11,47 @@ public static class AppRoles
     public static readonly RoleDefinition Manager = new()
     {
         Name = "Manager",
-        Permissions = new List<string>
-        {
+        Permissions =
+        [
             UserManagement.Get, UserManagement.Register, UserManagement.Update, UserManagement.Delete,
             RoleManagement.Get, RoleManagement.Update,
             ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update, ProjectManagement.Delete,
             TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
-        }
+        ]
     };
     
     public static readonly RoleDefinition TeamLeader = new()
     {
         Name = "TeamLeader",
-        Permissions = new List<string>
-        {
+        Permissions =
+        [
             UserManagement.Get, UserManagement.Register, UserManagement.Update,
             ProjectManagement.Get, ProjectManagement.Add, ProjectManagement.Update,
             TaskManagement.Get, TaskManagement.Get, TaskManagement.Update, TaskManagement.Delete
-        }
+        ]
     };
 
     public static readonly RoleDefinition Employee = new()
     {
         Name = "Employee",
-        Permissions = new List<string>
-        {
+        Permissions =
+        [
             UserManagement.Get,
             ProjectManagement.Get,
             TaskManagement.Get, TaskManagement.Update,
             UserManagement.Delete
-        }
+        ]
     };
     public static readonly RoleDefinition Observer = new()
     {
         Name = "Observer",
-        Permissions = new List<string>
-        {
+        Permissions =
+        [
             UserManagement.Get,
             ProjectManagement.Get,
             TaskManagement.Get, TaskManagement.Update,
             UserManagement.Delete
-        }
+        ]
     };
     
     public static IEnumerable<RoleDefinition> GetAllRoles()
