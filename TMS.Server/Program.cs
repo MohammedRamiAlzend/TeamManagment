@@ -1,7 +1,3 @@
-using Newtonsoft.Json;
-using TMS.Server.Helpers;
-using TMS.Server.PermissionsAndRolesConfig;
-
 var builder = WebApplication.CreateBuilder(args);
 
 

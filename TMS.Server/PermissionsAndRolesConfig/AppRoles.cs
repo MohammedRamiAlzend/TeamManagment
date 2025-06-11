@@ -1,6 +1,3 @@
-using System.Reflection;
-using static TMS.Server.PermissionsAndRolesConfig.AppPermissions; 
-
 namespace TMS.Server.PermissionsAndRolesConfig;
 
 public static class AppRoles

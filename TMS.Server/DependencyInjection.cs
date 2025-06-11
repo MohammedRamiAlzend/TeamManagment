@@ -1,8 +1,4 @@
-﻿using TMS.Application;
-using TMS.Application.Extensions;
-using TMS.Infrastructure;
-
-namespace TMS.Server;
+﻿namespace TMS.Server;
 
 public static class DependencyInjection
 {
