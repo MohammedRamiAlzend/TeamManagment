@@ -1,84 +1,74 @@
 {
-  "Version": 4,
+  "Version": 5,
   "Roles": [
     {
       "Name": "Admin",
       "Permissions": [
         {
-          "Name": "ProjectManagement.AddProject",
-          "Description": ""
+          "Name": "DepartmentManagement.Add"
         },
         {
-          "Name": "ProjectManagement.DeleteProject",
-          "Description": ""
+          "Name": "DepartmentManagement.Delete"
         },
         {
-          "Name": "ProjectManagement.GetProject",
-          "Description": ""
+          "Name": "DepartmentManagement.Get"
         },
         {
-          "Name": "ProjectManagement.UpdateProject",
-          "Description": ""
+          "Name": "DepartmentManagement.Update"
         },
         {
-          "Name": "RoleManagement.AddPermission",
-          "Description": ""
+          "Name": "EmployeeManagement.Delete"
         },
         {
-          "Name": "RoleManagement.GetPermission",
-          "Description": ""
+          "Name": "EmployeeManagement.Get"
         },
         {
-          "Name": "RoleManagement.GetRole",
-          "Description": ""
+          "Name": "EmployeeManagement.Update"
         },
         {
-          "Name": "RoleManagement.RemovePermission",
-          "Description": ""
+          "Name": "ProjectManagement.Add"
         },
         {
-          "Name": "RoleManagement.UpdatePermission",
-          "Description": ""
+          "Name": "ProjectManagement.Delete"
         },
         {
-          "Name": "RoleManagement.UpdateRole",
-          "Description": ""
+          "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "TaskManagement.AddTask",
-          "Description": ""
+          "Name": "ProjectManagement.Update"
         },
         {
-          "Name": "TaskManagement.DeleteTask",
-          "Description": ""
+          "Name": "RoleManagement.Add"
         },
         {
-          "Name": "TaskManagement.GetTask",
-          "Description": ""
+          "Name": "RoleManagement.Get"
         },
         {
-          "Name": "TaskManagement.UpdateTask",
-          "Description": ""
+          "Name": "RoleManagement.Update"
         },
         {
-          "Name": "UserManagement.AddUser",
-          "Description": ""
+          "Name": "TaskManagement.Add"
         },
         {
-          "Name": "UserManagement.DeleteUser",
-          "Description": ""
+          "Name": "TaskManagement.Delete"
         },
         {
-          "Name": "UserManagement.DeleteUser2",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "UserManagement.GetUser",
-          "Description": ""
+          "Name": "TaskManagement.Update"
         },
         {
-          "Name": "UserManagement.UpdateUser",
-          "Description": ""
+          "Name": "UserManagement.Delete"
+        },
+        {
+          "Name": "UserManagement.Get"
+        },
+        {
+          "Name": "UserManagement.Register"
+        },
+        {
+          "Name": "UserManagement.Update"
         }
       ]
     },
@@ -86,24 +76,19 @@
       "Name": "Employee",
       "Permissions": [
         {
-          "Name": "ProjectManagement.GetProject",
-          "Description": ""
+          "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "TaskManagement.GetTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.UpdateTask",
-          "Description": ""
+          "Name": "TaskManagement.Update"
         },
         {
-          "Name": "UserManagement.DeleteUser",
-          "Description": ""
+          "Name": "UserManagement.Delete"
         },
         {
-          "Name": "UserManagement.GetUser",
-          "Description": ""
+          "Name": "UserManagement.Get"
         }
       ]
     },
@@ -111,60 +96,46 @@
       "Name": "Manager",
       "Permissions": [
         {
-          "Name": "ProjectManagement.AddProject",
-          "Description": ""
+          "Name": "ProjectManagement.Add"
         },
         {
-          "Name": "ProjectManagement.DeleteProject",
-          "Description": ""
+          "Name": "ProjectManagement.Delete"
         },
         {
-          "Name": "ProjectManagement.GetProject",
-          "Description": ""
+          "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "ProjectManagement.UpdateProject",
-          "Description": ""
+          "Name": "ProjectManagement.Update"
         },
         {
-          "Name": "RoleManagement.GetRole",
-          "Description": ""
+          "Name": "RoleManagement.Get"
         },
         {
-          "Name": "RoleManagement.UpdateRole",
-          "Description": ""
+          "Name": "RoleManagement.Update"
         },
         {
-          "Name": "TaskManagement.AddTask",
-          "Description": ""
+          "Name": "TaskManagement.Delete"
         },
         {
-          "Name": "TaskManagement.DeleteTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.GetTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.UpdateTask",
-          "Description": ""
+          "Name": "TaskManagement.Update"
         },
         {
-          "Name": "UserManagement.AddUser",
-          "Description": ""
+          "Name": "UserManagement.Delete"
         },
         {
-          "Name": "UserManagement.DeleteUser",
-          "Description": ""
+          "Name": "UserManagement.Get"
         },
         {
-          "Name": "UserManagement.GetUser",
-          "Description": ""
+          "Name": "UserManagement.Register"
         },
         {
-          "Name": "UserManagement.UpdateUser",
-          "Description": ""
+          "Name": "UserManagement.Update"
         }
       ]
     },
@@ -172,24 +143,19 @@
       "Name": "Observer",
       "Permissions": [
         {
-          "Name": "ProjectManagement.GetProject",
-          "Description": ""
+          "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "TaskManagement.GetTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.UpdateTask",
-          "Description": ""
+          "Name": "TaskManagement.Update"
         },
         {
-          "Name": "UserManagement.DeleteUser",
-          "Description": ""
+          "Name": "UserManagement.Delete"
         },
         {
-          "Name": "UserManagement.GetUser",
-          "Description": ""
+          "Name": "UserManagement.Get"
         }
       ]
     },
@@ -197,124 +163,104 @@
       "Name": "TeamLeader",
       "Permissions": [
         {
-          "Name": "ProjectManagement.AddProject",
-          "Description": ""
+          "Name": "ProjectManagement.Add"
         },
         {
-          "Name": "ProjectManagement.GetProject",
-          "Description": ""
+          "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "ProjectManagement.UpdateProject",
-          "Description": ""
+          "Name": "ProjectManagement.Update"
         },
         {
-          "Name": "TaskManagement.AddTask",
-          "Description": ""
+          "Name": "TaskManagement.Delete"
         },
         {
-          "Name": "TaskManagement.DeleteTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.GetTask",
-          "Description": ""
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.UpdateTask",
-          "Description": ""
+          "Name": "TaskManagement.Update"
         },
         {
-          "Name": "UserManagement.AddUser",
-          "Description": ""
+          "Name": "UserManagement.Get"
         },
         {
-          "Name": "UserManagement.GetUser",
-          "Description": ""
+          "Name": "UserManagement.Register"
         },
         {
-          "Name": "UserManagement.UpdateUser",
-          "Description": ""
+          "Name": "UserManagement.Update"
         }
       ]
     }
   ],
   "Permissions": [
     {
-      "Name": "ProjectManagement.AddProject",
-      "Description": ""
+      "Name": "DepartmentManagement.Add"
     },
     {
-      "Name": "ProjectManagement.DeleteProject",
-      "Description": ""
+      "Name": "DepartmentManagement.Delete"
     },
     {
-      "Name": "ProjectManagement.GetProject",
-      "Description": ""
+      "Name": "DepartmentManagement.Get"
     },
     {
-      "Name": "ProjectManagement.UpdateProject",
-      "Description": ""
+      "Name": "DepartmentManagement.Update"
     },
     {
-      "Name": "RoleManagement.AddPermission",
-      "Description": ""
+      "Name": "EmployeeManagement.Delete"
     },
     {
-      "Name": "RoleManagement.GetPermission",
-      "Description": ""
+      "Name": "EmployeeManagement.Get"
     },
     {
-      "Name": "RoleManagement.GetRole",
-      "Description": ""
+      "Name": "EmployeeManagement.Update"
     },
     {
-      "Name": "RoleManagement.RemovePermission",
-      "Description": ""
+      "Name": "ProjectManagement.Add"
     },
     {
-      "Name": "RoleManagement.UpdatePermission",
-      "Description": ""
+      "Name": "ProjectManagement.Delete"
     },
     {
-      "Name": "RoleManagement.UpdateRole",
-      "Description": ""
+      "Name": "ProjectManagement.Get"
     },
     {
-      "Name": "TaskManagement.AddTask",
-      "Description": ""
+      "Name": "ProjectManagement.Update"
     },
     {
-      "Name": "TaskManagement.DeleteTask",
-      "Description": ""
+      "Name": "RoleManagement.Add"
     },
     {
-      "Name": "TaskManagement.GetTask",
-      "Description": ""
+      "Name": "RoleManagement.Get"
     },
     {
-      "Name": "TaskManagement.UpdateTask",
-      "Description": ""
+      "Name": "RoleManagement.Update"
     },
     {
-      "Name": "UserManagement.AddUser",
-      "Description": ""
+      "Name": "TaskManagement.Add"
     },
     {
-      "Name": "UserManagement.DeleteUser",
-      "Description": ""
+      "Name": "TaskManagement.Delete"
     },
     {
-      "Name": "UserManagement.DeleteUser2",
-      "Description": ""
+      "Name": "TaskManagement.Get"
     },
     {
-      "Name": "UserManagement.GetUser",
-      "Description": ""
+      "Name": "TaskManagement.Update"
     },
     {
-      "Name": "UserManagement.UpdateUser",
-      "Description": ""
+      "Name": "UserManagement.Delete"
+    },
+    {
+      "Name": "UserManagement.Get"
+    },
+    {
+      "Name": "UserManagement.Register"
+    },
+    {
+      "Name": "UserManagement.Update"
     }
   ]
 }

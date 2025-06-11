@@ -1,11 +1,12 @@
+
 namespace TMS.Server.Controllers;
 
 [ApiController]
-[Route($"{ApiEndPoints.ApiBase}/[controller]")]
+[Route($"{ApiBase}/[controller]")]
 [Authorize]
 public class EmployeesController(ISender sender) : ControllerBase
 {
-    [HttpGet(ApiEndPoints.Employees.GetAll)]
+    [HttpGet(EmployeesEndPoint.GetAll)]
     [HasPermission(EmployeeManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<GetEmployeeResponse>>>> GetAllEmployeesAsync(CancellationToken token)
     {
@@ -16,7 +17,7 @@ public class EmployeesController(ISender sender) : ControllerBase
                 .ThenInclude(r=>r.Roles)), token);
     }
 
-    [HttpGet(ApiEndPoints.Employees.GetAllPaginated)]
+    [HttpGet(EmployeesEndPoint.GetAllPaginated)]
     [HasPermission(EmployeeManagement.Get)]
     
     public async Task<ActionResult<PaginatedApiResponse<EmployeeDto>>> GetAllEmployeesPaginatedAsync(
@@ -33,7 +34,7 @@ public class EmployeesController(ISender sender) : ControllerBase
                     .ThenInclude(s => s.SubDepartments)), token);
     }
 
-    [HttpGet(ApiEndPoints.Employees.Get)]
+    [HttpGet(EmployeesEndPoint.Get)]
     [HasPermission(EmployeeManagement.Get)]
     public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeByIdAsync(
         [FromRoute] int employeeId,
@@ -46,7 +47,7 @@ public class EmployeesController(ISender sender) : ControllerBase
                 .ThenInclude(s => s.SubDepartments)), token);
     }
 
-    [HttpPut(ApiEndPoints.Employees.Update)]
+    [HttpPut(EmployeesEndPoint.Update)]
     [HasPermission(EmployeeManagement.Update)]
     public async Task<ActionResult<ApiResponse<UpdateEmployeeDto>>> UpdateEmployeeAsync(
         [FromRoute] int employeeId,
@@ -58,7 +59,7 @@ public class EmployeesController(ISender sender) : ControllerBase
         return await sender.Send(new UpdateEntityCommand<Employee, UpdateEmployeeDto>(employeeId, employee), token);
     }
 
-    [HttpDelete(ApiEndPoints.Employees.Delete)]
+    [HttpDelete(EmployeesEndPoint.Delete)]
     [HasPermission(EmployeeManagement.Delete)]
     public async Task<ActionResult<ApiResponse>> DeleteEmployeeAsync(
         [FromRoute] int employeeId,

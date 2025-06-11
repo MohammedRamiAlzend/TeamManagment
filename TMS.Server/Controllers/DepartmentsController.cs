@@ -7,7 +7,7 @@ namespace TMS.Server.Controllers;
 [Authorize]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet(DepartmentsEndPoint.GetAll)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<DepartmentDto>>>> GetAllDepartmentsAsync(CancellationToken token)
     {
@@ -17,7 +17,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
                 .Include(i3 => i3.TeamLeader)), token);
     }
 
-    [HttpGet("paginated")]
+    [HttpGet(DepartmentsEndPoint.GetAllPaginated)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<PaginatedApiResponse<DepartmentDto>>> GetAllDepartmentsPaginatedAsync(
         [FromQuery] int pageNumber
@@ -35,7 +35,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
         ), token);
     }
 
-    [HttpGet("{departmentId:int}")]
+    [HttpGet(DepartmentsEndPoint.Get)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<ApiResponse<DepartmentDto>>> GetDepartmentByIdAsync(
         [FromRoute] int departmentId,
@@ -50,7 +50,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
 
 
 
-    [HttpPut("{departmentId:int}")]
+    [HttpPut(DepartmentsEndPoint.Update)]
     [HasPermission(DepartmentManagement.Update)]
     public async Task<ActionResult<ApiResponse<UpdateDepartmentDto>>> UpdateDepartmentAsync(
         [FromRoute] int departmentId,
@@ -63,7 +63,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
             token);
     }
 
-    [HttpDelete("{departmentId:int}")]
+    [HttpDelete(DepartmentsEndPoint.Delete)]
     [HasPermission(DepartmentManagement.Delete)]
     public async Task<ActionResult<ApiResponse>> DeleteDepartmentAsync(
         [FromRoute] int departmentId,
