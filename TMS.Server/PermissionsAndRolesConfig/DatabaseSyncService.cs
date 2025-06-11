@@ -61,28 +61,25 @@ public class DatabaseSyncService : IHostedService
     private async Task SyncPermissionsAsync(AppDbContext context, List<PermissionDetailModel> permissionsFromFile)
     {
         var dbPermissions = await context.Permissions.ToDictionaryAsync(p => p.Name);
-        var permissionsFromFileSet = permissionsFromFile.Select(p => p.Name).ToHashSet();
+        var permissionsFromFileSet = permissionsFromFile.ToDictionary(p => p.Name);
 
         foreach (var permFromFile in permissionsFromFile)
         {
-            if (dbPermissions.TryGetValue(permFromFile.Name, out var dbPerm))
+            if (dbPermissions.TryGetValue(permFromFile.Name, out _))
             {
-                if (dbPerm.Description != permFromFile.Description)
-                {
-                    dbPerm.Description = permFromFile.Description;
-                }
             }
             else
             {
-                context.Permissions.Add(new Permission { Name = permFromFile.Name, Description = permFromFile.Description });
+                context.Permissions.Add(new Permission { Name = permFromFile.Name });
             }
         }
 
-        var permissionsToRemove = dbPermissions.Values.Where(p => !permissionsFromFileSet.Contains(p.Name));
+        var permissionsToRemove = dbPermissions.Values.Where(p => !permissionsFromFileSet.ContainsKey(p.Name));
         context.Permissions.RemoveRange(permissionsToRemove);
 
         await context.SaveChangesAsync();
     }
+
 
     private async Task SyncRolesAsync(AppDbContext context, List<RoleModel> rolesFromFile)
     {

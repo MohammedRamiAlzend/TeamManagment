@@ -8,7 +8,6 @@ public static class AppPermissions
         public const string AddUser = "UserManagement.AddUser";
         public const string UpdateUser = "UserManagement.UpdateUser";
         public const string DeleteUser = "UserManagement.DeleteUser";
-        public const string DeleteUser2 = "UserManagement.DeleteUser2";
     }
     public static class RoleManagement
     {
@@ -79,9 +78,6 @@ public class PermissionDetailModel
 {
     [JsonPropertyName("Name")]
     public string Name { get; set; }
-
-    [JsonPropertyName("Description")]
-    public string Description { get; set; }
 }
 
 

@@ -71,7 +71,7 @@ public static class DataSynchronizer
             }
             else
             {
-                updatedPermissions.Add(new PermissionDetailModel { Name = permissionName, Description = "" });
+                updatedPermissions.Add(new PermissionDetailModel { Name = permissionName });
                 newPermissionsAdded = true;
             }
         }
