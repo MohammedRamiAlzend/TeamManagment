@@ -1,5 +1,3 @@
-using TMS.Application.CQRS.Commands.AuthCommands;
-
 namespace TMS.Application.Handlers.AuthHandlers;
 
 public class RefreshTokenCommandHandler(IAuthService authService)

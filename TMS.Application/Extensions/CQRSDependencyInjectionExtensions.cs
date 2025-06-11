@@ -1,8 +1,3 @@
-using TMS.Application.CQRS.GenericCommands;
-using TMS.Application.CQRS.GenericQueries;
-using TMS.Application.Handlers.GenericCommandHandlers;
-using TMS.Application.Handlers.GenericQueryHandlers;
-
 namespace TMS.Application.Extensions;
 
 public static class CqrsDependencyInjectionExtensions

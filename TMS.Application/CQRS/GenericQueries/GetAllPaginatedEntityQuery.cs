@@ -1,6 +1,3 @@
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
-
 namespace TMS.Application.CQRS.GenericQueries;
 
 public record GetAllPaginatedEntityQuery<TEntity, TEntityDto>(

@@ -1,6 +1,4 @@
-﻿using TMS.Application.CQRS.GenericCommands;
-
-namespace TMS.Application.Handlers.GenericCommandHandlers;
+﻿namespace TMS.Application.Handlers.GenericCommandHandlers;
 
 public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,
