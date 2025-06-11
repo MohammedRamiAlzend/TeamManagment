@@ -1,0 +1,266 @@
+{
+  "Version": 5,
+  "Roles": [
+    {
+      "Name": "Admin",
+      "Permissions": [
+        {
+          "Name": "DepartmentManagement.Add"
+        },
+        {
+          "Name": "DepartmentManagement.Delete"
+        },
+        {
+          "Name": "DepartmentManagement.Get"
+        },
+        {
+          "Name": "DepartmentManagement.Update"
+        },
+        {
+          "Name": "EmployeeManagement.Delete"
+        },
+        {
+          "Name": "EmployeeManagement.Get"
+        },
+        {
+          "Name": "EmployeeManagement.Update"
+        },
+        {
+          "Name": "ProjectManagement.Add"
+        },
+        {
+          "Name": "ProjectManagement.Delete"
+        },
+        {
+          "Name": "ProjectManagement.Get"
+        },
+        {
+          "Name": "ProjectManagement.Update"
+        },
+        {
+          "Name": "RoleManagement.Add"
+        },
+        {
+          "Name": "RoleManagement.Get"
+        },
+        {
+          "Name": "RoleManagement.Update"
+        },
+        {
+          "Name": "TaskManagement.Add"
+        },
+        {
+          "Name": "TaskManagement.Delete"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Update"
+        },
+        {
+          "Name": "UserManagement.Delete"
+        },
+        {
+          "Name": "UserManagement.Get"
+        },
+        {
+          "Name": "UserManagement.Register"
+        },
+        {
+          "Name": "UserManagement.Update"
+        }
+      ]
+    },
+    {
+      "Name": "Employee",
+      "Permissions": [
+        {
+          "Name": "ProjectManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Update"
+        },
+        {
+          "Name": "UserManagement.Delete"
+        },
+        {
+          "Name": "UserManagement.Get"
+        }
+      ]
+    },
+    {
+      "Name": "Manager",
+      "Permissions": [
+        {
+          "Name": "ProjectManagement.Add"
+        },
+        {
+          "Name": "ProjectManagement.Delete"
+        },
+        {
+          "Name": "ProjectManagement.Get"
+        },
+        {
+          "Name": "ProjectManagement.Update"
+        },
+        {
+          "Name": "RoleManagement.Get"
+        },
+        {
+          "Name": "RoleManagement.Update"
+        },
+        {
+          "Name": "TaskManagement.Delete"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Update"
+        },
+        {
+          "Name": "UserManagement.Delete"
+        },
+        {
+          "Name": "UserManagement.Get"
+        },
+        {
+          "Name": "UserManagement.Register"
+        },
+        {
+          "Name": "UserManagement.Update"
+        }
+      ]
+    },
+    {
+      "Name": "Observer",
+      "Permissions": [
+        {
+          "Name": "ProjectManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Update"
+        },
+        {
+          "Name": "UserManagement.Delete"
+        },
+        {
+          "Name": "UserManagement.Get"
+        }
+      ]
+    },
+    {
+      "Name": "TeamLeader",
+      "Permissions": [
+        {
+          "Name": "ProjectManagement.Add"
+        },
+        {
+          "Name": "ProjectManagement.Get"
+        },
+        {
+          "Name": "ProjectManagement.Update"
+        },
+        {
+          "Name": "TaskManagement.Delete"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Get"
+        },
+        {
+          "Name": "TaskManagement.Update"
+        },
+        {
+          "Name": "UserManagement.Get"
+        },
+        {
+          "Name": "UserManagement.Register"
+        },
+        {
+          "Name": "UserManagement.Update"
+        }
+      ]
+    }
+  ],
+  "Permissions": [
+    {
+      "Name": "DepartmentManagement.Add"
+    },
+    {
+      "Name": "DepartmentManagement.Delete"
+    },
+    {
+      "Name": "DepartmentManagement.Get"
+    },
+    {
+      "Name": "DepartmentManagement.Update"
+    },
+    {
+      "Name": "EmployeeManagement.Delete"
+    },
+    {
+      "Name": "EmployeeManagement.Get"
+    },
+    {
+      "Name": "EmployeeManagement.Update"
+    },
+    {
+      "Name": "ProjectManagement.Add"
+    },
+    {
+      "Name": "ProjectManagement.Delete"
+    },
+    {
+      "Name": "ProjectManagement.Get"
+    },
+    {
+      "Name": "ProjectManagement.Update"
+    },
+    {
+      "Name": "RoleManagement.Add"
+    },
+    {
+      "Name": "RoleManagement.Get"
+    },
+    {
+      "Name": "RoleManagement.Update"
+    },
+    {
+      "Name": "TaskManagement.Add"
+    },
+    {
+      "Name": "TaskManagement.Delete"
+    },
+    {
+      "Name": "TaskManagement.Get"
+    },
+    {
+      "Name": "TaskManagement.Update"
+    },
+    {
+      "Name": "UserManagement.Delete"
+    },
+    {
+      "Name": "UserManagement.Get"
+    },
+    {
+      "Name": "UserManagement.Register"
+    },
+    {
+      "Name": "UserManagement.Update"
+    }
+  ]
+}

@@ -6,4 +6,3 @@ public enum PointType
     Penalty,
     Bonus
 }
-

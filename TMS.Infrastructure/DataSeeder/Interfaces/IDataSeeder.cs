@@ -1,5 +1,3 @@
-using TMS.Infrastructure.Data.DbContextTools;
-
 namespace TMS.Infrastructure.DataSeeder.Interfaces;
 
 public interface IDataSeeder
@@ -13,5 +11,5 @@ public enum EnvironmentEnum
 {
     Development,
     Production,
-    All,
+    All
 }

@@ -1,11 +1,9 @@
-﻿using TMS.Core.MediatR.Interfaces;
-
-namespace TMS.Core.MediatR;
+﻿namespace TMS.Core.MediatR;
 
 public class Sender(IServiceProvider serviceProvider) : ISender
 {
-
-    public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
+    public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 

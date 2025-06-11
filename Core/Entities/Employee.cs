@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TMS.Core.Entities;
+﻿namespace TMS.Core.Entities;
 
 public class Employee : Entity
 {
@@ -12,11 +10,12 @@ public class Employee : Entity
     public string Phone { get; set; }
     public string Email { get; set; }
     
-    [JsonIgnore]
-    public User User { get; set; }
+    public string ImagePath { get; set; } = string.Empty;
+
+    [JsonIgnore] public User User { get; set; }
+
     public ICollection<Department> Departments { get; set; }
     public ICollection<Project> Projects { get; set; }
     public ICollection<WorkTask> CreatedTasks { get; set; }
     public ICollection<WorkTask> AssignedTasks { get; set; }
-
 }

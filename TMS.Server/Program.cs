@@ -1,8 +1,3 @@
-﻿using TMS.Infrastructure.AppConfigurations;
-using TMS.Infrastructure.DataSeeder;
-using TMS.Server;
-using Newtonsoft.Json;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // ✅ إضافة سياسة CORS
@@ -23,10 +18,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.Services.AddOpenApi();
 
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddHostedService<DatabaseSyncService>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
 
-builder.Services.AddAppDi(connectionString, builder.Configuration);
+builder.Services.AddAppDependencyInjection(connectionString, builder.Configuration);
 
 var app = builder.Build();
 
@@ -36,26 +33,12 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-PermissionSettings.LoadPermissionsConfig();
-
-using (var scope = app.Services.CreateScope())
-{
-    var runner = scope.ServiceProvider.GetRequiredService<SeederRunner>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        await runner.RunSeedersAsync();
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "An error occurred during database seeding.");
-    }
-}
+await app.InitializeDatabaseAsync();
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowReactApp"); // ✅ تفعيل سياسة CORS
+// ✅ تفعيل سياسة CORS
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 app.UseAuthorization();

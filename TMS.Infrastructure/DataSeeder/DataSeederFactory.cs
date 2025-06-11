@@ -1,18 +1,16 @@
-using Microsoft.AspNetCore.Hosting;
-using TMS.Infrastructure.DataSeeder.Interfaces;
-
 namespace TMS.Infrastructure.DataSeeder;
 
 public class DataSeederFactory
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly string _currentEnvironment;
+    private readonly IServiceProvider _serviceProvider;
 
     public DataSeederFactory(IServiceProvider serviceProvider, IWebHostEnvironment environment)
     {
         _serviceProvider = serviceProvider;
         _currentEnvironment = environment.EnvironmentName;
     }
+
     public IEnumerable<IDataSeeder> GetSeeders()
     {
         var seeders = typeof(IDataSeeder).Assembly

@@ -1,19 +1,14 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using TMS.Infrastructure.Data.DbContextTools;
-
 namespace TMS.Infrastructure.DataSeeder;
 
-public class SeederRunner(IServiceProvider serviceProvider,ILogger<SeederRunner> _logger, DataSeederFactory factory)
+public class SeederRunner(IServiceProvider serviceProvider, ILogger<SeederRunner> _logger, DataSeederFactory factory)
 {
-
     public async Task RunSeedersAsync()
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         // await using var transaction = await context.Database.BeginTransactionAsync();
-        
+
         try
         {
             var seeders = factory.GetSeeders();
@@ -21,8 +16,8 @@ public class SeederRunner(IServiceProvider serviceProvider,ILogger<SeederRunner>
             foreach (var seeder in seeders)
             {
                 _logger.LogInformation("Running seeder: {SeederName}", seeder.GetType().Name);
-               var result =  await seeder.SeedAsync(context);
-               ;
+                var result = await seeder.SeedAsync(context);
+                ;
             }
 
             // await transaction.CommitAsync();
@@ -32,7 +27,6 @@ public class SeederRunner(IServiceProvider serviceProvider,ILogger<SeederRunner>
         {
             // await transaction.RollbackAsync();
             _logger.LogError(ex, "Seeding failed. Transaction rolled back.");
-
         }
     }
 }
