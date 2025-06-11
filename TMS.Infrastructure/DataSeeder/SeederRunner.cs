@@ -1,7 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using TMS.Infrastructure.Data.DbContextTools;
-
 namespace TMS.Infrastructure.DataSeeder;
 
 public class SeederRunner(IServiceProvider serviceProvider, ILogger<SeederRunner> _logger, DataSeederFactory factory)

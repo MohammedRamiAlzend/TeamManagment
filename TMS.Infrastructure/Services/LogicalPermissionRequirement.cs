@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace TMS.Infrastructure.Services;
 
-public class LogicalPermissionRequirement(LogicalOperator op, string[] permissions) 
+public class LogicalPermissionRequirement(LogicalOperator op, string[] permissions)
     : IAuthorizationRequirement
 {
     public LogicalOperator Operator { get; } = op;

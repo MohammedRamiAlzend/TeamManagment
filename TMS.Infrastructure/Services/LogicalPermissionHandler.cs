@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace TMS.Infrastructure.Services;
 
 public class LogicalPermissionHandler : AuthorizationHandler<LogicalPermissionRequirement>
@@ -8,26 +6,17 @@ public class LogicalPermissionHandler : AuthorizationHandler<LogicalPermissionRe
         AuthorizationHandlerContext context,
         LogicalPermissionRequirement requirement)
     {
-        var userPermissions = context.User.FindAll("permission").Select(c => c.Value);
+        var userPermissions = context.User.FindAll(AuthHelper.PermissionClaimName).Select(c => c.Value);
 
         if (requirement.Operator == LogicalOperator.And)
         {
-            // If ALL required permissions are present in the user's claims, succeed.
-            if (requirement.Permissions.All(p => userPermissions.Contains(p)))
-            {
-                context.Succeed(requirement);
-            }
+            if (requirement.Permissions.All(p => userPermissions.Contains(p))) context.Succeed(requirement);
         }
-        else // LogicalOperator.Or
+        else
         {
-            // If ANY of the required permissions are present, succeed.
-            if (requirement.Permissions.Any(p => userPermissions.Contains(p)))
-            {
-                context.Succeed(requirement);
-            }
+            if (requirement.Permissions.Any(p => userPermissions.Contains(p))) context.Succeed(requirement);
         }
 
         return Task.CompletedTask;
     }
 }
-

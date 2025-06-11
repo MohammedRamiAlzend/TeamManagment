@@ -1,6 +1,3 @@
-using TMS.Core.CommunicationModels;
-using TMS.Infrastructure.Data.DbContextTools;
-
 namespace TMS.Infrastructure.DataSeeder.Interfaces;
 
 public interface IDataSeeder

@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using TMS.Core.Entities;
-using TMS.Infrastructure.Data.DbContextTools;
-
-namespace TMS.Infrastructure.Repositories;
+﻿namespace TMS.Infrastructure.Repositories;
 
 public class EntityCommiter(AppDbContext appDbContext, ILogger<EntityCommiter> logger) : IEntityCommiter
 {

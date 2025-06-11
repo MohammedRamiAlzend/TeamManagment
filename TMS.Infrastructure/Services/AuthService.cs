@@ -1,15 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using TMS.Core.CommunicationModels;
-using TMS.Core.Entities;
-using TMS.Core.Entities.Models;
-using TMS.Infrastructure.Data.DbContextTools;
-
 namespace TMS.Infrastructure.Services;
 
 public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfiguration configuration) : IAuthService
@@ -136,21 +124,20 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
 
     private static List<Claim> BuildRolesAndPermissionsClaimsList(User user)
     {
-        var roles = 
+        var roles =
             user.Roles?.Select(x => x.Name).Distinct().ToList() ?? [];
 
-        var permissions = 
-            user.Roles?.SelectMany(x => x.Permissions).
-                Select(x => x.Name).Distinct().ToList() 
+        var permissions =
+            user.Roles?.SelectMany(x => x.Permissions).Select(x => x.Name).Distinct().ToList()
             ?? [];
 
-        var claims = new List<Claim>()
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString())
         };
-        
+
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-        claims.AddRange(permissions.Select(permission => new Claim("permission", permission)));
+        claims.AddRange(permissions.Select(permission => new Claim(AuthHelper.PermissionClaimName, permission)));
 
         return claims;
     }

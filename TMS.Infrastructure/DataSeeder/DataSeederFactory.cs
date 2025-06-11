@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using TMS.Infrastructure.DataSeeder.Interfaces;
-
 namespace TMS.Infrastructure.DataSeeder;
 
 public class DataSeederFactory

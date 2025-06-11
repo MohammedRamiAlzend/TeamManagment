@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using TMS.Core.CommunicationModels;
-using TMS.Core.Entities;
-using TMS.Infrastructure.Data.DbContextTools;
-using TMS.Infrastructure.DataSeeder.Interfaces;
-
 namespace TMS.Infrastructure.DataSeeder.Seeders;
 
 public class UsersSeeder : IDataSeeder

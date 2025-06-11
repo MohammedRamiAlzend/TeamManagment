@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using TMS.Core.Entities;
-
-namespace TMS.Infrastructure.Data.DbContextTools;
+﻿namespace TMS.Infrastructure.Data.DbContextTools;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {

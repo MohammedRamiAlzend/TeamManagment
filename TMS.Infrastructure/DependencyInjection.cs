@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using TMS.Infrastructure.Data.DbContextTools;
-using TMS.Infrastructure.DataSeeder;
-using TMS.Infrastructure.Repositories;
-using TMS.Infrastructure.Services;
-
-namespace TMS.Infrastructure;
+﻿namespace TMS.Infrastructure;
 
 public static class DependencyInjection
 {

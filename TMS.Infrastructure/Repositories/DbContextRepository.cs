@@ -1,9 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
-using TMS.Core.CommunicationModels;
-
-namespace TMS.Infrastructure.Repositories;
+﻿namespace TMS.Infrastructure.Repositories;
 
 public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContextRepository<T>
     where T : Entity
@@ -136,10 +131,10 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         return await ExecuteOperationAsync(
             async () =>
             {
-                dbSet.Remove((T)getEntity.Data);
+                dbSet.Remove(getEntity.Data);
                 return DbRequest.Success();
             },
-            $"Entity of type {typeof(T).Name} with ID {((T)getEntity.Data).Id} has been deleted.",
+            $"Entity of type {typeof(T).Name} with ID {getEntity.Data.Id} has been deleted.",
             $"Failed to delete entity of type {typeof(T).Name}."
         );
     }
