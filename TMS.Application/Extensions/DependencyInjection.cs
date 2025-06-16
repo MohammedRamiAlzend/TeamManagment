@@ -7,6 +7,7 @@ public static class DependencyInjection
         // Employee Registration
         services.AddEntityAdditionRegistration<Employee, CreateEmployeeDto>();
         services.AddEntityUpdationRegistration<Employee, UpdateEmployeeDto>();
+        services.AddEntityDeletionRegistration<Employee>();
         services.AddEntityGetAllQueryRegistration<Employee, GetEmployeeResponse>();
         services.AddEntityGetQueryRegistration<Employee, GetEmployeeResponse>();
         services.AddEntityGetAllPaginatedQueryRegistration<Employee, GetEmployeeResponse>();

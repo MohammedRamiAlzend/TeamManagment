@@ -53,10 +53,9 @@ public static class CqrsDependencyInjectionExtensions
                 GetAllPaginatedEntityQueryHandler<TEntity, TDto>>();
     }
 
-    public static void AddEntityDeletionRegistration<TEntity, TDto>(
+    public static void AddEntityDeletionRegistration<TEntity>(
         this IServiceCollection services)
         where TEntity : Entity
-        where TDto : IDto
     {
         services.AddRequestHandler<DeleteEntityCommand<TEntity>, ApiResponse, DeleteEntityCommandHandler<TEntity>>();
     }
