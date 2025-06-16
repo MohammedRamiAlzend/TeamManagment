@@ -2,9 +2,6 @@
 
 public class WorkTask : Entity
 {
-    //Should be unique
-    //TODO:make an interceptor and check if the type then generate it and
-    //save it in database
     public Guid TaskUniqueIdentifier { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }

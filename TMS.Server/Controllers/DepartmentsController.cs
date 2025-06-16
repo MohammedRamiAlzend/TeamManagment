@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 
+using static TMS.Server.Controllers.ControllersHelper.IncludeHelper;
 
 namespace TMS.Server.Controllers;
 
@@ -7,6 +9,7 @@ namespace TMS.Server.Controllers;
 [Authorize]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
+    
     [HttpGet(DepartmentsEndPoint.GetAll)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<DepartmentDto>>>> GetAllDepartmentsAsync(CancellationToken token)
@@ -30,8 +33,8 @@ public class DepartmentsController(ISender sender) : ControllerBase
             PageSize: pageSize,
             PageNumber: pageNumber,
             Include: x => x.Include(i => i.Employees)
-                .Include(i2 => i2.SubDepartments)
-                .Include(x => x.TeamLeader)
+                .Include(d2 => d2.SubDepartments)
+                .Include(d3 => d3.TeamLeader)
         ), token);
     }
 
@@ -44,7 +47,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     {
         if (departmentId <= 0) return BadRequest("Invalid Department ID.");
         return await sender.Send(new GetEntityQuery<Department, DepartmentDto>(
-            Include: GetIncludes(includes),
+            Include: GetIncludes(includes,IncludeExpressions),
             Filter: x => x.Id == departmentId), token);
     }
 
@@ -72,33 +75,18 @@ public class DepartmentsController(ISender sender) : ControllerBase
         return await sender.Send(new DeleteEntityCommand<Department>(x => x.Id == departmentId), token);
     }
 
-
-    [HttpGet("departments/includes")]
+    [HttpGet(DepartmentsEndPoint.Includes)]
     [AllowAnonymous]
     public ActionResult<IEnumerable<string>> GetDepartmentIncludes()
     {
-        var includes = new[]
-        {
-            nameof(Department.Employees),
-            nameof(Department.SubDepartments),
-            nameof(Department.TeamLeader)
-        };
-        return Ok(includes);
+        return Ok(IncludeExpressions.Keys);
     }
-    private static Func<IQueryable<Department>, IIncludableQueryable<Department, object>>? GetIncludes(
-        string[]? includeProperties)
+    
+    
+    private static readonly Dictionary<string, Expression<Func<Department, object>>> IncludeExpressions = new()
     {
-        if (includeProperties is null || includeProperties.Length == 0) return null;
-
-        return query =>
-        {
-            if (includeProperties.Contains(nameof(Department.Employees)))
-                query = query.Include(d => d.Employees);
-            if (includeProperties.Contains(nameof(Department.SubDepartments)))
-                query = query.Include(d => d.SubDepartments);
-            if (includeProperties.Contains(nameof(Department.TeamLeader)))
-                query = query.Include(d => d.TeamLeader);
-            return (IIncludableQueryable<Department, object>)query;
-        };
-    }
+        { nameof(Department.Employees), d => d.Employees },
+        { nameof(Department.SubDepartments), d => d.SubDepartments! },
+        { nameof(Department.TeamLeader), d => d.TeamLeader }
+    };
 }

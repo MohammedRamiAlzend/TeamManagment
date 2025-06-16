@@ -1,6 +1,6 @@
-namespace TMS.Server;
+namespace TMS.Server.ExtensionMethods;
 
-public  static class ApplicationExtensions
+public  static class WebApplicationExtensions
 {
     public static async Task InitializeDatabaseAsync(this WebApplication app)
     {

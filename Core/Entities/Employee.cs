@@ -12,8 +12,8 @@ public class Employee : Entity
     
     public string ImagePath { get; set; } = string.Empty;
 
-    [JsonIgnore] public User User { get; set; }
-
+    [JsonIgnore]
+    public User User { get; set; }
     public ICollection<Department> Departments { get; set; }
     public ICollection<Project> Projects { get; set; }
     public ICollection<WorkTask> CreatedTasks { get; set; }

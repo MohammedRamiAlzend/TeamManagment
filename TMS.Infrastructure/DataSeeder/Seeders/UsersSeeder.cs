@@ -17,8 +17,8 @@ public class UsersSeeder : IDataSeeder
 
             var getEmployeeRole = await context.Roles.FirstOrDefaultAsync(x => x.Name.ToLower() == "employee");
 
-            if (getAdminRole is null || getTeamLeaderRole is null)
-                return DbRequest.Failure("Admin Role was not founded");
+            if (getAdminRole is null || getTeamLeaderRole is null || getEmployeeRole is null)
+                return DbRequest.Failure("Admin Role or team leader or employee was not founded");
 
 
             var usersList = new List<User>();
@@ -42,7 +42,7 @@ public class UsersSeeder : IDataSeeder
             var user2 = new User();
             user2.UserName = "ibrahim";
             user2.PasswordHash = hashedPassword;
-            user2.Roles = [getEmployeeRole];
+            user2.Roles = [getTeamLeaderRole,getEmployeeRole];
             user2.Employee = new Employee
             {
                 FirstName = "Ibrahim",
@@ -58,7 +58,7 @@ public class UsersSeeder : IDataSeeder
             var user3 = new User();
             user3.UserName = "rama";
             user3.PasswordHash = hashedPassword;
-            user3.Roles = [getEmployeeRole];
+            user3.Roles = [getTeamLeaderRole,getEmployeeRole];
             user3.Employee = new Employee
             {
                 FirstName = "Rama",

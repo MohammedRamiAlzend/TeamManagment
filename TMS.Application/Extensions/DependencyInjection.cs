@@ -8,6 +8,8 @@ public static class DependencyInjection
         services.AddEntityAdditionRegistration<Employee, CreateEmployeeDto>();
         services.AddEntityUpdationRegistration<Employee, UpdateEmployeeDto>();
         services.AddEntityGetAllQueryRegistration<Employee, GetEmployeeResponse>();
+        services.AddEntityGetQueryRegistration<Employee, GetEmployeeResponse>();
+        services.AddEntityGetAllPaginatedQueryRegistration<Employee, GetEmployeeResponse>();
         // services.AddEntityRegistration<Employee, EmployeeDto>();
 
         //Department Registration

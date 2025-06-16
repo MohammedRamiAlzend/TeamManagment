@@ -49,9 +49,11 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
 
     public async Task<ApiResponse<TokenResponseDto>> LoginAsync(LoginUserDto request)
     {
+        // var user = await context.Users
+        //     .Include(r => r.Roles)
+        //     .ThenInclude(p => p.Permissions)
+        //     .FirstOrDefaultAsync(x => x.UserName == request.UserName);
         var user = await context.Users
-            .Include(r => r.Roles)
-            .ThenInclude(p => p.Permissions)
             .FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
         var passwordAccepted = new PasswordHasher<User>()

@@ -1,4 +1,6 @@
-﻿namespace TMS.Infrastructure.Data.DbContextTools;
+﻿using TMS.Infrastructure.Data.DbContextTools.Configurations;
+
+namespace TMS.Infrastructure.Data.DbContextTools;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
@@ -65,6 +67,15 @@ public class AppDbContext : DbContext
             .HasOne(d => d.TeamLeader)
             .WithOne();
 
+
+        modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+        modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new WorkTaskConfiguration());
+        
+        
         base.OnModelCreating(modelBuilder);
     }
 }
