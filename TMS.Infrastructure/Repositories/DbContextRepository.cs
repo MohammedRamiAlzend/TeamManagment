@@ -34,7 +34,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         try
         {
             if (filter != null) query = query.Where(filter);
-            // if (include != null) query = include(query);
+             if (include != null) query = include(query);
             if (orderBy != null) query = orderBy(query);
 
             var result = await query.ToListAsync();

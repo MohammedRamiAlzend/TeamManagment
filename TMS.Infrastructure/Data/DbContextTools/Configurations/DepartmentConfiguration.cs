@@ -11,6 +11,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     }
     private static void AutoIncludeConfiguration(EntityTypeBuilder<Department> builder)
     {
+        builder.Navigation(x => x.TeamLeader).AutoInclude();
     }
     private static void RelationsConfiguration(EntityTypeBuilder<Department> builder)
     {

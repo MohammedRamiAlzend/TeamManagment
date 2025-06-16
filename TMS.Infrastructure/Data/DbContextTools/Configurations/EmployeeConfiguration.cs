@@ -13,7 +13,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     private static void AutoIncludeConfiguration(EntityTypeBuilder<Employee> builder)
     {
         builder.Navigation(x=>x.User).AutoInclude();
-        builder.Navigation(x =>x.Departments ).AutoInclude();
+        builder.Navigation(x => x.Departments).AutoInclude();
+        // builder.Navigation(x =>x.Departments ).AutoInclude();
     }
     private static void RelationsConfiguration(EntityTypeBuilder<Employee> builder)
     {
@@ -26,3 +27,4 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     }
     
 }
+

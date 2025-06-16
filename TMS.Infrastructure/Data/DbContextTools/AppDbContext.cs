@@ -68,12 +68,12 @@ public class AppDbContext : DbContext
             .WithOne();
 
 
-        modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
-        modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
-        modelBuilder.ApplyConfiguration(new RoleConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new WorkTaskConfiguration());
+        // modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+        // modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+        // modelBuilder.ApplyConfiguration(new ProjectConfiguration());
+        // modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        // modelBuilder.ApplyConfiguration(new UserConfiguration());
+        // modelBuilder.ApplyConfiguration(new WorkTaskConfiguration());
         
         
         base.OnModelCreating(modelBuilder);

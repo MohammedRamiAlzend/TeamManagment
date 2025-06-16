@@ -17,6 +17,9 @@ public static class DependencyInjection
         services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
         services.AddEntityUpdationRegistration<Department, UpdateDepartmentDto>();
         services.AddEntityRegistration<Department, DepartmentDto>();
+        services.AddEntityGetQueryRegistration<Department, GetDepartmentResponse>();
+        services.AddEntityGetAllQueryRegistration<Department, GetDepartmentResponse>();
+        services.AddEntityGetAllPaginatedQueryRegistration<Department, GetDepartmentResponse>();
 
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();

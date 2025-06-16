@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using TMS.Infrastructure.Helpers;
 using TMS.Server.Controllers.ControllersHelper;
 
 namespace TMS.Server.Controllers;
@@ -13,7 +14,9 @@ public class EmployeesController(ISender sender) : ControllerBase
     [HasPermission(EmployeeManagement.Get)]
     public async Task<ActionResult<ApiResponse<List<GetEmployeeResponse>>>> GetAllEmployeesAsync(CancellationToken token)
     {
-        return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(), token);
+        return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(
+                Include:QueryIncludeHelper.IncludeEmployeeRelations()
+            ), token);
     }
 
     [HttpGet(EmployeesEndPoint.GetAllPaginated)]
@@ -28,7 +31,8 @@ public class EmployeesController(ISender sender) : ControllerBase
 
         return await sender.Send(
             new GetAllPaginatedEntityQuery<Employee, GetEmployeeResponse>(
-                PageNumber: pageNumber, PageSize: pageSize
+                PageNumber: pageNumber, PageSize: pageSize,
+                Include:QueryIncludeHelper.IncludeEmployeeRelations()
                 ), token);
     }
 
@@ -41,7 +45,9 @@ public class EmployeesController(ISender sender) : ControllerBase
         if (employeeId <= 0) return BadRequest("Invalid employee ID.");
 
         return await sender.Send(new GetEntityQuery<Employee, GetEmployeeResponse>(
-            x => x.Id == employeeId), token);
+            x => x.Id == employeeId,
+            Include:QueryIncludeHelper.IncludeEmployeeRelations()
+            ), token);
     }
 
     [HttpPut(EmployeesEndPoint.Update)]
