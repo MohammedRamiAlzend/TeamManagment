@@ -8,7 +8,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
-            "Server=lenovo;Database=TMS;User Id=sa;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;");
+            "Server=lenovo;Database=TMS;User Id=sa;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;"
+            // "Server=DESKTOP-MJIUN3T;Database=TMS;User Id=sa;Password=123;Encrypt=True;TrustServerCertificate=True;"
+            );
 
         return new AppDbContext(optionsBuilder.Options);
     }
