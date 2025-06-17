@@ -9,6 +9,7 @@ public static class AppPermissions
         public const string Register = $"{GetPrefix}.Register";
         public const string Update = $"{GetPrefix}.Update";
         public const string Delete = $"{GetPrefix}.Delete";
+        public const string Rami = $"{GetPrefix}.Rami";
     }
     public static class DepartmentManagement
     {

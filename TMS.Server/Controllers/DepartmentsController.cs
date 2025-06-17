@@ -60,7 +60,8 @@ public class DepartmentsController(ISender sender) : ControllerBase
     {
         if (department == null) return BadRequest("The Department data must not be null.");
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentDto>(departmentId, department), token);
+        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentDto>(departmentId, department,
+            Include: QueryIncludeHelper.IncludeDepartmentRelations() ), token);
     }
 
     [HttpDelete(DepartmentsEndPoint.Delete)]
