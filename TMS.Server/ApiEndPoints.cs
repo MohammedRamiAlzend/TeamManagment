@@ -34,7 +34,7 @@ public static class ApiEndPoints
     }
     public static class RolesEndPoint   
     {
-        public const string Get = "{rolesId:int}";
+        public const string Get = "{roleId:int}";
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
         public const string Create = "";

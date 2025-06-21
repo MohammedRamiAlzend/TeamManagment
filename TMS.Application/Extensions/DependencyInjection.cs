@@ -35,6 +35,12 @@ public static class DependencyInjection
         services.AddEntityGetQueryRegistration<Permission,GetPermissionResponse>();
         services.AddEntityGetAllPaginatedQueryRegistration<Permission,GetPermissionResponse>();
         
+        //Role Registration
+        services.AddEntityGetAllQueryRegistration<Role,GetRoleResponse>();
+        services.AddEntityGetQueryRegistration<Role,GetRoleResponse>();
+        services.AddEntityGetAllPaginatedQueryRegistration<Role,GetRoleResponse>();
+        
+        
         services.AddScoped<ISender, Sender>();
 
         return services;
