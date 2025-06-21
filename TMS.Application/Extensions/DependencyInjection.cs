@@ -24,12 +24,17 @@ public static class DependencyInjection
         services.AddEntityGetAllQueryRegistration<Department, GetDepartmentResponse>();
         services.AddEntityGetAllPaginatedQueryRegistration<Department, GetDepartmentResponse>();
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
+        
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();
         services.AddRequestHandler<LoginUserCommand, ApiResponse<TokenResponseDto>, LoginUserCommandHandler>();
         services.AddRequestHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>, RefreshTokenCommandHandler>();
-
-
+        
+        //Permission Registration
+        services.AddEntityGetAllQueryRegistration<Permission,GetPermissionResponse>();
+        services.AddEntityGetQueryRegistration<Permission,GetPermissionResponse>();
+        services.AddEntityGetAllPaginatedQueryRegistration<Permission,GetPermissionResponse>();
+        
         services.AddScoped<ISender, Sender>();
 
         return services;

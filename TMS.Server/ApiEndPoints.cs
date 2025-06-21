@@ -25,4 +25,18 @@ public static class ApiEndPoints
         public const string Delete = "{departmentId:int}";
         public const string UpdateDepartmentTeamLeader = "update-teamleader";
     }
+    public static class PermissonsEndPoint
+    {
+        public const string Get = "{permissonId:int}";
+        public const string GetAll = "";
+        public const string GetAllPaginated = "paginated";
+        public const string Create = "";
+    }
+    public static class RolesEndPoint   
+    {
+        public const string Get = "{rolesId:int}";
+        public const string GetAll = "";
+        public const string GetAllPaginated = "paginated";
+        public const string Create = "";
+    }
 }
