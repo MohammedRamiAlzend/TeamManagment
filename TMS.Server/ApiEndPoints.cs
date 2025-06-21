@@ -23,5 +23,6 @@ public static class ApiEndPoints
         public const string Create = "";
         public const string Update = "{departmentId:int}";
         public const string Delete = "{departmentId:int}";
+        public const string UpdateDepartmentTeamLeader = "update-teamleader";
     }
 }

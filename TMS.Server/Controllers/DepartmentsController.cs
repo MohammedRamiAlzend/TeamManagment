@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.WebUtilities;
+using TMS.Application.CQRS.Commands;
+using TMS.Application.CQRS.Commands.DepartmentCommands;
 using TMS.Infrastructure.Helpers;
 
 namespace TMS.Server.Controllers;
@@ -19,6 +21,13 @@ public class DepartmentsController(ISender sender) : ControllerBase
             ), token);
     }
 
+    [HttpPost(DepartmentsEndPoint.UpdateDepartmentTeamLeader)]
+    [HasPermission(DepartmentManagement.Update)]
+    public async Task<ActionResult<ApiResponse>> UpdateDepartmentTeamLeaderAsync([FromQuery]int departmentId,[FromQuery]int departmentTeamLeaderId)
+    {
+        return await sender.Send(new UpdateDepartmentTeamLeaderCommand(departmentId,departmentTeamLeaderId));
+    }
+    
     [HttpGet(DepartmentsEndPoint.GetAllPaginated)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<PaginatedApiResponse<GetDepartmentResponse>>> GetAllDepartmentsPaginatedAsync(

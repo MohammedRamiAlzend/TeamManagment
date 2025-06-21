@@ -1,3 +1,5 @@
+using TMS.Contract;
+
 namespace TMS.Infrastructure.Services;
 
 public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfiguration configuration) : IAuthService
@@ -9,12 +11,13 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
 
         if (await context.Users.AnyAsync(x => x.UserName.ToLower() == request.UserName.ToLower()))
             return DbRequest<User>.Failure("User already exists");
-
+        var getRoles = context.Roles.ToList();
         var user = new User();
         var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
         user.UserName = request.UserName;
         user.PasswordHash = hashedPassword;
         user.RefreshToken = null;
+        user.Roles = getRoles.Where(x=>x.Name == AppRoles.Employee.Name).ToList();
 
         var getDepartmentsRequest = await GetDepartmentsByIdAsync(request.DepartmentIds);
         var departmentsList = getDepartmentsRequest.Data ?? [];
@@ -28,7 +31,8 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
             BirthDate = request.BirthDate,
             HireDate = request.HireDate,
             NationalIdentificationNumber = request.NationalIdentificationNumber,
-            Departments = departmentsList
+            Departments = departmentsList,
+            
         };
 
         await using var transaction = await context.Database.BeginTransactionAsync();

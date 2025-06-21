@@ -29,5 +29,5 @@ global using TMS.Infrastructure.Data.DbContextTools;
 global using TMS.Infrastructure.Services;
 global using TMS.Server.Helpers;
 global using TMS.Server.PermissionsAndRolesConfig;
-global using static TMS.Server.PermissionsAndRolesConfig.AppPermissions;
+global using static TMS.Contract.AppPermissions;
 global using static TMS.Server.ApiEndPoints;

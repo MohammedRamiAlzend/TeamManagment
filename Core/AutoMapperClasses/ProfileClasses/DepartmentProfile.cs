@@ -10,7 +10,6 @@ public class DepartmentProfile : Profile
             .ForMember(dest => dest.EmployeesNames,
                 opt => opt.MapFrom(scr => MapEmployeeNames(scr.Employees)));
 
-
         CreateMap<Department, CreateDepartmentDto>();
 
         CreateMap<UpdateDepartmentDto, Department>()

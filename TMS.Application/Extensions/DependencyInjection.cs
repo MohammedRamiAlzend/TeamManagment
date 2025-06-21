@@ -1,4 +1,7 @@
-﻿namespace TMS.Application.Extensions;
+﻿using TMS.Application.CQRS.Commands.DepartmentCommands;
+using TMS.Application.Handlers.DepartmentHandlers;
+
+namespace TMS.Application.Extensions;
 
 public static class DependencyInjection
 {
@@ -20,7 +23,7 @@ public static class DependencyInjection
         services.AddEntityGetQueryRegistration<Department, GetDepartmentResponse>();
         services.AddEntityGetAllQueryRegistration<Department, GetDepartmentResponse>();
         services.AddEntityGetAllPaginatedQueryRegistration<Department, GetDepartmentResponse>();
-
+        services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();
         services.AddRequestHandler<LoginUserCommand, ApiResponse<TokenResponseDto>, LoginUserCommandHandler>();

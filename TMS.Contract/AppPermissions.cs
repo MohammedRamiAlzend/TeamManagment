@@ -1,4 +1,6 @@
-namespace TMS.Server.PermissionsAndRolesConfig;
+using System.Text.Json.Serialization;
+
+namespace TMS.Contract;
 
 public static class AppPermissions
 {

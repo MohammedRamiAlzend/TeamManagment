@@ -3,7 +3,7 @@ namespace TMS.Server.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Authorize] 
-public class AuthController(ISender sender) : ControllerBase
+public class UserController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
     [HasPermission(UserManagement.Register)]

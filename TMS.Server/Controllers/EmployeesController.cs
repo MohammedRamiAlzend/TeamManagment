@@ -21,7 +21,6 @@ public class EmployeesController(ISender sender) : ControllerBase
 
     [HttpGet(EmployeesEndPoint.GetAllPaginated)]
     [HasPermission(EmployeeManagement.Get)]
-    
     public async Task<ActionResult<PaginatedApiResponse<GetEmployeeResponse>>> GetAllEmployeesPaginatedAsync(
         [FromQuery] int pageNumber,
         [FromQuery] int pageSize,
