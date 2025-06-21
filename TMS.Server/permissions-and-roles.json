@@ -1,5 +1,5 @@
 {
-  "Version": 6,
+  "Version": 7,
   "Roles": [
     {
       "Name": "Admin",
@@ -63,6 +63,9 @@
         },
         {
           "Name": "UserManagement.Get"
+        },
+        {
+          "Name": "UserManagement.Ibrahim"
         },
         {
           "Name": "UserManagement.Rami"
@@ -261,6 +264,9 @@
     },
     {
       "Name": "UserManagement.Get"
+    },
+    {
+      "Name": "UserManagement.Ibrahim"
     },
     {
       "Name": "UserManagement.Rami"
