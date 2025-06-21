@@ -34,11 +34,9 @@ public class UpdateDepartmentTeamLeaderHandler(
         var department = getDepartment.Data;
         var employee = getEmployee.Data;
         
-        // Check if it's the same team leader
         if (department.TeamLeaderId == employee.Id)
             return ApiResponse.Success(HttpStatusCode.OK, "Team leader is already assigned to this department");
         
-        // Check if the employee is already a team leader of another department
         var existingTeamLeaderAssignment = await entityCommiter.Departments.GetAsync(
             filter: d => d.TeamLeaderId == employee.Id && d.Id != request.DepartmentId);
         
@@ -49,7 +47,7 @@ public class UpdateDepartmentTeamLeaderHandler(
         }
 
         var getRoles = await entityCommiter.Roles.GetAllAsync();
-        // Validate roles
+
         if (!HasRequiredRoles(employee.User.Roles, "teamleader", "manager"))
             employee.User.Roles.Add(getRoles.Data.First(r => r.Name == AppRoles.TeamLeader.Name));
         
@@ -69,7 +67,6 @@ public class UpdateDepartmentTeamLeaderHandler(
         }
         catch (DbUpdateException ex) 
         {
-            // Handle unique constraint violation
             logger.LogError(ex, "Unique constraint violation when updating team leader");
             return ApiResponse.Failure(HttpStatusCode.Conflict, 
                 "The selected employee is already assigned as team leader to another department");
