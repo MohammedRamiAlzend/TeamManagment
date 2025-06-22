@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TMS.Contract.Responses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
 
 public class CreateDepartmentDto : IDto

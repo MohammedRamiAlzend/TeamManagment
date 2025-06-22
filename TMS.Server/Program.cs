@@ -1,5 +1,3 @@
-using TMS.Server.ExtensionMethods;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -32,15 +30,15 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
         options.Servers = [];
     });
+// }
     app.UseCors("DevelopmentCorsPolicy");
-}
 
 await app.InitializeDatabaseAsync();
 

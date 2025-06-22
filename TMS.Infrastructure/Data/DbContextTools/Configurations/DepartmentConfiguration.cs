@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace TMS.Infrastructure.Data.DbContextTools.Configurations;
 
 public class DepartmentConfiguration : IEntityTypeConfiguration<Department>

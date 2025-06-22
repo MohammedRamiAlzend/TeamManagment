@@ -39,4 +39,23 @@ public static class ApiEndPoints
         public const string GetAllPaginated = "paginated";
         public const string Create = "";
     }
+    
+    public static class ProjectsEndPoint
+    {
+        public const string Get = "{projectId:int}";
+        public const string GetAll = "";
+        public const string GetAllPaginated = "paginated";
+        public const string Create = "";
+        public const string Update = "{projectId:int}";
+        public const string Delete = "{projectId:int}";
+    }
+    public static class TasksEndPoint
+    {
+        public const string Get = "{taskId:int}";
+        public const string GetAll = "";
+        public const string GetAllPaginated = "paginated";
+        public const string Create = "";
+        public const string Update = "{taskId:int}";
+        public const string Delete = "{taskId:int}";
+    }
 }

@@ -1,7 +1,4 @@
-﻿using TMS.Application.CQRS.Commands.DepartmentCommands;
-using TMS.Application.Handlers.DepartmentHandlers;
-
-namespace TMS.Application.Extensions;
+﻿namespace TMS.Application.Extensions;
 
 public static class DependencyInjection
 {
@@ -11,19 +8,15 @@ public static class DependencyInjection
         services.AddEntityAdditionRegistration<Employee, CreateEmployeeDto>();
         services.AddEntityUpdationRegistration<Employee, UpdateEmployeeDto>();
         services.AddEntityDeletionRegistration<Employee>();
-        services.AddEntityGetAllQueryRegistration<Employee, GetEmployeeResponse>();
-        services.AddEntityGetQueryRegistration<Employee, GetEmployeeResponse>();
-        services.AddEntityGetAllPaginatedQueryRegistration<Employee, GetEmployeeResponse>();
-        // services.AddEntityRegistration<Employee, EmployeeDto>();
+        services.AddEntityGetRegistration<Employee, GetEmployeeResponse>();
 
         //Department Registration
         services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
         services.AddEntityUpdationRegistration<Department, UpdateDepartmentDto>();
-        services.AddEntityRegistration<Department, DepartmentDto>();
-        services.AddEntityGetQueryRegistration<Department, GetDepartmentResponse>();
-        services.AddEntityGetAllQueryRegistration<Department, GetDepartmentResponse>();
-        services.AddEntityGetAllPaginatedQueryRegistration<Department, GetDepartmentResponse>();
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
+        services.AddEntityRegistration<Department, DepartmentDto>();
+        services.AddEntityGetRegistration<Department,GetDepartmentResponse>();
+
         
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();
@@ -31,15 +24,13 @@ public static class DependencyInjection
         services.AddRequestHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>, RefreshTokenCommandHandler>();
         
         //Permission Registration
-        services.AddEntityGetAllQueryRegistration<Permission,GetPermissionResponse>();
-        services.AddEntityGetQueryRegistration<Permission,GetPermissionResponse>();
-        services.AddEntityGetAllPaginatedQueryRegistration<Permission,GetPermissionResponse>();
-        
+        services.AddEntityGetRegistration<Permission,GetPermissionResponse>();
+
         //Role Registration
-        services.AddEntityGetAllQueryRegistration<Role,GetRoleResponse>();
-        services.AddEntityGetQueryRegistration<Role,GetRoleResponse>();
-        services.AddEntityGetAllPaginatedQueryRegistration<Role,GetRoleResponse>();
+        services.AddEntityGetRegistration<Role,GetRoleResponse>();
         
+        //project Registration
+        services.AddEntityGetRegistration<Project,GetProjectResponse>();
         
         services.AddScoped<ISender, Sender>();
 

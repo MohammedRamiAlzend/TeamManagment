@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TMS.Contract.Responses.DTOs.RequestDTOs.RequestEmployeeDTOS;
+﻿namespace TMS.Contract.Responses.DTOs.RequestDTOs.RequestEmployeeDTOS;
 
 public class CreateEmployeeDto : IDto
 {

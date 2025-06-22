@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using TMS.Application.CQRS.Commands.DepartmentCommands;
-using TMS.Contract;
-
 namespace TMS.Application.Handlers.DepartmentHandlers;
 
 public class UpdateDepartmentTeamLeaderHandler(

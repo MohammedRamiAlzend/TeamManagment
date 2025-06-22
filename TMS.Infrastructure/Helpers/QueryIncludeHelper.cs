@@ -22,5 +22,32 @@ public static class QueryIncludeHelper
             .Include(e => e.Departments)
             .ThenInclude(d => d.ParentDepartment)!;
     }
+    
+    
+    public static Func<IQueryable<Project>, IIncludableQueryable<Project, object>>? IncludeProjectRelations()
+    {
+        return query => query
+            .Include(e => e.TeamMembers)
+            .ThenInclude(x => x.User)
+            .ThenInclude(x => x.Roles)
+            .Include(e => e.Department)
+            .ThenInclude(x => x.ParentDepartment)
+            .Include(e => e.Tasks)
+            .ThenInclude(x => x.AssignedTo)
+            .Include(e => e.Tasks)
+            .ThenInclude(x => x.CreatedBy);
+    }
+    public static Func<IQueryable<WorkTask>, IIncludableQueryable<WorkTask, object>>? IncludeTaskRelations()
+    {
+        return query => query
+            .Include(e => e.CreatedBy)
+            .ThenInclude(e=>e.User)
+            .ThenInclude(e=>e.Roles)
+            .Include(e => e.AssignedTo)
+            .ThenInclude(e=>e.User)
+            .ThenInclude(e=>e.Roles)
+            .Include(e=>e.Projects)
+            .ThenInclude(x=>x.Department);
+    }
 
 }

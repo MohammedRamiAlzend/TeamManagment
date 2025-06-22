@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace TMS.Contract;
 
 public static class AppRoles

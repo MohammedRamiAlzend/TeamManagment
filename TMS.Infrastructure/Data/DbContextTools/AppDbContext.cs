@@ -1,6 +1,4 @@
-﻿using TMS.Infrastructure.Data.DbContextTools.Configurations;
-
-namespace TMS.Infrastructure.Data.DbContextTools;
+﻿namespace TMS.Infrastructure.Data.DbContextTools;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {

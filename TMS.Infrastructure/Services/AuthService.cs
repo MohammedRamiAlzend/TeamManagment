@@ -1,5 +1,3 @@
-using TMS.Contract;
-
 namespace TMS.Infrastructure.Services;
 
 public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfiguration configuration) : IAuthService

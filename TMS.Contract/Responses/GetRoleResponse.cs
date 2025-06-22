@@ -1,5 +1,3 @@
-using TMS.Contract.Responses.DTOs;
-
 namespace TMS.Contract.Responses;
 
 public class GetRoleResponse : IDto

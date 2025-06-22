@@ -1,6 +1,4 @@
-﻿using TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
-
-namespace TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
+﻿namespace TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseEmployeeDTOS;
 
 public class EmployeeDto : IDto
 {

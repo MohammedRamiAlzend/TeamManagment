@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi.Models;
-
 namespace TMS.Server;
 internal sealed class BearerSecuritySchemeTransformer(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
 {

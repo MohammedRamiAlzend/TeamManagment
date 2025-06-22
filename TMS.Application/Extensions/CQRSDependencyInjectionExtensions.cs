@@ -22,6 +22,22 @@ public static class CqrsDependencyInjectionExtensions
         services.AddRequestHandler<AddEntityCommand<TDto>, ApiResponse<TDto>, AddEntityCommandHandler<TEntity, TDto>>();
         services.AddRequestHandler<DeleteEntityCommand<TEntity>, ApiResponse, DeleteEntityCommandHandler<TEntity>>();
     }
+    public static void AddEntityGetRegistration<TEntity, TDto>(
+        this IServiceCollection services)
+        where TEntity : Entity
+        where TDto : IDto
+    {
+        services
+            .AddRequestHandler<GetAllEntityQuery<TEntity, TDto>, ApiResponse<List<TDto>>,
+                GetAllEntityQueryHandler<TEntity, TDto>>();
+        services
+            .AddRequestHandler<GetAllPaginatedEntityQuery<TEntity, TDto>, PaginatedApiResponse<TDto>,
+                GetAllPaginatedEntityQueryHandler<TEntity, TDto>>();
+        services
+            .AddRequestHandler<GetEntityQuery<TEntity, TDto>, ApiResponse<TDto>,
+                GetEntityQueryHandler<TEntity, TDto>>();
+    }
+
 
     public static void AddEntityGetQueryRegistration<TEntity, TDto>(
         this IServiceCollection services)

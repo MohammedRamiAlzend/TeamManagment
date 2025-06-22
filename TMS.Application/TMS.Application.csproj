@@ -16,8 +16,4 @@
         <ProjectReference Include="..\TMS.Contract\TMS.Contract.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="CQRS\Queries\" />
-    </ItemGroup>
-
 </Project>
