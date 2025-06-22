@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Queries.CustomQueries.ProjectQuries;
+
 namespace TMS.Core.AutoMapperClasses.ProfileClasses;
 
 public class ProjectProfile : Profile

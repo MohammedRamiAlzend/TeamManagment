@@ -1,0 +1,7 @@
+namespace TMS.Contract.CQRS.Queries.CustomQueries.PermissionQuries;
+
+public class GetPermissionResponse : IDto
+{
+    public string Name { get; set; }
+    public ICollection<string> Roles { get; set; }
+}

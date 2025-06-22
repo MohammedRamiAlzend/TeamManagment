@@ -1,8 +1,5 @@
 global using System.ComponentModel.DataAnnotations;
-global using TMS.Core.Entities.Models;
-global using TMS.Contract.Responses.DTOs;
 global using TMS.Contract.CommunicationModels;
-global using TMS.Core.Entities;
 global using System.Linq.Expressions;
 global using System.Net;
 global using System.Reflection;
@@ -11,5 +8,3 @@ global using TMS.Contract.Entities.Interfaces;
 global using System.Text.Json.Serialization;
 global using TMS.Contract.Entities;
 global using TMS.Contract.MediatR.Interfaces;
-global using TMS.Contract.Responses.DTOs.ResponseDTOs.ResponseDepartmentDTOS;
-

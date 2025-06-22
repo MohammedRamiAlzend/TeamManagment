@@ -1,3 +1,6 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands;
+using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands.Dtos;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]

@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands;
+
 namespace TMS.Application.Handlers.AuthHandlers;
 
 public class RegisterUserCommandHandler(IAuthService authService)

@@ -1,4 +1,7 @@
-﻿namespace TMS.Core.AutoMapperClasses.ProfileClasses;
+﻿using TMS.Contract.CQRS.Commands.CustomCommands.EmployeeCommands.Dtos;
+using TMS.Contract.CQRS.Queries.CustomQueries.EmployeeQuries;
+
+namespace TMS.Core.AutoMapperClasses.ProfileClasses;
 public class EmployeeProfile : Profile
 {
     public EmployeeProfile()

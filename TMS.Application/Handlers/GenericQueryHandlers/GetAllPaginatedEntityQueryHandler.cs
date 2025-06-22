@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.Handlers.GenericQueryHandlers;
+﻿using TMS.Contract.CQRS.Queries.GenericQueries;
+
+namespace TMS.Application.Handlers.GenericQueryHandlers;
 
 public class GetAllPaginatedEntityQueryHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,

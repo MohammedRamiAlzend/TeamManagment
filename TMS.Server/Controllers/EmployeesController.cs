@@ -1,3 +1,8 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.EmployeeCommands.Dtos;
+using TMS.Contract.CQRS.Commands.GenericCommands;
+using TMS.Contract.CQRS.Queries.CustomQueries.EmployeeQuries;
+using TMS.Contract.CQRS.Queries.GenericQueries;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]

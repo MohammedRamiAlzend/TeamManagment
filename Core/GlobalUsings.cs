@@ -9,8 +9,3 @@ global using Microsoft.Extensions.DependencyInjection;
 global using TMS.Contract.CommunicationModels;
 global using TMS.Contract.Entities;
 global using TMS.Contract.Entities.Interfaces;
-global using TMS.Contract.Responses.DTOs.RequestDTOs.RequestDepartmentsDTOS;
-global using TMS.Contract.Responses;
-global using TMS.Contract.Responses.DTOs;
-global using TMS.Contract.Responses.DTOs.RequestDTOs.RequestEmployeeDTOS;
-global using TMS.Core.Entities.Models;

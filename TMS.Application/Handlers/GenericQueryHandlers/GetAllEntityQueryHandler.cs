@@ -1,4 +1,6 @@
-﻿namespace TMS.Application.Handlers.GenericQueryHandlers;
+﻿using TMS.Contract.CQRS.Queries.GenericQueries;
+
+namespace TMS.Application.Handlers.GenericQueryHandlers;
 
 public class GetAllEntityQueryHandler<TEntity, TEntityDto>(
     IEntityCommiter entityCommiter,

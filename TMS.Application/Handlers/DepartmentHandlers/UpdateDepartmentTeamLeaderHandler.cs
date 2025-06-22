@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.DepartmentCommands;
+
 namespace TMS.Application.Handlers.DepartmentHandlers;
 
 public class UpdateDepartmentTeamLeaderHandler(

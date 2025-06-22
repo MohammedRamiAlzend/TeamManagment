@@ -1,3 +1,6 @@
+using TMS.Contract.CQRS.Queries.CustomQueries.PermissionQuries;
+using TMS.Contract.CQRS.Queries.GenericQueries;
+
 namespace TMS.Server.Controllers;
 
 [ApiController]

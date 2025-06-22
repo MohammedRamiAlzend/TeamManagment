@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Queries.CustomQueries.PermissionQuries;
+
 namespace TMS.Core.AutoMapperClasses.ProfileClasses;
 
 public class PermissionProfile : Profile

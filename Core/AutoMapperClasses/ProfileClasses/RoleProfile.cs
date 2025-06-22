@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Queries.CustomQueries.RoleQuries;
+
 namespace TMS.Core.AutoMapperClasses.ProfileClasses;
 
 public class RoleProfile : Profile

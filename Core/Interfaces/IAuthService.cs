@@ -1,3 +1,5 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands.Dtos;
+
 namespace TMS.Core.Interfaces;
 
 public interface IAuthService
