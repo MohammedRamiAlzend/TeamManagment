@@ -1,4 +1,5 @@
 ﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 
 namespace TMS.Application.Extensions;
@@ -33,6 +34,8 @@ public static class DependencyInjection
         //project Registration
         services.AddEntityGetRegistration<Project,GetProjectResponse>();
         services.AddRequestHandler<AddProjectCommand,ApiResponse<AddProjectDto>,AddProjectHandler>();
+        services.AddRequestHandler<UpdateProjectCommand, ApiResponse<UpdateProjectDto>, UpdateProjectCommandHandler>();
+        services.AddRequestHandler<DeleteProjectCommand, ApiResponse<bool>, DeleteProjectCommandHandler>();
         services.AddScoped<ISender, Sender>();
 
         return services;

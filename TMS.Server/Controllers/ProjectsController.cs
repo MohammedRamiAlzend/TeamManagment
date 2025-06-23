@@ -1,12 +1,11 @@
 using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.CQRS.Commands.GenericCommands;
 using TMS.Contract.CQRS.Queries.CustomQueries.ProjectQuries;
 using TMS.Contract.CQRS.Queries.GenericQueries;
 
 namespace TMS.Server.Controllers;
-
-
 [ApiController]
 [Route($"{ApiBase}/[controller]")]
 [Authorize]
@@ -20,7 +19,6 @@ public class ProjectsController(ISender sender):ControllerBase
             Include: QueryIncludeHelper.IncludeProjectRelations()
         ), token);
     }
-    
     [HttpGet(ProjectsEndPoint.GetAllPaginated)]
     [HasPermission(ProjectManagement.Get)]
     public async Task<ActionResult<PaginatedApiResponse<GetProjectResponse>>> GetAllProjectsPaginatedAsync(
@@ -34,7 +32,6 @@ public class ProjectsController(ISender sender):ControllerBase
             Include: QueryIncludeHelper.IncludeProjectRelations()
         ), token);
     }
-
     [HttpGet(ProjectsEndPoint.Get)]
     [HasPermission(ProjectManagement.Get)]
     public async Task<ActionResult<ApiResponse<GetProjectResponse>>> GetProjectAsync(int projectId,CancellationToken token)
@@ -44,15 +41,25 @@ public class ProjectsController(ISender sender):ControllerBase
             Include: QueryIncludeHelper.IncludeProjectRelations()
         ), token);
     }
-    // [HttpPut(ProjectsEndPoint.Update)]
-    // [HasPermission(ProjectManagement.Update)]
-    // public async Task<ActionResult<ApiResponse<    
-
     [HttpPost(ProjectsEndPoint.Create)]
     [HasPermission(ProjectManagement.Add)]
     public async Task<ActionResult<ApiResponse<AddProjectDto>>> AddProjectAsync([FromBody] AddProjectDto project,
         CancellationToken token)
     {
         return await sender.Send(new AddProjectCommand(project), token);
+    }
+    [HttpPut(ProjectsEndPoint.Update)]
+    [HasPermission(ProjectManagement.Update)]
+    public async Task<ActionResult<ApiResponse<UpdateProjectDto>>> UpdateProjectAsync([FromBody] UpdateProjectDto project,
+        CancellationToken token)
+    {
+        return await sender.Send(new UpdateProjectCommand(project), token);
+    }
+    [HttpDelete(ProjectsEndPoint.Delete)]
+    [HasPermission(ProjectManagement.Delete)]
+    public async Task<ActionResult<ApiResponse<bool>>> DeleteProjectAsync(int projectId,
+        CancellationToken token)
+    {
+        return await sender.Send(new DeleteProjectCommand(projectId), token);
     }
 }
