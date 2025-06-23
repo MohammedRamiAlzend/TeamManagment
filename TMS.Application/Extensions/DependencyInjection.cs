@@ -1,5 +1,7 @@
 ﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
+using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries;
 
 namespace TMS.Application.Extensions;
 
@@ -15,7 +17,7 @@ public static class DependencyInjection
         //Department Registration
         services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
         services.AddEntityUpdationRegistration<Department, UpdateDepartmentCommand>();
-        services.AddEntityGetRegistration<Department,GetDepartmentQuery>();
+        services.AddEntityGetRegistration<Department,GetDepartmentResponse>();
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
 
         
@@ -33,8 +35,14 @@ public static class DependencyInjection
         //project Registration
         services.AddEntityGetRegistration<Project,GetProjectResponse>();
         services.AddRequestHandler<AddProjectCommand,ApiResponse<AddProjectDto>,AddProjectHandler>();
+        services.AddRequestHandler<UpdateProjectCommand, ApiResponse<UpdateProjectDto>, UpdateProjectCommandHandler>();
+        services.AddRequestHandler<DeleteProjectCommand, ApiResponse<bool>, DeleteProjectCommandHandler>();
+        
+        //Task Registration
+        services.AddEntityRegistration<WorkTask,GetTaskResponse>();
+        
         services.AddScoped<ISender, Sender>();
-
+        
         return services;
     }
 }

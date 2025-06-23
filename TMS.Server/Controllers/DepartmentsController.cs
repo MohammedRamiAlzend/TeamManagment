@@ -14,9 +14,9 @@ public class DepartmentsController(ISender sender) : ControllerBase
     
     [HttpGet(DepartmentsEndPoint.GetAll)]
     [HasPermission(DepartmentManagement.Get)]
-    public async Task<ActionResult<ApiResponse<List<GetDepartmentQuery>>>> GetAllDepartmentsAsync(CancellationToken token)
+    public async Task<ActionResult<ApiResponse<List<GetDepartmentResponse>>>> GetAllDepartmentsAsync(CancellationToken token)
     {
-        return await sender.Send(new GetAllEntityQuery<Department, GetDepartmentQuery>(
+        return await sender.Send(new GetAllEntityQuery<Department, GetDepartmentResponse>(
             Include:QueryIncludeHelper.IncludeDepartmentRelations()
         ), token);
     }
@@ -30,14 +30,14 @@ public class DepartmentsController(ISender sender) : ControllerBase
     
     [HttpGet(DepartmentsEndPoint.GetAllPaginated)]
     [HasPermission(DepartmentManagement.Get)]
-    public async Task<ActionResult<PaginatedApiResponse<GetDepartmentQuery>>> GetAllDepartmentsPaginatedAsync(
+    public async Task<ActionResult<PaginatedApiResponse<GetDepartmentResponse>>> GetAllDepartmentsPaginatedAsync(
         [FromQuery] int pageNumber
         , [FromQuery] int pageSize,
         CancellationToken token)
     {
         if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Invalid pagination parameters.");
 
-        return await sender.Send(new GetAllPaginatedEntityQuery<Department, GetDepartmentQuery>(
+        return await sender.Send(new GetAllPaginatedEntityQuery<Department, GetDepartmentResponse>(
             PageSize: pageSize,
             PageNumber: pageNumber,
             Include:QueryIncludeHelper.IncludeDepartmentRelations()
@@ -47,12 +47,12 @@ public class DepartmentsController(ISender sender) : ControllerBase
 
     [HttpGet(DepartmentsEndPoint.Get)]
     [HasPermission(DepartmentManagement.Get)]
-    public async Task<ActionResult<ApiResponse<GetDepartmentQuery>>> GetDepartmentByIdAsync(
+    public async Task<ActionResult<ApiResponse<GetDepartmentResponse>>> GetDepartmentByIdAsync(
         [FromRoute] int departmentId,
         CancellationToken token)
     {
         if (departmentId <= 0) return BadRequest("Invalid Department ID.");
-        return await sender.Send(new GetEntityQuery<Department, GetDepartmentQuery>(
+        return await sender.Send(new GetEntityQuery<Department, GetDepartmentResponse>(
             Filter: x => x.Id == departmentId,
             Include:QueryIncludeHelper.IncludeDepartmentRelations()
         ), token);

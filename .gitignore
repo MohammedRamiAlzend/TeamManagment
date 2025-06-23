@@ -363,3 +363,9 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/TMS.Infrastructure/Migrations/
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
