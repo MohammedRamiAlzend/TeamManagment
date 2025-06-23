@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
@@ -50,10 +51,12 @@ public class ProjectsController(ISender sender):ControllerBase
     }
     [HttpPut(ProjectsEndPoint.Update)]
     [HasPermission(ProjectManagement.Update)]
-    public async Task<ActionResult<ApiResponse<UpdateProjectDto>>> UpdateProjectAsync([FromBody] UpdateProjectDto project,
+    public async Task<ActionResult<ApiResponse<UpdateProjectDto>>> UpdateProjectAsync(
+        [FromRoute] int projectId,
+        [FromBody] UpdateProjectDto project,
         CancellationToken token)
     {
-        return await sender.Send(new UpdateProjectCommand(project), token);
+        return await sender.Send(new UpdateProjectCommand(projectId,project), token);
     }
     [HttpDelete(ProjectsEndPoint.Delete)]
     [HasPermission(ProjectManagement.Delete)]

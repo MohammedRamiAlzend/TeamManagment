@@ -8,55 +8,49 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
 {
     public async Task<ApiResponse<UpdateProjectDto>> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateDto(request.Project);
-        if (validationResult.IsSuccess is false)
-            return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, validationResult.Message);
 
-        var projectToUpdate = await commiter.Projects.GetAsync(p => p.Id == request.Project.Id);
+        var projectToUpdate = await commiter.Projects.GetAsync(p => p.Id == request.Id);
         if (projectToUpdate.IsSuccess is false || projectToUpdate.Data is null)
             return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.NotFound, "Project not found.");
+        if (request.Project.Name is not null)
+        {
+            projectToUpdate.Data.Name = request.Project.Name;
+        }
+        if (request.Project.Description is not null)
+        {
+            projectToUpdate.Data.Description = request.Project.Description;
+        }
+        if (request.Project.ProjectStatus is not null)
+        {
+            projectToUpdate.Data.Status = request.Project.ProjectStatus.ToString();
+        }
+        if (request.Project.DepartmentId is not null)
+        {
+            projectToUpdate.Data.DepartmentId = request.Project.DepartmentId.Value;
+        }
 
-        projectToUpdate.Data.Name = request.Project.Name;
-        projectToUpdate.Data.Description = request.Project.Description;
-        projectToUpdate.Data.StartDate = request.Project.StartDate;
-        projectToUpdate.Data.EndDate = request.Project.EndDate;
-        projectToUpdate.Data.Status = request.Project.ProjectStatus.ToString();
-        projectToUpdate.Data.DepartmentId = request.Project.DepartmentId;
-        // Potentially update team members if that's part of UpdateProjectDto
-
+        if (request.Project.EnrolledMembersIds is not null &&
+            request.Project.EnrolledMembersIds.Count != 0 &&
+            request.Project.EnrolledMembersIds.Contains(0) is false)
+        {
+            projectToUpdate.Data.TeamMembers = await GetEnrolledMembers(request.Project.EnrolledMembersIds);
+        }
         var updateResult = await commiter.Projects.UpdateAsync(projectToUpdate.Data);
         var commitResult = await commiter.CommitAsync(cancellationToken);
 
         return updateResult.IsSuccess is false || commitResult == 0
-            ? ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, updateResult.Message)
+            ? ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, updateResult.Message??"")
             : ApiResponse<UpdateProjectDto>.Success(request.Project);
     }
-
-    private async Task<DbRequest> ValidateDto(UpdateProjectDto dto)
+    
+    private async Task<List<Employee>> GetEnrolledMembers(List<int> enrolledMembersIds)
     {
-        var errorMessage = "";
-        if (dto.Name.Length < 3)
+        var employees = new List<Employee>();
+        foreach (var id in enrolledMembersIds)
         {
-            errorMessage += "Project name must be at least 3 characters long\n";
-        }
-        if (dto.Description.Length < 3)
-        {
-            errorMessage += "Project description must be at least 3 characters long\n";
-        }
-        if (dto.StartDate > dto.EndDate)
-        {
-            errorMessage += "Start date must be before end date\n";
-        }
-        // Note: For update, startDate < DateTime.Now might not be an error if updating an ongoing project.
-        // Consider your business logic for this validation.
-
-        if (await commiter.Departments.AnyAsync(x => x.Id == dto.DepartmentId) is false)
-        {
-            errorMessage += $"Department with id {dto.DepartmentId} does not exist\n";
+            employees.Add((await commiter.Employees.GetAsync(x => x.Id == id)).Data!);
         }
 
-        // Add more specific validation for project status, etc. if needed
-
-        return errorMessage.Length > 0 ? DbRequest.Failure(errorMessage) : DbRequest.Success();
+        return employees;
     }
 } 

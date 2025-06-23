@@ -112,7 +112,8 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.NameIdentifier, user.Id.ToString())
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new ("Employee_Id",user.Id.ToString())
         };
         claims.AddRange(rolesAndPermissionsAsListOfClaims);
         var key = new SymmetricSecurityKey(
