@@ -59,7 +59,7 @@ public class EmployeesController(ISender sender) : ControllerBase
     {
         if (employee == null) return BadRequest("The employee data must not be null.");
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return await sender.Send(new UpdateEntityCommand<Employee, UpdateEmployeeDto>(employeeId, employee), token);
+        return await sender.Send(new UpdateEntityCommand<Employee, UpdateEmployeeDto>(x=>x.Id == employeeId, employee), token);
     }
 
     [HttpDelete(EmployeesEndPoint.Delete)]

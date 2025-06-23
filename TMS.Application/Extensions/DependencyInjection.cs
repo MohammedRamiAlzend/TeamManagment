@@ -1,6 +1,9 @@
 ﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+using TMS.Application.Handlers.CustomHandlers.TaskHandlers;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
+using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
+using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries;
 
 namespace TMS.Application.Extensions;
@@ -39,10 +42,16 @@ public static class DependencyInjection
         services.AddRequestHandler<DeleteProjectCommand, ApiResponse<bool>, DeleteProjectCommandHandler>();
         
         //Task Registration
-        services.AddEntityRegistration<WorkTask,GetTaskResponse>();
+        services.AddEntityGetRegistration<WorkTask,GetTaskResponse>();
+        services.AddEntityAdditionRegistration<WorkTask,AddTaskDto>();
+        services.AddEntityUpdationRegistration<WorkTask,UpdateTaskDto>();
+        services.AddRequestHandler<UpdateWorkTaskCommand, ApiResponse, UpdateTaskCommandHandler>();
+        
+        services.AddEntityDeletionRegistration<WorkTask>();
         
         services.AddScoped<ISender, Sender>();
         
         return services;
     }
 }
+

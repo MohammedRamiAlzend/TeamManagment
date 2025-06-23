@@ -69,7 +69,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     {
         if (department == null) return BadRequest("The Department data must not be null.");
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentCommand>(departmentId, department,
+        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentCommand>(x=>x.Id==departmentId, department,
             Include: QueryIncludeHelper.IncludeDepartmentRelations() ), token);
     }
 

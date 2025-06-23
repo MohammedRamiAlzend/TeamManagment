@@ -36,24 +36,10 @@ public static class AppRoles
         Name = "Employee",
         Permissions =
         [
-            AppPermissions.UserManagement.Get,
-            AppPermissions.ProjectManagement.Get,
-            AppPermissions.TaskManagement.Get, AppPermissions.TaskManagement.Update,
-            AppPermissions.UserManagement.Delete
+            AppPermissions.UserManagement.Get, AppPermissions.ProjectManagement.Get,
+            AppPermissions.TaskManagement.Get, AppPermissions.TaskManagement.Update, AppPermissions.TaskManagement.SubmitTask
         ]
     };
-    public static readonly RoleDefinition Observer = new()
-    {
-        Name = "Observer",
-        Permissions =
-        [
-            AppPermissions.UserManagement.Get,
-            AppPermissions.ProjectManagement.Get,
-            AppPermissions.TaskManagement.Get, AppPermissions.TaskManagement.Update,
-            AppPermissions.UserManagement.Delete
-        ]
-    };
-    
     public static IEnumerable<RoleDefinition> GetAllRoles()
     {
         return typeof(AppRoles)

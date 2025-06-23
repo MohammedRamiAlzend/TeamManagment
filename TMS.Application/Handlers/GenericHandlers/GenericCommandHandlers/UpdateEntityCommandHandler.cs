@@ -29,7 +29,7 @@ public class UpdateEntityCommandHandler<TEntity, TEntityDto>(
                     "Repository is unavailable.");
             }
 
-            var existingEntityResult = await repository.GetAsync(x => x.Id == request.Id,include:request.Include);
+            var existingEntityResult = await repository.GetAsync(request.Filter,include:request.Include);
             if (!existingEntityResult.IsSuccess)
             {
                 logger.LogWarning("Entity not found for update: {Message}", existingEntityResult.Message);

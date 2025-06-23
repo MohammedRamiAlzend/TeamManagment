@@ -1,8 +1,7 @@
-﻿namespace TMS.Contract.Entities;
+namespace TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 
-public class WorkTask : Entity
+public class AddTaskDto : IDto
 {
-    public Guid TaskUniqueIdentifier { get; init; } = Guid.NewGuid();
     public string Title { get; set; }
     public string Description { get; set; }
     public string Status { get; set; }
@@ -14,10 +13,8 @@ public class WorkTask : Entity
     public int PointsValue { get; set; }
 
     public int CreatedByEmployeeId { get; set; }
-    public Employee CreatedBy { get; set; }
 
     public int AssignedToEmployeeId { get; set; }
-    public Employee AssignedTo { get; set; }
 
-    public ICollection<Project> Projects { get; set; }
+    public ICollection<int> ProjectIds { get; set; }
 }

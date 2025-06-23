@@ -51,11 +51,12 @@ public static class ApiEndPoints
     }
     public static class TasksEndPoint
     {
-        public const string Get = "{taskId:int}";
+        public const string Get = "{taskId:Guid}";
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
         public const string Create = "";
-        public const string Update = "{taskId:int}";
-        public const string Delete = "{taskId:int}";
+        public const string Update = "{taskId:Guid}";
+        public const string Delete = "{taskId:Guid}";
+        public const string SubmitTask = "{taskId:Guid}";
     }
 }

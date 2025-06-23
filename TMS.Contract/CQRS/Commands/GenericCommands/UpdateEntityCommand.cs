@@ -1,7 +1,7 @@
 namespace TMS.Contract.CQRS.Commands.GenericCommands;
 
 public record UpdateEntityCommand<TEntity, TEntityDto>(
-    int Id,
+    Expression<Func<TEntity, bool>> Filter,
     TEntityDto Entity,
     Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? Include = null
     ) : IRequest<ApiResponse<TEntityDto>>

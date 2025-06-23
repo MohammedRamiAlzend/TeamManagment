@@ -1,5 +1,5 @@
 {
-  "Version": 7,
+  "Version": 8,
   "Roles": [
     {
       "Name": "Admin",
@@ -53,6 +53,9 @@
           "Name": "TaskManagement.Delete"
         },
         {
+          "Name": "TaskManagement.Delete"
+        },
+        {
           "Name": "TaskManagement.Get"
         },
         {
@@ -85,13 +88,13 @@
           "Name": "ProjectManagement.Get"
         },
         {
+          "Name": "TaskManagement.Delete"
+        },
+        {
           "Name": "TaskManagement.Get"
         },
         {
           "Name": "TaskManagement.Update"
-        },
-        {
-          "Name": "UserManagement.Delete"
         },
         {
           "Name": "UserManagement.Get"
@@ -145,26 +148,6 @@
         },
         {
           "Name": "UserManagement.Update"
-        }
-      ]
-    },
-    {
-      "Name": "Observer",
-      "Permissions": [
-        {
-          "Name": "ProjectManagement.Get"
-        },
-        {
-          "Name": "TaskManagement.Get"
-        },
-        {
-          "Name": "TaskManagement.Update"
-        },
-        {
-          "Name": "UserManagement.Delete"
-        },
-        {
-          "Name": "UserManagement.Get"
         }
       ]
     },
