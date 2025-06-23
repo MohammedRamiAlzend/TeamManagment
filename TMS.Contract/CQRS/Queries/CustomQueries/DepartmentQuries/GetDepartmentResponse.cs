@@ -1,6 +1,6 @@
 namespace TMS.Contract.CQRS.Queries.CustomQueries.DepartmentQuries;
 
-public class GetDepartmentQuery : IDto
+public class GetDepartmentResponse : IDto
 {
     public int Id { get; set; }
     public string? Name { get; set; }

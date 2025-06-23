@@ -8,7 +8,7 @@ public class DepartmentProfile : Profile
 {
     public DepartmentProfile()
     {
-        CreateMap<Department, GetDepartmentQuery>()
+        CreateMap<Department, GetDepartmentResponse>()
             .ForMember(dest => dest.TeamLeaderName,
                 opt => opt.MapFrom(scr => $"{scr.TeamLeader.FirstName} {scr.TeamLeader.LastName}"))
             .ForMember(dest => dest.EmployeesNames,
