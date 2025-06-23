@@ -1,13 +1,5 @@
-﻿using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands;
-using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands.Dtos;
-using TMS.Contract.CQRS.Commands.CustomCommands.DepartmentCommands;
-using TMS.Contract.CQRS.Commands.CustomCommands.DepartmentCommands.Dtos;
-using TMS.Contract.CQRS.Commands.CustomCommands.EmployeeCommands.Dtos;
-using TMS.Contract.CQRS.Queries.CustomQueries.DepartmentQuries;
-using TMS.Contract.CQRS.Queries.CustomQueries.EmployeeQuries;
-using TMS.Contract.CQRS.Queries.CustomQueries.PermissionQuries;
-using TMS.Contract.CQRS.Queries.CustomQueries.ProjectQuries;
-using TMS.Contract.CQRS.Queries.CustomQueries.RoleQuries;
+﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 
 namespace TMS.Application.Extensions;
 
@@ -40,7 +32,7 @@ public static class DependencyInjection
         
         //project Registration
         services.AddEntityGetRegistration<Project,GetProjectResponse>();
-        
+        services.AddRequestHandler<AddProjectCommand,ApiResponse<AddProjectDto>,AddProjectHandler>();
         services.AddScoped<ISender, Sender>();
 
         return services;

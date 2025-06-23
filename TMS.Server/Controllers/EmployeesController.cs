@@ -16,8 +16,8 @@ public class EmployeesController(ISender sender) : ControllerBase
     public async Task<ActionResult<ApiResponse<List<GetEmployeeResponse>>>> GetAllEmployeesAsync(CancellationToken token)
     {
         return await sender.Send(new GetAllEntityQuery<Employee, GetEmployeeResponse>(
-                Include:QueryIncludeHelper.IncludeEmployeeRelations()
-            ), token);
+            Include:QueryIncludeHelper.IncludeEmployeeRelations()
+        ), token);
     }
 
     [HttpGet(EmployeesEndPoint.GetAllPaginated)]
@@ -33,7 +33,7 @@ public class EmployeesController(ISender sender) : ControllerBase
             new GetAllPaginatedEntityQuery<Employee, GetEmployeeResponse>(
                 PageNumber: pageNumber, PageSize: pageSize,
                 Include:QueryIncludeHelper.IncludeEmployeeRelations()
-                ), token);
+            ), token);
     }
 
     [HttpGet(EmployeesEndPoint.Get)]
@@ -47,7 +47,7 @@ public class EmployeesController(ISender sender) : ControllerBase
         return await sender.Send(new GetEntityQuery<Employee, GetEmployeeResponse>(
             x => x.Id == employeeId,
             Include:QueryIncludeHelper.IncludeEmployeeRelations()
-            ), token);
+        ), token);
     }
 
     [HttpPut(EmployeesEndPoint.Update)]

@@ -1,3 +1,4 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.CQRS.Queries.CustomQueries.ProjectQuries;
 
 namespace TMS.Core.AutoMapperClasses.ProfileClasses;

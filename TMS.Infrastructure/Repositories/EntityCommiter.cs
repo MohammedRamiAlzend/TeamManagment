@@ -8,6 +8,7 @@ public class EntityCommiter(AppDbContext appDbContext, ILogger<EntityCommiter> l
     public IDbContextRepository<Permission> Claims => GetRepository<Permission>();
     public IDbContextRepository<Role> Roles => GetRepository<Role>();
     public IDbContextRepository<WorkTask> Tasks => GetRepository<WorkTask>();
+    public IDbContextRepository<Project> Projects => GetRepository<Project>();
 
     public int Commit()
     {

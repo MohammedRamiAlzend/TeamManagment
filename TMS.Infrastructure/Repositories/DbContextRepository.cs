@@ -139,6 +139,11 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         );
     }
 
+    public Task<bool> AnyAsync(Expression<Func<T, bool>> filter)
+    {
+        return dbSet.AnyAsync(filter);
+    }
+
     /// <summary>
     ///     Updates an entity in the database asynchronously.
     /// </summary>

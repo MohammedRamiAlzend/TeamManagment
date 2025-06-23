@@ -19,4 +19,6 @@ public interface IDbContextRepository<T> where T : class
     Task<DbRequest> AddAsync(T entity);
     Task<DbRequest> UpdateAsync(T entity);
     Task<DbRequest> RemoveAsync(Expression<Func<T, bool>> filter);
+    Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
+    
 }

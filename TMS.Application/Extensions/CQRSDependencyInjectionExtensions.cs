@@ -1,6 +1,3 @@
-using TMS.Contract.CQRS.Commands.GenericCommands;
-using TMS.Contract.CQRS.Queries.GenericQueries;
-
 namespace TMS.Application.Extensions;
 
 public static class CqrsDependencyInjectionExtensions

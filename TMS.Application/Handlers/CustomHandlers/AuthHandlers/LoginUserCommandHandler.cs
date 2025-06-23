@@ -1,7 +1,4 @@
-using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands;
-using TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands.Dtos;
-
-namespace TMS.Application.Handlers.AuthHandlers;
+namespace TMS.Application.Handlers.CustomHandlers.AuthHandlers;
 
 public class LoginUserCommandHandler(IAuthService authService)
     : IRequestHandler<LoginUserCommand, ApiResponse<TokenResponseDto>>

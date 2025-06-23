@@ -16,4 +16,8 @@
         <ProjectReference Include="..\TMS.Contract\TMS.Contract.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Handlers\GenericHandlers\" />
+    </ItemGroup>
+
 </Project>

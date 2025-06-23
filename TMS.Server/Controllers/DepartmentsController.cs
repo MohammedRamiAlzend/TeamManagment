@@ -18,7 +18,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
     {
         return await sender.Send(new GetAllEntityQuery<Department, GetDepartmentQuery>(
             Include:QueryIncludeHelper.IncludeDepartmentRelations()
-            ), token);
+        ), token);
     }
 
     [HttpPost(DepartmentsEndPoint.UpdateDepartmentTeamLeader)]
@@ -55,7 +55,7 @@ public class DepartmentsController(ISender sender) : ControllerBase
         return await sender.Send(new GetEntityQuery<Department, GetDepartmentQuery>(
             Filter: x => x.Id == departmentId,
             Include:QueryIncludeHelper.IncludeDepartmentRelations()
-            ), token);
+        ), token);
     }
 
 

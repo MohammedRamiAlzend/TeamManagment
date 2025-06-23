@@ -29,9 +29,9 @@ public class PermissionsController(ISender sender)
         )
     {
         return await sender.Send(new GetAllPaginatedEntityQuery<Permission, GetPermissionResponse>(
-            PageNumber:pageNumber,
-            PageSize: pageSize,
-            Include:x=>x.Include(i=>i.Roles)),
+                PageNumber:pageNumber,
+                PageSize: pageSize,
+                Include:x=>x.Include(i=>i.Roles)),
             token);
     }
 }
