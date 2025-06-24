@@ -13,7 +13,7 @@ public static class AppRoles
         Name = "Manager",
         Permissions =
         [
-            AppPermissions.UserManagement.Get, AppPermissions.UserManagement.Register, AppPermissions.UserManagement.Update, AppPermissions.UserManagement.Delete,AppPermissions.UserManagement.Rami,
+            AppPermissions.UserManagement.Get, AppPermissions.UserManagement.Register, AppPermissions.UserManagement.Update, AppPermissions.UserManagement.Delete,
             AppPermissions.RoleManagement.Get, AppPermissions.RoleManagement.Update,
             AppPermissions.ProjectManagement.Get, AppPermissions.ProjectManagement.Add, AppPermissions.ProjectManagement.Update, AppPermissions.ProjectManagement.Delete,
             AppPermissions.TaskManagement.Get, AppPermissions.TaskManagement.Get, AppPermissions.TaskManagement.Update, AppPermissions.TaskManagement.Delete
