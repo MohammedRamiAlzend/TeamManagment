@@ -1,4 +1,6 @@
-﻿namespace TMS.Contract.Entities;
+﻿using System.Collections.Generic;
+
+namespace TMS.Contract.Entities;
 
 public class WorkTask : Entity
 {
@@ -13,6 +15,12 @@ public class WorkTask : Entity
     public bool Accepted { get; set; }
     public int PointsValue { get; set; }
 
+    // Submission related properties
+    public bool AllowMultipleSubmissions { get; set; } = false;
+    public bool RequiresSubmission { get; set; } = true;
+    public DateTime? SubmissionDeadline { get; set; }
+    public string SubmissionInstructions { get; set; }
+
     public int CreatedByEmployeeId { get; set; }
     public Employee CreatedBy { get; set; }
 
@@ -20,4 +28,7 @@ public class WorkTask : Entity
     public Employee AssignedTo { get; set; }
 
     public ICollection<Project> Projects { get; set; }
+
+    // Submissions related to this task
+    public ICollection<TaskSubmission> Submissions { get; set; } = new List<TaskSubmission>();
 }

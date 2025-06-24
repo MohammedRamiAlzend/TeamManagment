@@ -1,7 +1,10 @@
+using System.Net;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 using TMS.Contract.CQRS.Commands.GenericCommands;
 using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries;
+using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries.Dtos;
 using TMS.Contract.CQRS.Queries.GenericQueries;
 
 namespace TMS.Server.Controllers;
@@ -72,5 +75,57 @@ public class TaskController(ISender sender) : ControllerBase
         CancellationToken token)
     {
         return await sender.Send(new DeleteEntityCommand<WorkTask>(x=>x.TaskUniqueIdentifier==taskId), token);
+    }
+
+    [HttpPost(TasksEndPoint.SubmitTask)]
+    [HasPermission(TaskManagement.SubmitTask)]
+    public async Task<ActionResult<ApiResponse<List<SubmitTaskResponseDto>>>> SubmitTaskAsync(
+        [FromRoute] Guid taskId,
+        [FromForm] SubmitTaskRequestDto request,
+        CancellationToken token)
+    {
+        return await sender.Send(new SubmitTaskCommand(request,taskId), token);
+    }
+
+    [HttpGet(TasksEndPoint.GetSubmissionFiles)]
+    [HasPermission(TaskManagement.Get)]
+    public async Task<ActionResult<ApiResponse<List<SubmissionFileDto>>>> GetSubmissionFilesAsync(
+        [FromRoute] Guid taskId,
+        CancellationToken token)
+    {
+        return await sender.Send(new GetTaskSubmissionFilesQuery(taskId), token);
+    }
+
+    [HttpGet(TasksEndPoint.DownloadSubmissionFile)]
+    [HasPermission(TaskManagement.Get)]
+    public async Task<IActionResult> DownloadSubmissionFileAsync(
+        [FromRoute] Guid taskId,
+        [FromRoute] int fileId,
+        CancellationToken token)
+    {
+        var result = await sender.Send(new GetSubmissionFileQuery(taskId, fileId), token);
+
+        if (!result.IsSuccess || result.Data == null)
+        {
+            return StatusCode((int)(result.Code ?? HttpStatusCode.BadRequest), result);
+        }
+
+        return File(result.Data.FileContents, result.Data.ContentType, result.Data.FileName);
+    }
+    
+    [HttpGet(TasksEndPoint.DownloadAllFiles)]
+    [HasPermission(TaskManagement.Get)]
+    public async Task<IActionResult> DownloadAllSubmissionsFilesAsync(
+        [FromRoute] Guid taskId,
+        CancellationToken token)
+    {
+        var result = await sender.Send(new GetAllSubmissionsFilesQuery(taskId), token);
+
+        if (!result.IsSuccess || result.Data == null)
+        {
+            return StatusCode((int)(result.Code ?? HttpStatusCode.BadRequest), result);
+        }
+
+        return File(result.Data.ZipFileContents, result.Data.ContentType, result.Data.ZipFileName);
     }
 }

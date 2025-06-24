@@ -49,7 +49,7 @@ public static class AppPermissions
         public const string Add = $"{GetPrefix}.Add";
         public const string Update = $"{GetPrefix}.Update";
         public const string Delete = $"{GetPrefix}.Delete";
-        public const string SubmitTask = $"{GetPrefix}.Delete";
+        public const string SubmitTask = $"{GetPrefix}.SubmitTask";
     }
     public static IEnumerable<string> GetAllPermissions()
     {

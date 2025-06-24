@@ -9,6 +9,8 @@ public class EntityCommiter(AppDbContext appDbContext, ILogger<EntityCommiter> l
     public IDbContextRepository<Role> Roles => GetRepository<Role>();
     public IDbContextRepository<WorkTask> Tasks => GetRepository<WorkTask>();
     public IDbContextRepository<Project> Projects => GetRepository<Project>();
+        public IDbContextRepository<TaskSubmission> TaskSubmissions => GetRepository<TaskSubmission>();
+        public IDbContextRepository<SubmissionFile> SubmissionFiles => GetRepository<SubmissionFile>();
 
     public int Commit()
     {

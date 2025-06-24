@@ -1,10 +1,12 @@
 ﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 using TMS.Application.Handlers.CustomHandlers.TaskHandlers;
+using TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries;
+using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries.Dtos;
 
 namespace TMS.Application.Extensions;
 
@@ -45,11 +47,17 @@ public static class DependencyInjection
         services.AddEntityGetRegistration<WorkTask,GetTaskResponse>();
         services.AddEntityAdditionRegistration<WorkTask,AddTaskDto>();
         services.AddEntityUpdationRegistration<WorkTask,UpdateTaskDto>();
-        services.AddRequestHandler<UpdateWorkTaskCommand, ApiResponse, UpdateTaskCommandHandler>();
-        
         services.AddEntityDeletionRegistration<WorkTask>();
-        
+        services.AddRequestHandler<UpdateWorkTaskCommand, ApiResponse, UpdateTaskCommandHandler>();
+        services.AddRequestHandler<SubmitTaskCommand, ApiResponse<List<SubmitTaskResponseDto>>, SubmitTaskCommandHandler>();
+        services.AddRequestHandler<GetTaskSubmissionFilesQuery, ApiResponse<List<SubmissionFileDto>>, GetTaskSubmissionFilesQueryHandler>();
+        services.AddRequestHandler<GetSubmissionFileQuery, ApiResponse<SubmissionFileResult>, GetSubmissionFileQueryHandler>();
+        services.AddRequestHandler<GetAllSubmissionsFilesQuery, ApiResponse<ZipSubmissionFileResult>, GetAllSubmissionsFilesQueryHandler>();
+         
+            
+            
         services.AddScoped<ISender, Sender>();
+        services.AddHttpContextAccessor();
         
         return services;
     }

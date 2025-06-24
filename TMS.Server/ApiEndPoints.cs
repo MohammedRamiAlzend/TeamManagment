@@ -57,6 +57,9 @@ public static class ApiEndPoints
         public const string Create = "";
         public const string Update = "{taskId:Guid}";
         public const string Delete = "{taskId:Guid}";
-        public const string SubmitTask = "{taskId:Guid}";
+        public const string SubmitTask = "submit-task/{taskId:Guid}";
+        public const string GetSubmissionFiles = "get-submission-files/{taskId:Guid}/files";
+        public const string DownloadSubmissionFile = "download-submission-file/{taskId:Guid}/files/{fileId:int}/download";
+        public const string DownloadAllFiles = "download-all-files/{taskId:Guid}/download";
     }
 }

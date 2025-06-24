@@ -1,5 +1,5 @@
 {
-  "Version": 9,
+  "Version": 10,
   "Roles": [
     {
       "Name": "Admin",
@@ -53,10 +53,10 @@
           "Name": "TaskManagement.Delete"
         },
         {
-          "Name": "TaskManagement.Delete"
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.Get"
+          "Name": "TaskManagement.SubmitTask"
         },
         {
           "Name": "TaskManagement.Update"
@@ -82,10 +82,10 @@
           "Name": "ProjectManagement.Get"
         },
         {
-          "Name": "TaskManagement.Delete"
+          "Name": "TaskManagement.Get"
         },
         {
-          "Name": "TaskManagement.Get"
+          "Name": "TaskManagement.SubmitTask"
         },
         {
           "Name": "TaskManagement.Update"
@@ -229,6 +229,9 @@
     },
     {
       "Name": "TaskManagement.Get"
+    },
+    {
+      "Name": "TaskManagement.SubmitTask"
     },
     {
       "Name": "TaskManagement.Update"

@@ -1,5 +1,3 @@
-using System;
-
 namespace TMS.Contract.Entities;
 
 public class SubmissionFile : Entity

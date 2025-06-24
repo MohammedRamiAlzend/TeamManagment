@@ -9,7 +9,8 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
     public async Task<ApiResponse<UpdateProjectDto>> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
 
-        var projectToUpdate = await commiter.Projects.GetAsync(p => p.Id == request.Id);
+        var projectToUpdate = await commiter.Projects.GetAsync(p => p.Id == request.Id,
+            include:i=> i.Include(x=>x.TeamMembers));
         if (projectToUpdate.IsSuccess is false || projectToUpdate.Data is null)
             return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.NotFound, "Project not found.");
         if (request.Project.Name is not null)
@@ -29,11 +30,10 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
             projectToUpdate.Data.DepartmentId = request.Project.DepartmentId.Value;
         }
 
-        if (request.Project.EnrolledMembersIds is not null &&
-            request.Project.EnrolledMembersIds.Count != 0 &&
-            request.Project.EnrolledMembersIds.Contains(0) is false)
+        if (request.Project.EnrolledMembersIds is not null 
+            )
         {
-            projectToUpdate.Data.TeamMembers = await GetEnrolledMembers(request.Project.EnrolledMembersIds);
+            projectToUpdate.Data.TeamMembers= await GetEnrolledMembers(request.Project.EnrolledMembersIds, projectToUpdate.Data.TeamMembers);
         }
         var updateResult = await commiter.Projects.UpdateAsync(projectToUpdate.Data);
         var commitResult = await commiter.CommitAsync(cancellationToken);
@@ -43,14 +43,13 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
             : ApiResponse<UpdateProjectDto>.Success(request.Project);
     }
     
-    private async Task<List<Employee>> GetEnrolledMembers(List<int> enrolledMembersIds)
+    private async Task<List<Employee>> GetEnrolledMembers(List<int> enrolledMembersIds,ICollection<Employee>? teamMembers)
     {
         var employees = new List<Employee>();
         foreach (var id in enrolledMembersIds)
         {
             employees.Add((await commiter.Employees.GetAsync(x => x.Id == id)).Data!);
         }
-
         return employees;
     }
 } 

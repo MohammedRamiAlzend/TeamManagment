@@ -27,6 +27,8 @@ public class AppDbContext : DbContext
     public DbSet<WorkTask> Tasks { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<TaskSubmission> TaskSubmissions { get; set; }
+    public DbSet<SubmissionFile> SubmissionFiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,6 +68,26 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Department>()
             .HasOne(d => d.TeamLeader)
             .WithOne();
+
+        // Configure TaskSubmission relationships
+        modelBuilder.Entity<TaskSubmission>()
+            .HasOne(ts => ts.WorkTask)
+            .WithMany(wt => wt.Submissions)
+            .HasForeignKey(ts => ts.WorkTaskId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TaskSubmission>()
+            .HasOne(ts => ts.SubmittedBy)
+            .WithMany(e => e.TaskSubmissions)
+            .HasForeignKey(ts => ts.SubmittedByEmployeeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Configure SubmissionFile relationships
+        modelBuilder.Entity<SubmissionFile>()
+            .HasOne(sf => sf.TaskSubmission)
+            .WithMany(ts => ts.Files)
+            .HasForeignKey(sf => sf.TaskSubmissionId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
         // modelBuilder.ApplyConfiguration(new DepartmentConfiguration());

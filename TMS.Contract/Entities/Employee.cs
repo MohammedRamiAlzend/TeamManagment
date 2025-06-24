@@ -1,4 +1,7 @@
-﻿namespace TMS.Contract.Entities;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+namespace TMS.Contract.Entities;
 
 public class Employee : Entity
 {
@@ -9,7 +12,7 @@ public class Employee : Entity
     public DateTime HireDate { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
-    
+
     public string ImagePath { get; set; } = string.Empty;
 
     [JsonIgnore]
@@ -18,4 +21,5 @@ public class Employee : Entity
     public ICollection<Project> Projects { get; set; }
     public ICollection<WorkTask> CreatedTasks { get; set; }
     public ICollection<WorkTask> AssignedTasks { get; set; }
+    public ICollection<TaskSubmission> TaskSubmissions { get; set; } = new List<TaskSubmission>();
 }

@@ -8,6 +8,8 @@ public interface IEntityCommiter : IDisposable
     IDbContextRepository<Role> Roles { get; }
     IDbContextRepository<WorkTask> Tasks { get; }
     IDbContextRepository<Project> Projects { get; }
+    IDbContextRepository<TaskSubmission> TaskSubmissions { get; }
+    IDbContextRepository<SubmissionFile> SubmissionFiles { get; }
     
     IDbContextRepository<T> GetRepository<T>() where T : Entity;
     int Commit();
