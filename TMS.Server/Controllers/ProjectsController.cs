@@ -49,6 +49,14 @@ public class ProjectsController(ISender sender):ControllerBase
     {
         return await sender.Send(new AddProjectCommand(project), token);
     }
+    [HttpPost(ProjectsEndPoint.AddTasks)]
+    [HasPermission(ProjectManagement.Add)]
+    public async Task<ActionResult<ApiResponse>> AddTasksToProjectAsync(
+        [FromForm] AddTasksToProjectDto project,
+        CancellationToken token)
+    {
+        return await sender.Send(new AddTasksToProjectCommand(project), token);
+    }
     [HttpPut(ProjectsEndPoint.Update)]
     [HasPermission(ProjectManagement.Update)]
     public async Task<ActionResult<ApiResponse<UpdateProjectDto>>> UpdateProjectAsync(

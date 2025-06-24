@@ -42,6 +42,7 @@ public static class DependencyInjection
         services.AddRequestHandler<AddProjectCommand,ApiResponse<AddProjectDto>,AddProjectHandler>();
         services.AddRequestHandler<UpdateProjectCommand, ApiResponse<UpdateProjectDto>, UpdateProjectCommandHandler>();
         services.AddRequestHandler<DeleteProjectCommand, ApiResponse<bool>, DeleteProjectCommandHandler>();
+        services.AddRequestHandler<AddTasksToProjectCommand, ApiResponse, AddTasksToProjectCommandHandler>();
         
         //Task Registration
         services.AddEntityGetRegistration<WorkTask,GetTaskResponse>();

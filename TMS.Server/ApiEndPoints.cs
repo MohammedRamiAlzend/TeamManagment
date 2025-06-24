@@ -46,6 +46,7 @@ public static class ApiEndPoints
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
         public const string Create = "";
+        public const string AddTasks = "add-task";
         public const string Update = "{projectId:int}";
         public const string Delete = "{projectId:int}";
     }

@@ -8,4 +8,7 @@ public class AddProjectDto : IDto
     public DateTime EndDate { get; set; }
     public int DepartmentId { get; set; }
     public List<int> EnrolledMembersIds { get; set; }
+    
+    public List<Guid> Tasks { get; set; }
+    
 }

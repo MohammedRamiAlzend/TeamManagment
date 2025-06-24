@@ -54,11 +54,10 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
     public async Task<ApiResponse<TokenResponseDto>> LoginAsync(LoginUserDto request)
     {
         var user = await context.Users
+            .Include(e=>e.Employee)
             .Include(r => r.Roles)
             .ThenInclude(p => p.Permissions)
             .FirstOrDefaultAsync(x => x.UserName == request.UserName);
-        // var user = await context.Users
-        //     .FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
         var passwordAccepted = new PasswordHasher<User>()
             .VerifyHashedPassword(user, user.PasswordHash, request.Password) != PasswordVerificationResult.Failed;
@@ -113,7 +112,7 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
         {
             new(ClaimTypes.Name, user.UserName),
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new ("Employee_Id",user.Id.ToString())
+            new ("Employee_Id",user.EmployeeId.ToString())
         };
         claims.AddRange(rolesAndPermissionsAsListOfClaims);
         var key = new SymmetricSecurityKey(

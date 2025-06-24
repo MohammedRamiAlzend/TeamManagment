@@ -1,8 +1,8 @@
+using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.Entities.Enums;
 
 namespace TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
-public record AddProjectCommand(AddProjectDto EntityDto):IRequest<ApiResponse<AddProjectDto>>;
 
 public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddProjectCommand,ApiResponse<AddProjectDto>>
 {
@@ -10,10 +10,10 @@ public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddPr
     {
         var validationResult = await ValidateDto(request.EntityDto);
         if(validationResult.IsSuccess is false)
-            return ApiResponse<AddProjectDto>.Failure(HttpStatusCode.BadRequest, validationResult.Message);
+            return ApiResponse<AddProjectDto>.Failure(HttpStatusCode.BadRequest, validationResult.Message!);
         
         var getEnrolledEmployees = await GetEnrolledMembers(request.EntityDto.EnrolledMembersIds);
-
+        var getTasksForProject = await GetTasksForProject(request.EntityDto.Tasks);
         Project project = new()
         {
             DepartmentId = request.EntityDto.DepartmentId,
@@ -22,15 +22,25 @@ public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddPr
             EndDate = request.EntityDto.EndDate,
             Name = request.EntityDto.ProjectName,
             TeamMembers = getEnrolledEmployees,
+            Tasks = getTasksForProject,
             Status = nameof(ProjectStatus.Pending)
         };
         var addResult =await commiter.Projects.AddAsync(project);
         var commitResult = await commiter.CommitAsync(cancellationToken);
         return addResult.IsSuccess is false  || commitResult == 0
-            ? ApiResponse<AddProjectDto>.Failure(HttpStatusCode.BadRequest, addResult.Message) 
+            ? ApiResponse<AddProjectDto>.Failure(HttpStatusCode.BadRequest, addResult.Message!) 
             : ApiResponse<AddProjectDto>.Success(request.EntityDto);
     }
+    private async Task<List<WorkTask>> GetTasksForProject(List<Guid> tasksIds)
+    {
+        var tasks = new List<WorkTask>();
+        foreach (var id in tasksIds)
+        {
+            tasks.Add((await commiter.Tasks.GetAsync(x => x.TaskUniqueIdentifier == id)).Data!);
+        }
 
+        return tasks;
+    }
     private async Task<DbRequest> ValidateDto(AddProjectDto dto)
     {
         var projectName = dto.ProjectName;
@@ -71,7 +81,6 @@ public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddPr
         
         return errorMessage.Length > 0 ? DbRequest.Failure(errorMessage) : DbRequest.Success();
     }
-
     private async Task<List<Employee>> GetEnrolledMembers(List<int> enrolledMembersIds)
     {
         var employees = new List<Employee>();
@@ -79,9 +88,6 @@ public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddPr
         {
             employees.Add((await commiter.Employees.GetAsync(x => x.Id == id)).Data!);
         }
-
         return employees;
     }
-
- 
 }

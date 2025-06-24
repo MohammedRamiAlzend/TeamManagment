@@ -8,4 +8,6 @@ public class UpdateProjectDto:IDto
     public ProjectStatus? ProjectStatus { get; set; }
     public int? DepartmentId { get; set; }
     public List<int>? EnrolledMembersIds { get; set; }
+    public ICollection<Guid>? Tasks { get; set; }
+    
 }
