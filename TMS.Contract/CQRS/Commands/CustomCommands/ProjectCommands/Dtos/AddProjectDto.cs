@@ -9,6 +9,6 @@ public class AddProjectDto : IDto
     public int DepartmentId { get; set; }
     public List<int> EnrolledMembersIds { get; set; }
     
-    public List<Guid> Tasks { get; set; }
+    public List<Guid> GuidTasks { get; set; }
     
 }

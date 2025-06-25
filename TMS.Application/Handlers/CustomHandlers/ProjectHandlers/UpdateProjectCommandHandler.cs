@@ -33,9 +33,9 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
         {
             projectToUpdate.Data.TeamMembers = await GetEnrolledMembers(request.Project.EnrolledMembersIds);
         }
-        if (request.Project.Tasks is not null)
+        if (request.Project.GuidTasks is not null)
         {
-            projectToUpdate.Data.Tasks = await GetTasksForProject(request.Project.Tasks);
+            projectToUpdate.Data.Tasks = await GetTasksForProject(request.Project.GuidTasks);
         }
         var updateResult = await commiter.Projects.UpdateAsync(projectToUpdate.Data);
         var commitResult = await commiter.CommitAsync(cancellationToken);

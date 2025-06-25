@@ -13,7 +13,7 @@ public class AddProjectHandler(IEntityCommiter commiter) : IRequestHandler<AddPr
             return ApiResponse<AddProjectDto>.Failure(HttpStatusCode.BadRequest, validationResult.Message!);
         
         var getEnrolledEmployees = await GetEnrolledMembers(request.EntityDto.EnrolledMembersIds);
-        var getTasksForProject = await GetTasksForProject(request.EntityDto.Tasks);
+        var getTasksForProject = await GetTasksForProject(request.EntityDto.GuidTasks);
         Project project = new()
         {
             DepartmentId = request.EntityDto.DepartmentId,

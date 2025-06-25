@@ -8,11 +8,11 @@ public class AddTasksToProjectCommandHandler(IEntityCommiter commiter):IRequestH
 {
      public async Task<ApiResponse> Handle(AddTasksToProjectCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateDto(request.dto.TasksIds);
+        var validationResult = await ValidateDto(request.dto.GuidTasks);
         if(validationResult.IsSuccess is false)
             return ApiResponse.Failure(HttpStatusCode.BadRequest, validationResult.Message!);
         var getProject = await commiter.Projects.GetAsync(x => x.Id == request.dto.ProjectId,include:i=>i.Include(x=>x.Tasks));
-        ICollection<WorkTask> getTasksForProject = await GetTasksForProject(request.dto.TasksIds);
+        ICollection<WorkTask> getTasksForProject = await GetTasksForProject(request.dto.GuidTasks);
         if (getProject.IsSuccess is false || getProject.Data is null)
         {
             return ApiResponse.Failure(HttpStatusCode.BadRequest, getProject.Message??$"no project with {request.dto.ProjectId} was found");
