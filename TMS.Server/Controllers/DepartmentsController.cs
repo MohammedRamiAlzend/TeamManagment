@@ -11,6 +11,14 @@ namespace TMS.Server.Controllers;
 [Authorize]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
+    [HttpGet(DepartmentsEndPoint.Create)]
+    [HasPermission(DepartmentManagement.Add)]
+    public async Task<ActionResult<ApiResponse>> CreateDepartmentAsync(
+        [FromForm]
+        CreateDepartmentDto request,CancellationToken token)
+    {
+        return await sender.Send(new CreateDepartmentCommand(request), token);
+    }
     
     [HttpGet(DepartmentsEndPoint.GetAll)]
     [HasPermission(DepartmentManagement.Get)]
@@ -23,7 +31,8 @@ public class DepartmentsController(ISender sender) : ControllerBase
 
     [HttpPost(DepartmentsEndPoint.UpdateDepartmentTeamLeader)]
     [HasPermission(DepartmentManagement.Update)]
-    public async Task<ActionResult<ApiResponse>> UpdateDepartmentTeamLeaderAsync([FromQuery]int departmentId,[FromQuery]int departmentTeamLeaderId)
+    public async Task<ActionResult<ApiResponse>> UpdateDepartmentTeamLeaderAsync(
+        [FromQuery]int departmentId,[FromQuery]int departmentTeamLeaderId)
     {
         return await sender.Send(new UpdateDepartmentTeamLeaderCommand(departmentId,departmentTeamLeaderId));
     }

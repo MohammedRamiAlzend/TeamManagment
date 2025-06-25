@@ -139,9 +139,11 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
         );
     }
 
-    public Task<bool> AnyAsync(Expression<Func<T, bool>> filter)
-    {
-        return dbSet.AnyAsync(filter);
+    public Task<bool> AnyAsync(Expression<Func<T, bool>> filter,Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+    { 
+        IQueryable<T> query = dbSet;
+        if (include != null) query = include(query);
+        return query.AnyAsync(filter);
     }
 
     /// <summary>

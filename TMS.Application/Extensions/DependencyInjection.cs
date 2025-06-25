@@ -20,11 +20,11 @@ public static class DependencyInjection
         services.AddEntityGetRegistration<Employee, GetEmployeeResponse>();
 
         //Department Registration
-        services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
+        // services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
         services.AddEntityUpdationRegistration<Department, UpdateDepartmentCommand>();
         services.AddEntityGetRegistration<Department,GetDepartmentResponse>();
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
-
+        services.AddRequestHandler<CreateDepartmentCommand, ApiResponse, CreateDepartmentCommandHandler>();
         
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();

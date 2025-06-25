@@ -1,4 +1,6 @@
-namespace TMS.Infrastructure.Helpers;
+using Microsoft.EntityFrameworkCore;
+
+namespace TMS.Contract;
 
 public static class QueryIncludeHelper
 {
