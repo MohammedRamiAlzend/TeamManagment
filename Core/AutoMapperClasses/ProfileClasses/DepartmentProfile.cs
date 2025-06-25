@@ -11,7 +11,7 @@ public class DepartmentProfile : Profile
         CreateMap<Department, GetDepartmentResponse>()
             .ForMember(dest => dest.TeamLeaderName,
                 opt => opt.MapFrom(scr => $"{scr.TeamLeader.FirstName} {scr.TeamLeader.LastName}"))
-            .ForMember(dest => dest.EmployeesNames,
+            .ForMember(dest => dest.EmployeesNamesAsDictionary,
                 opt => opt.MapFrom(scr => MapEmployeeNames(scr.Employees)));
 
         CreateMap<Department, CreateDepartmentDto>();
@@ -23,9 +23,13 @@ public class DepartmentProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
-    private static List<string> MapEmployeeNames(ICollection<Employee> employees)
+    private static Dictionary<int,string> MapEmployeeNames(ICollection<Employee> employees)
     {
-        return employees?.Select(employee => $"{employee.FirstName} {employee.LastName}").ToList() ?? [];
+        var dict = new Dictionary<int, string>();
+        foreach (var employee in employees) {
+            dict[employee.Id] = $"{employee.FirstName} {employee.LastName}";
+        }
+        return dict;
     }
 
 }

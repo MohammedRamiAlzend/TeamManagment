@@ -78,7 +78,7 @@ public class CreateDepartmentCommandHandler(IEntityCommiter commiter , ILogger<C
         {
             errorBuilder.AppendLine($"{dto.Name} is already taken try another one");
         }
-        if (await commiter.Departments.AnyAsync(
+        if (dto.ParentDepartmentId is not null && await commiter.Departments.AnyAsync(
                 x => x.Id == dto.ParentDepartmentId,
                 QueryIncludeHelper.IncludeDepartmentRelations()) is false)
         {

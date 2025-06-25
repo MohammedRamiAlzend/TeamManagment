@@ -2,3 +2,6 @@ Rama Connection String
 
 "DefaultConnection": "Server=DESKTOP-MJIUN3T;Database=TMS;User Id=sa;Password=123;Encrypt=True;TrustServerCertificate=True;"
 then go to AppDbContext.cs in AppDbContextFactory update your connection string
+
+
+2
