@@ -11,11 +11,11 @@ namespace TMS.Server.Controllers;
 [Authorize]
 public class DepartmentsController(ISender sender) : ControllerBase
 {
-    [HttpGet(DepartmentsEndPoint.Create)]
+    [HttpPost(DepartmentsEndPoint.Create)]
     [HasPermission(DepartmentManagement.Add)]
     public async Task<ActionResult<ApiResponse>> CreateDepartmentAsync(
-        [FromForm]
-        CreateDepartmentDto request,CancellationToken token)
+        [FromBody] CreateDepartmentDto request,
+                   CancellationToken token)
     {
         return await sender.Send(new CreateDepartmentCommand(request), token);
     }
@@ -32,7 +32,8 @@ public class DepartmentsController(ISender sender) : ControllerBase
     [HttpPost(DepartmentsEndPoint.UpdateDepartmentTeamLeader)]
     [HasPermission(DepartmentManagement.Update)]
     public async Task<ActionResult<ApiResponse>> UpdateDepartmentTeamLeaderAsync(
-        [FromQuery]int departmentId,[FromQuery]int departmentTeamLeaderId)
+        [FromQuery]int departmentId,
+        [FromQuery]int departmentTeamLeaderId)
     {
         return await sender.Send(new UpdateDepartmentTeamLeaderCommand(departmentId,departmentTeamLeaderId));
     }
@@ -40,8 +41,8 @@ public class DepartmentsController(ISender sender) : ControllerBase
     [HttpGet(DepartmentsEndPoint.GetAllPaginated)]
     [HasPermission(DepartmentManagement.Get)]
     public async Task<ActionResult<PaginatedApiResponse<GetDepartmentResponse>>> GetAllDepartmentsPaginatedAsync(
-        [FromQuery] int pageNumber
-        , [FromQuery] int pageSize,
+        [FromQuery] int pageNumber,
+        [FromQuery] int pageSize,
         CancellationToken token)
     {
         if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Invalid pagination parameters.");
@@ -71,15 +72,12 @@ public class DepartmentsController(ISender sender) : ControllerBase
 
     [HttpPut(DepartmentsEndPoint.Update)]
     [HasPermission(DepartmentManagement.Update)]
-    public async Task<ActionResult<ApiResponse<UpdateDepartmentCommand>>> UpdateDepartmentAsync(
+    public async Task<ActionResult<ApiResponse>> UpdateDepartmentAsync(
         [FromRoute] int departmentId,
-        [FromBody] UpdateDepartmentCommand department,
+        [FromBody] UpdateDepartmentDto department,
         CancellationToken token)
     {
-        if (department == null) return BadRequest("The Department data must not be null.");
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-        return await sender.Send(new UpdateEntityCommand<Department, UpdateDepartmentCommand>(x=>x.Id==departmentId, department,
-            Include: QueryIncludeHelper.IncludeDepartmentRelations() ), token);
+        return await sender.Send(new UpdateDepartmentCommand(departmentId,department), token);
     }
 
     [HttpDelete(DepartmentsEndPoint.Delete)]

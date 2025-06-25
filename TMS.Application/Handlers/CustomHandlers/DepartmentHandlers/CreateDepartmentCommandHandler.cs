@@ -14,19 +14,11 @@ public class CreateDepartmentCommandHandler(IEntityCommiter commiter , ILogger<C
             return validationResult;
         }
         logger.LogInformation("informations Accepted ....");
-        logger.LogInformation("checking if employee exists ...");
-        var getEmployees = await GetEnrolledEmployeeByIdsAsListAsync(request.Dto.EnrolledEmployeeIds);
-        if (getEmployees.IsSuccess is false)
-        {
-            return ApiResponse.Failure(code: HttpStatusCode.NotAcceptable, getEmployees.Message!);
-        }
-        logger.LogInformation("Employess was founded ....");
-        logger.LogInformation("start creating department ....");
 
         var createDepartmentResult = await CreateDepartment(request.Dto, cancellationToken);
         
         return createDepartmentResult.IsSuccess 
-            ? ApiResponse.Success(HttpStatusCode.OK,$"employee {request.Dto.Name} has been added successfully") 
+            ? ApiResponse.Success(HttpStatusCode.OK,$"department {request.Dto.Name} has been added successfully") 
             : ApiResponse.Failure(HttpStatusCode.BadRequest,createDepartmentResult.Message!);
 
 
@@ -82,35 +74,40 @@ public class CreateDepartmentCommandHandler(IEntityCommiter commiter , ILogger<C
     {
         var errorBuilder = new StringBuilder();
         if (await commiter.Departments.AnyAsync(x =>
-                x.Name.Equals(dto.Name, StringComparison.CurrentCultureIgnoreCase)))
+                x.Name == dto.Name.ToLower() ))
         {
             errorBuilder.AppendLine($"{dto.Name} is already taken try another one");
         }
         if (await commiter.Departments.AnyAsync(
-                x => x.ParentDepartmentId == dto.ParentDepartmentId,
+                x => x.Id == dto.ParentDepartmentId,
                 QueryIncludeHelper.IncludeDepartmentRelations()) is false)
         {
             errorBuilder.AppendLine($"department with {dto.ParentDepartmentId} was not found");
         }
         if (await commiter.Departments.AnyAsync(x =>
-                x.Email.Equals(dto.Email, StringComparison.CurrentCultureIgnoreCase)))
+                x.Email.ToLower() == dto.Email.ToLower()))
         {
             errorBuilder.AppendLine($"{dto.Email} is already taken try another one");
         }       
         if (await commiter.Departments.AnyAsync(x =>
-                x.PhoneNumber.Equals(dto.PhoneNumber, StringComparison.CurrentCultureIgnoreCase)))
+                x.PhoneNumber.ToLower()== dto.PhoneNumber.ToLower()))
         {
             errorBuilder.AppendLine($"{dto.PhoneNumber} is already taken try another one");
-        }       
+        }      
+        if (await commiter.Departments.AnyAsync(x =>
+                x.TeamLeaderId== dto.TeamLeaderId, QueryIncludeHelper.IncludeDepartmentRelations()))
+        {
+            errorBuilder.AppendLine($"{dto.TeamLeaderId} is already taken try another one");
+        }  
         
         if (await commiter.Employees.AnyAsync(x =>
-                x.Id.Equals(dto.TeamLeaderId),
+                x.Id==dto.TeamLeaderId,
                 QueryIncludeHelper.IncludeEmployeeRelations()) is false)
         {
             errorBuilder.AppendLine($"team leader with {dto.TeamLeaderId} was not found");
         }
 
-        return errorBuilder.Length == 0
+        return errorBuilder.ToString().Length != 0 
             ? ApiResponse<CreatedDepartmentResponseDto>.Failure(code: HttpStatusCode.NotAcceptable,
                 errorBuilder.ToString())
             : ApiResponse<CreatedDepartmentResponseDto>.Success();

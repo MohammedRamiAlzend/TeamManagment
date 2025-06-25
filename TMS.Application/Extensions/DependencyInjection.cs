@@ -21,10 +21,10 @@ public static class DependencyInjection
 
         //Department Registration
         // services.AddEntityAdditionRegistration<Department, CreateDepartmentDto>();
-        services.AddEntityUpdationRegistration<Department, UpdateDepartmentCommand>();
         services.AddEntityGetRegistration<Department,GetDepartmentResponse>();
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
         services.AddRequestHandler<CreateDepartmentCommand, ApiResponse, CreateDepartmentCommandHandler>();
+        services.AddRequestHandler<UpdateDepartmentCommand, ApiResponse, UpdateDepartmentCommandHandler>();
         
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();

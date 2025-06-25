@@ -18,7 +18,7 @@ public static class ApiEndPoints
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
         public const string Includes = "DepartmentIncludes";
-        public const string Create = "";
+        public const string Create = "create-department";
         public const string Update = "{departmentId:int}";
         public const string Delete = "{departmentId:int}";
         public const string UpdateDepartmentTeamLeader = "update-teamleader";
