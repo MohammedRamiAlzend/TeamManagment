@@ -1,5 +1,6 @@
 ﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 using TMS.Application.Handlers.CustomHandlers.TaskHandlers;
+using TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlders;
 using TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
@@ -55,7 +56,7 @@ public static class DependencyInjection
         services.AddRequestHandler<GetTaskSubmissionFilesQuery, ApiResponse<List<SubmissionFileDto>>, GetTaskSubmissionFilesQueryHandler>();
         services.AddRequestHandler<GetSubmissionFileQuery, ApiResponse<SubmissionFileResult>, GetSubmissionFileQueryHandler>();
         services.AddRequestHandler<GetAllSubmissionsFilesQuery, ApiResponse<ZipSubmissionFileResult>, GetAllSubmissionsFilesQueryHandler>();
-         
+        services.AddRequestHandler<AddTaskCommand, ApiResponse<AddTaskResponseDto>, AddTaskCommandHandler>();
             
             
         services.AddScoped<ISender, Sender>();

@@ -50,13 +50,14 @@ public class TaskController(ISender sender) : ControllerBase
                 Include:QueryIncludeHelper.IncludeTaskRelations()
             ), token);
     }
+    
     [HttpPost(TasksEndPoint.Create)]
     [HasPermission(TaskManagement.Add)]
-    public async Task<ActionResult<ApiResponse>> AddTaskAsync(
+    public async Task<ActionResult<ApiResponse<AddTaskResponseDto>>> AddTaskAsync(
         [FromBody] AddTaskDto task,
         CancellationToken token)
     {
-        return await sender.Send(new AddEntityCommand<AddTaskDto>(task), token);
+        return await sender.Send(new AddTaskCommand(task), token);
     }
     
     [HttpPut(TasksEndPoint.Update)]
