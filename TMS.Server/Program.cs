@@ -14,7 +14,7 @@ builder.Services.AddOpenApi("v1", options =>
 
 builder.Services.AddHostedService<DatabaseSyncService>();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection2");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
 builder.Services.AddAppDependencyInjection(connectionString, builder.Configuration);
 builder.Services.AddCors(options =>

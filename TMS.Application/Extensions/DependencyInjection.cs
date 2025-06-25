@@ -25,7 +25,8 @@ public static class DependencyInjection
         services.AddRequestHandler<UpdateDepartmentTeamLeaderCommand, ApiResponse, UpdateDepartmentTeamLeaderHandler>();
         services.AddRequestHandler<CreateDepartmentCommand, ApiResponse, CreateDepartmentCommandHandler>();
         services.AddRequestHandler<UpdateDepartmentCommand, ApiResponse, UpdateDepartmentCommandHandler>();
-        
+        services.AddRequestHandler<DeleteDepartmentCommand,ApiResponse,DeleteDepartmentCommandHandler>();
+
         //User Registration
         services.AddRequestHandler<RegisterUserCommand, ApiResponse<User>, RegisterUserCommandHandler>();
         services.AddRequestHandler<LoginUserCommand, ApiResponse<TokenResponseDto>, LoginUserCommandHandler>();

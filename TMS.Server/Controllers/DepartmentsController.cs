@@ -86,6 +86,6 @@ public class DepartmentsController(ISender sender) : ControllerBase
         [FromRoute] int departmentId,
         CancellationToken token)
     {
-        return await sender.Send(new DeleteEntityCommand<Department>(x => x.Id == departmentId), token);
+        return await sender.Send(new DeleteDepartmentCommand(departmentId), token);
     }
 }

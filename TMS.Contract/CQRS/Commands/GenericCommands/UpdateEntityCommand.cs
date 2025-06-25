@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Query;
+
 namespace TMS.Contract.CQRS.Commands.GenericCommands;
 
 public record UpdateEntityCommand<TEntity, TEntityDto>(

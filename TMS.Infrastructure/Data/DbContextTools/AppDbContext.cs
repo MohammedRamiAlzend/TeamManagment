@@ -1,21 +1,5 @@
 ﻿namespace TMS.Infrastructure.Data.DbContextTools;
 
-public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
-{
-    public AppDbContext CreateDbContext(string[] args)
-    {
-        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseSqlServer(
-            // "Server=lenovo;Database=TMS;User Id=sa;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;"
-            // "Server=DESKTOP-MJIUN3T;Database=TMS;User Id=sa;Password=123;Encrypt=True;TrustServerCertificate=True;"
-             "Server=sql.bsite.net\\MSSQL2016;Database=ramialzend_ramialzend;User Id=ramialzend_ramialzend;Password=Rami0000;Encrypt=True;TrustServerCertificate=True;"
-            
-            );
-
-        return new AppDbContext(optionsBuilder.Options);
-    }
-}
-
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -67,9 +51,24 @@ public class AppDbContext : DbContext
             .HasForeignKey(t => t.AssignedToEmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        //modelBuilder.Entity<Department>()
+        //    .HasOne(d => d.TeamLeader)
+        //    .WithOne();
+        //modelBuilder.Entity<Department>()
+        //    .HasOne(d => d.ParentDepartment)
+        //    .WithMany(d => d.SubDepartments)
+        //    .OnDelete(DeleteBehavior.Cascade);
+
+
+        modelBuilder.Entity<Department>()
+            .HasOne(d => d.ParentDepartment)
+            .WithMany(d => d.SubDepartments)
+            .OnDelete(DeleteBehavior.NoAction);  // Cascade delete for subdepartments when parent is deleted
+
         modelBuilder.Entity<Department>()
             .HasOne(d => d.TeamLeader)
-            .WithOne();
+            .WithOne()
+            .OnDelete(DeleteBehavior.NoAction);  // Prevent cascade delete on team leader (or use SetNull if desired)
 
         // Configure TaskSubmission relationships
         modelBuilder.Entity<TaskSubmission>()
