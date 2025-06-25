@@ -7,12 +7,12 @@ namespace TMS.Server.Controllers;
 [Route($"{ApiBase}/[controller]")]
 public class PermissionsController(ISender sender)
 {
-    [HttpGet(PermissonsEndPoint.GetAll)]
+    [HttpGet(PermissionsEndPoint.GetAll)]
     public async Task<ActionResult<ApiResponse<List<GetPermissionResponse>>>> GetAllPermissionsAsync(CancellationToken token)
     {
         return await sender.Send(new GetAllEntityQuery<Permission, GetPermissionResponse>(Include:x=>x.Include(i=>i.Roles)),token);
     }
-    [HttpGet(PermissonsEndPoint.Get)]
+    [HttpGet(PermissionsEndPoint.Get)]
     public async Task<ActionResult<ApiResponse<GetPermissionResponse>>> GetPermissionAsync(
         [FromRoute] int permissionId,
         CancellationToken token)
@@ -21,7 +21,7 @@ public class PermissionsController(ISender sender)
             Filter: x=>x.Id == permissionId,
             Include:x=>x.Include(i=>i.Roles)), token);
     }
-    [HttpGet(PermissonsEndPoint.GetAllPaginated)]
+    [HttpGet(PermissionsEndPoint.GetAllPaginated)]
     public async Task<ActionResult<PaginatedApiResponse<GetPermissionResponse>>> GetPermissionAsync(
             [FromQuery] int pageSize,
             [FromQuery] int pageNumber,

@@ -9,8 +9,6 @@ public static class ApiEndPoints
         public const string Get = "{employeeId:int}";
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
-        public const string Includes = "EmployeeIncludes";
-        public const string Create = "";
         public const string Update = "{employeeId:int}";
         public const string Delete = "{employeeId:int}";
     }
@@ -25,7 +23,7 @@ public static class ApiEndPoints
         public const string Delete = "{departmentId:int}";
         public const string UpdateDepartmentTeamLeader = "update-teamleader";
     }
-    public static class PermissonsEndPoint
+    public static class PermissionsEndPoint
     {
         public const string Get = "{permissonId:int}";
         public const string GetAll = "";
@@ -37,7 +35,6 @@ public static class ApiEndPoints
         public const string Get = "{roleId:int}";
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
-        public const string Create = "";
     }
     
     public static class ProjectsEndPoint
