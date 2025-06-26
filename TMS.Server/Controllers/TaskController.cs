@@ -52,7 +52,7 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [ProducesResponseType(typeof(ApiResponse<GetTaskResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ApiResponse<GetTaskResponse>>> GetTaskByIdAsync(
-        [FromRoute] Guid taskGuidId,
+        Guid taskGuidId,
         CancellationToken token)
     {
         try
@@ -143,8 +143,8 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ApiResponse>> UpdateProjectAsync(
-        [FromRoute] Guid taskGuidId,
+    public async Task<ActionResult<ApiResponse>> UpdateTaskAsync(
+        Guid taskGuidId,
         [FromBody] UpdateTaskDto task,
         CancellationToken token)
     {
@@ -177,17 +177,17 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [HasPermission(TaskManagement.Delete)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ApiResponse>> DeleteProjectAsync(
-        [FromRoute]Guid taskGuidId,
+    public async Task<ActionResult<ApiResponse>> DeleteTaskAsync(
+        Guid taskGuidId,
         CancellationToken token)
     {
         try
         {
-            var result = await sender.Send(new DeleteEntityCommand<WorkTask>(x => x.TaskUniqueIdentifier == taskGuidId), token);
-            if (result == null)
+            var result = await sender.Send(new DeleteTaskCommand(taskGuidId), token);
+            if (!result.IsSuccess)
             {
                 logger.LogWarning("Task not found for delete: {TaskId}", taskGuidId);
-                return NotFound("Task not found.");
+                return NotFound(result.Message);
             }
             return Ok(result);
         }
@@ -206,7 +206,7 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [ProducesResponseType(typeof(ApiResponse<List<SubmitTaskResponseDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ApiResponse<List<SubmitTaskResponseDto>>>> SubmitTaskAsync(
-        [FromRoute] Guid taskGuidId,
+        Guid taskGuidId,
         [FromForm] SubmitTaskRequestDto request,
         CancellationToken token)
     {
@@ -234,7 +234,7 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [HasPermission(TaskManagement.Get)]
     [ProducesResponseType(typeof(ApiResponse<List<SubmissionFileDto>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<ApiResponse<List<SubmissionFileDto>>>> GetSubmissionFilesAsync(
-        [FromRoute] Guid taskGuidId,
+        Guid taskGuidId,
         CancellationToken token)
     {
         try
@@ -249,35 +249,34 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
         }
     }
 
-    ///// <summary>
-    ///// Downloads a submission file for a task.
-    ///// </summary>
-    //[HttpGet(TasksEndPoint.DownloadSubmissionFile)]
-    //[HasPermission(TaskManagement.Get)]
-    //[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> DownloadSubmissionFileAsync(
-    //    [FromRoute] Guid taskGuidId,
-    //    [FromRoute] Guid fileGuidId,
-    //    CancellationToken token)
-    //{
-    //    try
-    //    {
-    //        var result = await sender.Send(new GetSubmissionFileQuery(taskGuidId, fileGuidId), token);
-    //        if (!result.IsSuccess || result.Data == null)
-    //        {
-    //            logger.LogWarning("Submission file not found: TaskId={TaskId}, FileId={FileId}", taskGuidId, fileGuidId);
-    //            return StatusCode((int)(result.Code ?? HttpStatusCode.BadRequest), result);
-    //        }
-    //        return File(result.Data.FileContents, result.Data.ContentType, result.Data.FileName);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        logger.LogError(ex, "Error downloading submission file");
-    //        return StatusCode(500, "An error occurred while downloading the submission file.");
-    //    }
-    //}
-    
+    /// <summary>
+    /// Downloads a submission file for a task.
+    /// </summary>
+    [HttpGet(TasksEndPoint.DownloadSubmissionFile)]
+    [HasPermission(TaskManagement.Get)]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DownloadSubmissionFileAsync(
+         Guid fileGuidId,
+        CancellationToken token)
+    {
+        try
+        {
+            var result = await sender.Send(new GetSubmissionFileQuery(fileGuidId), token);
+            if (!result.IsSuccess || result.Data == null)
+            {
+                logger.LogWarning("Submission file not found: FileId={fileGuidId}", fileGuidId);
+                return StatusCode((int)(result.Code ?? HttpStatusCode.BadRequest), result);
+            }
+            return File(result.Data.FileContents, result.Data.ContentType, result.Data.FileName);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error downloading submission file");
+            return StatusCode(500, "An error occurred while downloading the submission file.");
+        }
+    }
+
     /// <summary>
     /// Downloads all submission files for a task as a zip.
     /// </summary>
@@ -286,15 +285,15 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DownloadAllSubmissionsFilesAsync(
-        [FromRoute] Guid taskId,
+        Guid taskGuidId,
         CancellationToken token)
     {
         try
         {
-            var result = await sender.Send(new GetAllSubmissionsFilesQuery(taskId), token);
+            var result = await sender.Send(new GetAllSubmissionsFilesQuery(taskGuidId), token);
             if (!result.IsSuccess || result.Data == null)
             {
-                logger.LogWarning("Submission zip not found: TaskId={TaskId}", taskId);
+                logger.LogWarning("Submission zip not found: taskGuidId={taskGuidId}", taskGuidId);
                 return StatusCode((int)(result.Code ?? HttpStatusCode.BadRequest), result);
             }
             return File(result.Data.ZipFileContents, result.Data.ContentType, result.Data.ZipFileName);
@@ -311,12 +310,12 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     /// </summary>
     [HttpGet(TaskSubmissionsEndPoint.GetAll)]
     [HasPermission(TaskManagement.Get)]
-    [ProducesResponseType(typeof(ApiResponse<List<TaskSubmission>>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ApiResponse<List<TaskSubmission>>>> GetTaskSubmissionsAsync(
-        [FromRoute] Guid guidTaskId,
+    [ProducesResponseType(typeof(ApiResponse<List<TaskSubmissionResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ApiResponse<List<TaskSubmissionResponseDto>>>> GetTaskSubmissionsAsync(
+        Guid taskGuidId,
         CancellationToken token)
     {
-        var result = await sender.Send(new GetTaskSubmissionsQuery(guidTaskId), token);
+        var result = await sender.Send(new GetTaskSubmissionsQuery(taskGuidId), token);
         return Ok(result);
     }
 
@@ -325,36 +324,32 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     /// </summary>
     [HttpGet(TaskSubmissionsEndPoint.GetById)]
     [HasPermission(TaskManagement.Get)]
-    [ProducesResponseType(typeof(ApiResponse<TaskSubmission>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<TaskSubmissionResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ApiResponse<TaskSubmission>>> GetTaskSubmissionAsync(
-        [FromRoute] Guid guidTaskId,
-        [FromRoute] Guid submissionGuidId,
+    public async Task<ActionResult<ApiResponse<TaskSubmissionResponseDto>>> GetTaskSubmissionAsync(
+         Guid submissionGuidId,
         CancellationToken token)
     {
         var result = await sender.Send(new GetTaskSubmissionByIdQuery(submissionGuidId), token);
         return result.Data == null ? NotFound(result) : Ok(result);
     }
 
-   
-
     /// <summary>
     /// Updates a submission.
     /// </summary>
     [HttpPut(TaskSubmissionsEndPoint.Update)]
     [HasPermission(TaskManagement.Update)]
-    [ProducesResponseType(typeof(ApiResponse<TaskSubmission>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ApiResponse<TaskSubmission>>> UpdateTaskSubmissionAsync(
-        [FromRoute] Guid guidTaskId,
-        [FromRoute] Guid submissionGuidId,
-        [FromBody] TaskSubmission updatedSubmission,
+    public async Task<ActionResult<ApiResponse>> UpdateTaskSubmissionAsync(
+        Guid taskGuidId,
+        Guid submissionGuidId,
+        [FromBody] UpdateTaskSubmissionDto updatedSubmission,
         CancellationToken token)
     {
-        updatedSubmission.WorkTaskId = guidTaskId.GetHashCode();
         var result = await sender.Send(new UpdateTaskSubmissionCommand(submissionGuidId, updatedSubmission), token);
-        return result.IsSuccess ? Ok(result) : BadRequest(result);
+        return result.IsSuccess ? Ok(ApiResponse.Success(result.Code ?? System.Net.HttpStatusCode.OK, result.Message)) : BadRequest(ApiResponse.Failure(result.Code ?? System.Net.HttpStatusCode.BadRequest, result.Message));
     }
 
     /// <summary>
@@ -365,8 +360,8 @@ public class TaskController(ISender sender, ILogger<TaskController> logger) : Co
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ApiResponse>> DeleteTaskSubmissionAsync(
-        [FromRoute] Guid guidTaskId,
-        [FromRoute] Guid submissionGuidId,
+        Guid taskGuidId,
+        Guid submissionGuidId,
         CancellationToken token)
     {
         var result = await sender.Send(new DeleteTaskSubmissionCommand(submissionGuidId), token);

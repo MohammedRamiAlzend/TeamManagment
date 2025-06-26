@@ -35,7 +35,7 @@ public class TaskSubmissionFileService : ITaskSubmissionFileService
                     TaskSubmissionId = submission.Id,
                     FileName = uniqueFileName,
                     OriginalFileName = file.FileName,
-                    FilePath = Path.Combine("uploads", "task-submissions",
+                    FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory , "uploads", "task-submissions",
                         submission.SubmissionUniqueIdentifier.ToString(), uniqueFileName),
                     FileExtension = fileExtension,
                     FileSize = file.Length,

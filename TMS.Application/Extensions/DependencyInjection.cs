@@ -68,10 +68,11 @@ public static class DependencyInjection
         services.AddRequestHandler<GetAllSubmissionsFilesQuery, ApiResponse<ZipSubmissionFileResult>, GetAllSubmissionsFilesQueryHandler>();
         services.AddRequestHandler<AddTaskCommand, ApiResponse<AddTaskResponseDto>, AddTaskCommandHandler>();
         services.AddRequestHandler<DeleteEmployeeCommand, bool, DeleteEmployeeCommandHandler>();
-        services.AddRequestHandler<UpdateTaskSubmissionCommand, ApiResponse<TaskSubmission>, UpdateTaskSubmissionCommandHandler>();
+        services.AddRequestHandler<UpdateTaskSubmissionCommand, ApiResponse, UpdateTaskSubmissionCommandHandler>();
         services.AddRequestHandler<DeleteTaskSubmissionCommand, ApiResponse, DeleteTaskSubmissionCommandHandler>();
-        services.AddRequestHandler<GetTaskSubmissionsQuery, ApiResponse<List<TaskSubmission>>, GetTaskSubmissionsQueryHandler>();
-        services.AddRequestHandler<GetTaskSubmissionByIdQuery, ApiResponse<TaskSubmission>, GetTaskSubmissionByIdQueryHandler>();
+        services.AddRequestHandler<GetTaskSubmissionsQuery, ApiResponse<List<TaskSubmissionResponseDto>>, GetTaskSubmissionsQueryHandler>();
+        services.AddRequestHandler<GetTaskSubmissionByIdQuery, ApiResponse<TaskSubmissionResponseDto>, GetTaskSubmissionByIdQueryHandler>();
+        services.AddRequestHandler<DeleteTaskCommand, ApiResponse, DeleteTaskCommandHandler>();
             
             
         services.AddScoped<ISender, Sender>();
@@ -90,7 +91,7 @@ public static class DependencyInjection
         services.AddScoped<IAddTaskService, AddTaskService>();
         services.AddScoped<IUpdateWorkTaskService, UpdateWorkTaskService>();
         services.AddScoped<ISubmissionFilesZippingService, SubmissionFilesZippingService>();
-        //services.AddScoped<ISubmissionFileRetrievalService, SubmissionFileRetrievalService>();
+        services.AddScoped<ISubmissionFileRetrievalService, SubmissionFileRetrievalService>();
         services.AddScoped<ITaskSubmissionFilesService, TaskSubmissionFilesService>();
         
         return services;

@@ -22,3 +22,4 @@ public class TaskSubmission : Entity
 
     public ICollection<SubmissionFile> Files { get; set; } = new List<SubmissionFile>();
 }
+

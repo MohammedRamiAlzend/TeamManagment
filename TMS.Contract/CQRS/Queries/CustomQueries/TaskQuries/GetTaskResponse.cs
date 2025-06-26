@@ -20,4 +20,14 @@ public class GetTaskResponse : IDto
     public string AssignedToName { get; set; }
 
     public Dictionary<string,string> ProjectIdNames { get; set; }
+
+    // Submissions for this task, each with its own files' unique identifiers
+    public List<TaskSubmissionSummaryDto> Submissions { get; set; }
+}
+
+// DTO for minimal submission info
+public class TaskSubmissionSummaryDto
+{
+    public Guid SubmissionUniqueIdentifier { get; set; }
+    public List<Guid> FileUniqueIdentifiers { get; set; }
 }

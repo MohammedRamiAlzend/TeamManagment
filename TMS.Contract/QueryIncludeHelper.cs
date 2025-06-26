@@ -51,7 +51,9 @@ public static class QueryIncludeHelper
             .ThenInclude(e=>e.User)
             .ThenInclude(e=>e.Roles)
             .Include(e=>e.Projects)
-            .ThenInclude(x=>x.Department);
+            .ThenInclude(x=>x.Department)
+            .Include(x=>x.Submissions)
+            .ThenInclude(x=>x.Files);
     }
 
     public static Func<IQueryable<TaskSubmission>, IIncludableQueryable<TaskSubmission, object>>? IncludeTaskSubmittionsRelations()

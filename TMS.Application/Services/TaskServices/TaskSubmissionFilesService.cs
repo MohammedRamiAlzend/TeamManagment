@@ -42,12 +42,14 @@ public class TaskSubmissionFilesService : ITaskSubmissionFilesService
                 {
                     filesList.Add(new SubmissionFileDto
                     {
-                        Id = file.Id,
+                        FileUniqueIdentifier = file.FileUniqueIdentifier,
                         FileName = file.FileName,
                         OriginalFileName = file.OriginalFileName,
                         ContentType = file.ContentType,
                         FileSize = file.FileSize,
-                        UploadedDate = file.CreatedAt
+                        UploadedDate = file.CreatedAt,
+                        FileExtension = file.FileExtension,
+                        FilePath= file.FilePath
                     });
                 }
             }
