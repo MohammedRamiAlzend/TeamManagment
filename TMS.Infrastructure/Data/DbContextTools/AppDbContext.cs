@@ -43,13 +43,14 @@ public class AppDbContext : DbContext
             .HasOne(t => t.CreatedBy)
             .WithMany(e => e.CreatedTasks)
             .HasForeignKey(t => t.CreatedByEmployeeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<WorkTask>()
             .HasOne(t => t.AssignedTo)
             .WithMany(e => e.AssignedTasks)
             .HasForeignKey(t => t.AssignedToEmployeeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
+        
 
         //modelBuilder.Entity<Department>()
         //    .HasOne(d => d.TeamLeader)

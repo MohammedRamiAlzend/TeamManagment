@@ -1,7 +1,9 @@
-﻿using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
+﻿using TMS.Application.Handlers.CustomHandlers.EmployeeHandlers;
+using TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 using TMS.Application.Handlers.CustomHandlers.TaskHandlers;
 using TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlders;
 using TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers;
+using TMS.Application.Services;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
@@ -57,10 +59,32 @@ public static class DependencyInjection
         services.AddRequestHandler<GetSubmissionFileQuery, ApiResponse<SubmissionFileResult>, GetSubmissionFileQueryHandler>();
         services.AddRequestHandler<GetAllSubmissionsFilesQuery, ApiResponse<ZipSubmissionFileResult>, GetAllSubmissionsFilesQueryHandler>();
         services.AddRequestHandler<AddTaskCommand, ApiResponse<AddTaskResponseDto>, AddTaskCommandHandler>();
+        services.AddRequestHandler<DeleteEmployeeCommand, bool, DeleteEmployeeCommandHandler>();
+        services.AddRequestHandler<AddTaskSubmissionCommand, ApiResponse<TaskSubmission>, AddTaskSubmissionCommandHandler>();
+        services.AddRequestHandler<UpdateTaskSubmissionCommand, ApiResponse<TaskSubmission>, UpdateTaskSubmissionCommandHandler>();
+        services.AddRequestHandler<DeleteTaskSubmissionCommand, ApiResponse, DeleteTaskSubmissionCommandHandler>();
+        services.AddRequestHandler<GetTaskSubmissionsQuery, ApiResponse<List<TaskSubmission>>, GetTaskSubmissionsQueryHandler>();
+        services.AddRequestHandler<GetTaskSubmissionByIdQuery, ApiResponse<TaskSubmission>, GetTaskSubmissionByIdQueryHandler>();
             
             
         services.AddScoped<ISender, Sender>();
         services.AddHttpContextAccessor();
+        services.AddScoped<IDepartmentValidator, DepartmentValidator>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<ITaskSubmissionFileService, TaskSubmissionFileService>();
+        services.AddScoped<IUserContextService, UserContextService>();
+        services.AddScoped<IProjectValidator, ProjectValidator>();
+        services.AddScoped<IProjectService, ProjectService>();
+        services.AddScoped<IAddTasksToProjectValidator, AddTasksToProjectValidator>();
+        services.AddScoped<IAddTasksToProjectService, AddTasksToProjectService>();
+        services.AddScoped<ICreateDepartmentValidator, CreateDepartmentValidator>();
+        services.AddScoped<ICreateDepartmentService, CreateDepartmentService>();
+        services.AddScoped<IUpdateDepartmentTeamLeaderService, UpdateDepartmentTeamLeaderService>();
+        services.AddScoped<IAddTaskService, AddTaskService>();
+        services.AddScoped<IUpdateWorkTaskService, UpdateWorkTaskService>();
+        services.AddScoped<ISubmissionFilesZippingService, SubmissionFilesZippingService>();
+        services.AddScoped<ISubmissionFileRetrievalService, SubmissionFileRetrievalService>();
+        services.AddScoped<ITaskSubmissionFilesService, TaskSubmissionFilesService>();
         
         return services;
     }

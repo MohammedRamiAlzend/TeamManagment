@@ -15,13 +15,13 @@ public class TaskProfile: Profile
             .ForMember(dest => dest.ProjectIdNames, opt =>
                 opt.MapFrom(scr => scr.Projects.ToDictionary(k => k.Id, v => v.Name)));
         
-        CreateMap<WorkTask, AddTaskDto>()
-            .ForMember(dest => dest.ProjectIds, opt =>
-                opt.MapFrom(scr => scr.Projects.Select(x => x.Id).ToList()));
+        //CreateMap<WorkTask, AddTaskDto>()
+        //    .ForMember(dest => dest.ProjectIds, opt =>
+        //        opt.MapFrom(scr => scr.Projects.Select(x => x.Id).ToList()));
         
-        CreateMap<WorkTask, AddTaskResponseDto>()
-            .ForMember(dest => dest.ProjectIds, opt =>
-                opt.MapFrom(scr => scr.Projects.Select(x => x.Id).ToList()));
+        //CreateMap<WorkTask, AddTaskResponseDto>()
+        //    .ForMember(dest => dest.ProjectIds, opt =>
+        //        opt.MapFrom(scr => scr.Projects.Select(x => x.Id).ToList()));
 
 
         CreateMap<WorkTask, UpdateTaskDto>()

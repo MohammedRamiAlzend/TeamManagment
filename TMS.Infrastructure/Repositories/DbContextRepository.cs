@@ -152,6 +152,7 @@ public class DbContextRepository<T>(DbSet<T> dbSet, ILogger logger) : IDbContext
     public async Task<DbRequest> UpdateAsync(T entity)
     {
         if (entity == null) return DbRequest.Failure("Entity cannot be null.");
+        if (entity.Id == 0) return DbRequest.Failure("Entity key (Id) cannot be zero or null.");
 
         return await ExecuteOperationAsync(
             async () =>

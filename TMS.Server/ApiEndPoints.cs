@@ -60,4 +60,12 @@ public static class ApiEndPoints
         public const string DownloadSubmissionFile = "download-submission-file/{taskId:Guid}/files/{fileId:int}/download";
         public const string DownloadAllFiles = "download-all-files/{taskId:Guid}/download";
     }
+    public static class TaskSubmissionsEndPoint
+    {
+        public const string GetAll = "task/{guidTaskId:Guid}/submissions";
+        public const string GetById = "task/{guidTaskId:Guid}/submissions/{submissionId:int}";
+        public const string Create = "task/{guidTaskId:Guid}/submissions";
+        public const string Update = "task/{guidTaskId:Guid}/submissions/{submissionId:int}";
+        public const string Delete = "task/{guidTaskId:Guid}/submissions/{submissionId:int}";
+    }
 }
