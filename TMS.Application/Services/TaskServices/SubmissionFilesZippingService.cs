@@ -24,7 +24,7 @@ public class SubmissionFilesZippingService : ISubmissionFilesZippingService
         {
             var submissionFilesBasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "uploads", "task-submissions");
             var taskResult = await _entityCommiter.Tasks.GetAsync(
-                t => t.TaskUniqueIdentifier == request.TaskId);
+                t => t.TaskUniqueIdentifier == request.TaskGuidId);
             if (!taskResult.IsSuccess || taskResult.Data == null)
             {
                 return ApiResponse<ZipSubmissionFileResult>.Failure(HttpStatusCode.NotFound, "Task not found");

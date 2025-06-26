@@ -7,16 +7,7 @@ using System.Net;
 
 namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlders
 {
-    public class UpdateTaskSubmissionCommand : IRequest<ApiResponse<TaskSubmission>>
-    {
-        public int SubmissionId { get; set; }
-        public TaskSubmission Submission { get; set; }
-        public UpdateTaskSubmissionCommand(int submissionId, TaskSubmission submission)
-        {
-            SubmissionId = submissionId;
-            Submission = submission;
-        }
-    }
+    public record UpdateTaskSubmissionCommand(Guid SubmissionGuid, TaskSubmission Submission) : IRequest<ApiResponse<TaskSubmission>>;
 
     public class UpdateTaskSubmissionCommandHandler : IRequestHandler<UpdateTaskSubmissionCommand, ApiResponse<TaskSubmission>>
     {
@@ -25,7 +16,7 @@ namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlde
 
         public async Task<ApiResponse<TaskSubmission>> Handle(UpdateTaskSubmissionCommand request, CancellationToken cancellationToken)
         {
-            var getResult = await _commiter.TaskSubmissions.GetAsync(x => x.Id == request.SubmissionId);
+            var getResult = await _commiter.TaskSubmissions.GetAsync(x => x.SubmissionUniqueIdentifier == request.SubmissionGuid);
             if (!getResult.IsSuccess || getResult.Data == null)
                 return ApiResponse<TaskSubmission>.Failure(HttpStatusCode.NotFound, "Task submission not found.");
 

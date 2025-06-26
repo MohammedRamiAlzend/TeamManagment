@@ -32,8 +32,8 @@ public class SubmitTaskCommandHandler : IRequestHandler<SubmitTaskCommand, ApiRe
                 return ApiResponse<List<SubmitTaskResponseDto>>.Failure(HttpStatusCode.Unauthorized, "User not authenticated or employee not found");
             }
 
-            var taskResult = await _entityCommiter.Tasks.GetAsync(
-                t => t.TaskUniqueIdentifier == request.TaskGuid);
+            var taskResult = await _entityCommiter.Tasks.GetAsync(t => t.TaskUniqueIdentifier == request.TaskGuid,
+                QueryIncludeHelper.IncludeTaskRelations());
 
             if (!taskResult.IsSuccess || taskResult.Data == null)
             {
@@ -51,10 +51,10 @@ public class SubmitTaskCommandHandler : IRequestHandler<SubmitTaskCommand, ApiRe
             {
                 WorkTaskId = task.Id,
                 SubmittedByEmployeeId = employee.Id,
-                Description = request.Request.Comment,
+                Description = request.Request.Description,
                 SubmissionDate = DateTime.UtcNow,
                 Status = "Pending",
-                FeedbackComments = ""
+                FeedbackComments = "",
             };
 
             var addSubmissionResult = await _entityCommiter.TaskSubmissions.AddAsync(submission);
@@ -72,8 +72,16 @@ public class SubmitTaskCommandHandler : IRequestHandler<SubmitTaskCommand, ApiRe
             }
 
             task.Status = "Submitted";
-            await _entityCommiter.Tasks.UpdateAsync(task);
-            await _entityCommiter.CommitAsync(cancellationToken);
+            var udpateResult=   await _entityCommiter.Tasks.UpdateAsync(task);
+            if (udpateResult.IsSuccess is false) { return ApiResponse<List<SubmitTaskResponseDto>>.Failure(HttpStatusCode.InternalServerError, udpateResult.Message ?? "some thing went wrong while update task"); }
+            try
+            {
+                await _entityCommiter.CommitAsync(cancellationToken);
+            }
+            catch (Exception e)
+            {
+                return ApiResponse<List<SubmitTaskResponseDto>>.Failure(HttpStatusCode.InternalServerError, e.Message);
+            }
 
             return ApiResponse<List<SubmitTaskResponseDto>>.Success(uploadResults, HttpStatusCode.OK, "Task submitted successfully");
         }

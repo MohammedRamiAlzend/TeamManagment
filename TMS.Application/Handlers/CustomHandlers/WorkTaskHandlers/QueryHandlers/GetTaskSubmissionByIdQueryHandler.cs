@@ -7,11 +7,7 @@ using System.Net;
 
 namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers
 {
-    public class GetTaskSubmissionByIdQuery : IRequest<ApiResponse<TaskSubmission>>
-    {
-        public int SubmissionId { get; set; }
-        public GetTaskSubmissionByIdQuery(int submissionId) => SubmissionId = submissionId;
-    }
+    public record GetTaskSubmissionByIdQuery(Guid SubmissionGuidId) : IRequest<ApiResponse<TaskSubmission>>;
 
     public class GetTaskSubmissionByIdQueryHandler : IRequestHandler<GetTaskSubmissionByIdQuery, ApiResponse<TaskSubmission>>
     {
@@ -20,7 +16,7 @@ namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers
 
         public async Task<ApiResponse<TaskSubmission>> Handle(GetTaskSubmissionByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = await _commiter.TaskSubmissions.GetAsync(x => x.Id == request.SubmissionId);
+            var result = await _commiter.TaskSubmissions.GetAsync(x => x.SubmissionUniqueIdentifier == request.SubmissionGuidId);
             return result.IsSuccess && result.Data != null
                 ? ApiResponse<TaskSubmission>.Success(result.Data, HttpStatusCode.OK, "Task submission retrieved.")
                 : ApiResponse<TaskSubmission>.Failure(HttpStatusCode.NotFound, result.Message ?? "Submission not found.");

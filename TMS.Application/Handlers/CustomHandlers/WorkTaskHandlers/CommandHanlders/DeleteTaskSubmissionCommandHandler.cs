@@ -7,11 +7,7 @@ using System.Net;
 
 namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlders
 {
-    public class DeleteTaskSubmissionCommand : IRequest<ApiResponse>
-    {
-        public int SubmissionId { get; set; }
-        public DeleteTaskSubmissionCommand(int submissionId) => SubmissionId = submissionId;
-    }
+    public record DeleteTaskSubmissionCommand(Guid SubmissionGuidId) : IRequest<ApiResponse>;
 
     public class DeleteTaskSubmissionCommandHandler : IRequestHandler<DeleteTaskSubmissionCommand, ApiResponse>
     {
@@ -20,7 +16,7 @@ namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlde
 
         public async Task<ApiResponse> Handle(DeleteTaskSubmissionCommand request, CancellationToken cancellationToken)
         {
-            var getResult = await _commiter.TaskSubmissions.GetAsync(x => x.Id == request.SubmissionId);
+            var getResult = await _commiter.TaskSubmissions.GetAsync(x => x.SubmissionUniqueIdentifier == request.SubmissionGuidId);
             if (!getResult.IsSuccess || getResult.Data == null)
                 return ApiResponse.Failure(HttpStatusCode.NotFound, "Task submission not found.");
 
