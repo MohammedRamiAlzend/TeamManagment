@@ -1,5 +1,5 @@
 using TMS.Contract.CQRS.Queries.CustomQueries.TaskQuries;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.TaskInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.QueryHandlers;
 

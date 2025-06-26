@@ -1,5 +1,5 @@
 using System.Text;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.DepartmentInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.DepartmentHandlers;
 

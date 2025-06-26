@@ -1,6 +1,7 @@
 using System.Text;
 using Bogus.DataSets;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.DepartmentInterfaces;
+using TMS.Application.Services.Interfaces.EmployeeInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.DepartmentHandlers;
 

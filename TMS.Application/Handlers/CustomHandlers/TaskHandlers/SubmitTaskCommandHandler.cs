@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.TaskInterfaces;
+using TMS.Application.Services.Interfaces.EmployeeInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.TaskHandlers;
 

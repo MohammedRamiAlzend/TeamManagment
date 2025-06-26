@@ -3,7 +3,7 @@ using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 using TMS.Contract.Entities.Interfaces;
 using TMS.Core.Interfaces;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.TaskServices;
 
 namespace TMS.Application.Handlers.CustomHandlers.WorkTaskHandlers.CommandHanlders;
 

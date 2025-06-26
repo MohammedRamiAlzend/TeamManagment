@@ -1,7 +1,7 @@
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.Entities.Enums;
-using TMS.Application.Services;
+using TMS.Application.Services.Interfaces.ProjectInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 
