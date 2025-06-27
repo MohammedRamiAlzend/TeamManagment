@@ -9,8 +9,7 @@ public class ProjectProfile : Profile
     {
         CreateMap<Project, GetProjectResponse>()
             .ForMember(dest=>dest.DepartmentName,
-                opt=>
-                        opt.MapFrom(scr=>scr.Department.Name))
+                opt=>opt.MapFrom(scr=>scr.Department.Name))
             .ForMember(dest=> dest.TeamMembers,opt=>
                 opt.MapFrom(scr=>scr.TeamMembers.Select(x=>$"{x.FirstName} {x.LastName}")))
             .ForMember(dest => dest.Tasks,opt=> 

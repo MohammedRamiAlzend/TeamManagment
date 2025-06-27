@@ -5,6 +5,7 @@ public class UpdateEmployeeDto : IDto
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? NationalIdentificationNumber { get; set; }
+    public string ? ImagePath { get; set; }
     public DateTime? BirthDate { get; set; }
     public DateTime? HireDate { get; set; }
     public string? Phone { get; set; }

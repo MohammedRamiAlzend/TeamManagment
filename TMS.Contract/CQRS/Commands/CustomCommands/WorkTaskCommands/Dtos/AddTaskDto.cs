@@ -16,7 +16,7 @@ public class AddTaskDto : IDto
 
     public int AssignedToEmployeeId { get; set; }
 
-    public ICollection<int> ProjectIds { get; set; }
+    //public ICollection<int> ProjectIds { get; set; }
 }
 
 
@@ -37,6 +37,6 @@ public class AddTaskResponseDto : IDto
 
     public int AssignedToEmployeeId { get; set; }
 
-    public ICollection<int> ProjectIds { get; set; }
+    //public ICollection<int> ProjectIds { get; set; }
 }
 

@@ -22,7 +22,9 @@ public static class QueryIncludeHelper
             .Include(e=>e.CreatedTasks)
             .Include(e=>e.Projects)
             .Include(e => e.Departments)
-            .ThenInclude(d => d.ParentDepartment)!;
+            .ThenInclude(d => d.ParentDepartment)!
+            .Include(e=>e.TaskSubmissions)
+            .ThenInclude(e=>e.Files);
     }
     
     
@@ -37,7 +39,7 @@ public static class QueryIncludeHelper
             .Include(e => e.Tasks)
             .ThenInclude(x => x.AssignedTo)
             .Include(e => e.Tasks)
-            .ThenInclude(x => x.CreatedBy);
+            .ThenInclude(x => x.CreatedBy)!;
     }
     public static Func<IQueryable<WorkTask>, IIncludableQueryable<WorkTask, object>>? IncludeTaskRelations()
     {
@@ -49,7 +51,17 @@ public static class QueryIncludeHelper
             .ThenInclude(e=>e.User)
             .ThenInclude(e=>e.Roles)
             .Include(e=>e.Projects)
-            .ThenInclude(x=>x.Department);
+            .ThenInclude(x=>x.Department)
+            .Include(x=>x.Submissions)
+            .ThenInclude(x=>x.Files);
+    }
+
+    public static Func<IQueryable<TaskSubmission>, IIncludableQueryable<TaskSubmission, object>>? IncludeTaskSubmittionsRelations()
+    {
+        return query => query
+            .Include(e => e.WorkTask)
+            .Include(e=>e.SubmittedBy)
+            .Include(e=>e.Files);
     }
 
 }

@@ -13,4 +13,5 @@ public class GetEmployeeResponse : IDto
     public string ImagePath { get; set; } = string.Empty;
     public List<string> Roles { get; set; } = [];
     public List<string> Departments { get; set; } = [];
+    public List<Guid> SubmissionsGuid { get; set; } = [];
 }

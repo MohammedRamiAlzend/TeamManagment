@@ -2,13 +2,15 @@ namespace TMS.Contract.CQRS.Commands.CustomCommands.AuthCommands.Dtos;
 
 public class RegisterUserDto
 {
-    public string UserName { get; set; } = string.Empty;
+    [Required] public string UserName { get; set; } = string.Empty;
 
-    public string Password { get; set; } = string.Empty;
+    [Required] public string Password { get; set; } = string.Empty;
 
     [Required] public required string FirstName { get; set; }
 
     [Required] public required string LastName { get; set; }
+
+     public string? ImagePath { get; set; }
 
     [Required] public required string NationalIdentificationNumber { get; set; }
 

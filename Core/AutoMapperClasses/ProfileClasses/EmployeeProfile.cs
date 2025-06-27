@@ -15,7 +15,9 @@ public class EmployeeProfile : Profile
         CreateMap<Employee,GetEmployeeResponse>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(scr => MapRoleNames(scr.User.Roles)))
-            .ForMember(dest => dest.Departments, opt => opt.MapFrom(scr => MapDepartmentNames(scr.Departments)));
+            .ForMember(dest => dest.Departments, opt => opt.MapFrom(scr => MapDepartmentNames(scr.Departments)))
+            .ForMember(dest => dest.SubmissionsGuid, opt => opt.MapFrom(scr => scr.TaskSubmissions.Select(x=>x.SubmissionUniqueIdentifier)))
+            ;
         
         
     }

@@ -32,6 +32,7 @@ public class AuthService(AppDbContext context, IEntityCommiter commiter, IConfig
             HireDate = request.HireDate,
             NationalIdentificationNumber = request.NationalIdentificationNumber,
             Departments = departmentsList,
+            ImagePath = request.ImagePath??"",
             
         };
 

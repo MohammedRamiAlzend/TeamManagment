@@ -1,16 +1,27 @@
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands;
 using TMS.Contract.CQRS.Commands.CustomCommands.ProjectCommands.Dtos;
 using TMS.Contract.Entities.Enums;
+using TMS.Application.Services.Interfaces.ProjectInterfaces;
 
 namespace TMS.Application.Handlers.CustomHandlers.ProjectHandlers;
 
-public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHandler<UpdateProjectCommand, ApiResponse<UpdateProjectDto>>
+public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, ApiResponse<UpdateProjectDto>>
 {
+    private readonly IProjectService _projectService;
+    private readonly IEntityCommiter _commiter;
+
+    public UpdateProjectCommandHandler(IProjectService projectService, IEntityCommiter commiter)
+    {
+        _projectService = projectService;
+        _commiter = commiter;
+    }
+
     public async Task<ApiResponse<UpdateProjectDto>> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
-
-        var projectToUpdate = await commiter.Projects.GetAsync(p => p.Id == request.Id,
-            include:i=> i.Include(x=>x.TeamMembers));
+        var projectToUpdate = await _commiter.Projects.GetAsync(p => p.Id == request.Id,
+            include: i => i.Include(x => x.TeamMembers)
+                            .Include(x=>x.Department)
+                            .Include(x=>x.Tasks));
         if (projectToUpdate.IsSuccess is false || projectToUpdate.Data is null)
             return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.NotFound, "Project not found.");
         if (request.Project.Name is not null)
@@ -31,36 +42,23 @@ public class UpdateProjectCommandHandler(IEntityCommiter commiter) : IRequestHan
         }
         if (request.Project.EnrolledMembersIds is not null)
         {
-            projectToUpdate.Data.TeamMembers = await GetEnrolledMembers(request.Project.EnrolledMembersIds);
+            var members = await _projectService.GetEnrolledMembers(request.Project.EnrolledMembersIds);
+            if (members == null || members.Count != request.Project.EnrolledMembersIds.Count)
+                return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, "Invalid team member(s) specified.");
+            projectToUpdate.Data.TeamMembers = members;
         }
         if (request.Project.GuidTasks is not null)
         {
-            projectToUpdate.Data.Tasks = await GetTasksForProject(request.Project.GuidTasks);
+            var tasks = await _projectService.GetTasksForProject(request.Project.GuidTasks.ToList());
+            if (tasks == null || tasks.Count != request.Project.GuidTasks.Count)
+                return ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, "Invalid task(s) specified.");
+            projectToUpdate.Data.Tasks = tasks;
         }
-        var updateResult = await commiter.Projects.UpdateAsync(projectToUpdate.Data);
-        var commitResult = await commiter.CommitAsync(cancellationToken);
+        var updateResult = await _commiter.Projects.UpdateAsync(projectToUpdate.Data);
+        var commitResult = await _commiter.CommitAsync(cancellationToken);
 
         return updateResult.IsSuccess is false || commitResult == 0
-            ? ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, updateResult.Message??"")
+            ? ApiResponse<UpdateProjectDto>.Failure(HttpStatusCode.BadRequest, updateResult.Message ?? "")
             : ApiResponse<UpdateProjectDto>.Success(request.Project);
-    }
-    
-    private async Task<List<Employee>> GetEnrolledMembers(List<int> enrolledMembersIds)
-    {
-        var employees = new List<Employee>();
-        foreach (var id in enrolledMembersIds)
-        {
-            employees.Add((await commiter.Employees.GetAsync(x => x.Id == id)).Data!);
-        }
-        return employees;
-    }
-    private async Task<List<WorkTask>> GetTasksForProject(ICollection<Guid> tasksIds)
-    {
-        var tasks = new List<WorkTask>();
-        foreach (var id in tasksIds)
-        {
-            tasks.Add((await commiter.Tasks.GetAsync(x => x.TaskUniqueIdentifier == id)).Data!);
-        }
-        return tasks;
     }
 } 

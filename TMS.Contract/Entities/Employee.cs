@@ -13,7 +13,7 @@ public class Employee : Entity
     public string Phone { get; set; }
     public string Email { get; set; }
 
-    public string ImagePath { get; set; } = string.Empty;
+    public string? ImagePath { get; set; } = string.Empty;
 
     [JsonIgnore]
     public User User { get; set; }

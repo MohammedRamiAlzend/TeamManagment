@@ -49,15 +49,23 @@ public static class ApiEndPoints
     }
     public static class TasksEndPoint
     {
-        public const string Get = "{taskId:Guid}";
+        public const string Get = "{taskGuidId:Guid}";
         public const string GetAll = "";
         public const string GetAllPaginated = "paginated";
         public const string Create = "";
-        public const string Update = "{taskId:Guid}";
-        public const string Delete = "{taskId:Guid}";
-        public const string SubmitTask = "submit-task/{taskId:Guid}";
-        public const string GetSubmissionFiles = "get-submission-files/{taskId:Guid}/files";
-        public const string DownloadSubmissionFile = "download-submission-file/{taskId:Guid}/files/{fileId:int}/download";
-        public const string DownloadAllFiles = "download-all-files/{taskId:Guid}/download";
+        public const string Update = "{taskGuidId:Guid}";
+        public const string Delete = "{taskGuidId:Guid}";
+        public const string SubmitTask = "submit-task/{taskGuidId:Guid}";
+        public const string GetSubmissionFiles = "get-submission-files/{taskGuidId:Guid}/files";
+        public const string DownloadSubmissionFile = "download-submission-file/files/{fileGuidId:Guid}/download";
+        public const string DownloadAllFiles = "download-all-files/{taskGuidId:Guid}/download";
+    }
+    public static class TaskSubmissionsEndPoint
+    {
+        public const string GetAll = "task/{taskGuidId:Guid}/submissions";
+        public const string GetById = "/submissions/{submissionGuidId:Guid}";
+        public const string Create = "task/{taskGuidId:Guid}/submissions";
+        public const string Update = "task/{taskGuidId:Guid}/submissions/{submissionGuidId:Guid}";
+        public const string Delete = "task/{taskGuidId:Guid}/submissions/{submissionGuidId:Guid}";
     }
 }

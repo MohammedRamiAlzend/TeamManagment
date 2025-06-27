@@ -6,6 +6,6 @@ namespace TMS.Contract.CQRS.Commands.CustomCommands.WorkTaskCommands.Dtos;
 
 public class SubmitTaskRequestDto
 {
-    public string Comment { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public ICollection<IFormFile>? Files { get; set; } = [];
 }
