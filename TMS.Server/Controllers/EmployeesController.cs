@@ -155,39 +155,12 @@ public class EmployeesController : ControllerBase
             return StatusCode(500, "An error occurred while updating the employee.");
         }
     }
-
-    /// <summary>
-    /// Deletes an employee.
-    /// </summary>
-    [HttpDelete(EmployeesEndPoint.Delete)]
-    [HasPermission(EmployeeManagement.Delete)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ApiResponse>> DeleteEmployeeAsync(
-        [FromRoute] int employeeId,
-        CancellationToken token)
-    {
-        try
-        {
-            var result = await _sender.Send(new DeleteEntityCommand<Employee>(x => x.Id == employeeId), token);
-            if (result == null)
-            {
-                _logger.LogWarning("Employee not found for delete: {EmployeeId}", employeeId);
-                return NotFound("Employee not found.");
-            }
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting employee");
-            return StatusCode(500, "An error occurred while deleting the employee.");
-        }
-    }
+    
 
     /// <summary>
     /// Deletes an employee and sets related tasks' CreatedByEmployeeId to null.
     /// </summary>
-    [HttpDelete("custom-delete/{employeeId:int}")]
+    [HttpDelete(ApiEndPoints.EmployeesEndPoint.Delete)]
     [HasPermission(EmployeeManagement.Delete)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
